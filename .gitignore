@@ -6,6 +6,7 @@ coverage/
 .local/
 test-results/
 playwright-report/
+output/
 .env
 .env.*
 !.env.example

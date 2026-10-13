@@ -25,6 +25,7 @@
     "@vitest/coverage-v8": "5.0.4",
     "addons-linter": "10.14.0",
     "esbuild": "0.28.2",
+    "fake-indexeddb": "6.2.5",
     "fflate": "0.8.3",
     "jsdom": "30.1.2",
     "sharp": "0.35.5",
