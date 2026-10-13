@@ -40,7 +40,7 @@ const gateway: BrowserGateway = {
       .map((tab) => extension.tabs.sendMessage(tab.id!, { type: 'CONFIG_CHANGED' })));
   },
 };
-const service = new MessageService(settings, credentials, lookup, gateway, extension.runtime.getURL(''));
+const service = new MessageService(settings, credentials, lookup, gateway, extension.runtime.getURL(''), extension.runtime.id);
 
 extension.runtime.onMessage.addListener((message: unknown, sender, respond) => {
   void service.handle(message, sender).then(respond, () => respond({ ok: false, error: 'operation_failed' }));

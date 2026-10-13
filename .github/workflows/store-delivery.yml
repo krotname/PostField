@@ -1,0 +1,90 @@
+name: Store delivery
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing immutable stable release tag
+        type: string
+        required: true
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+  schedule:
+    - cron: '15 5,17 * * *' # 08:15 and 20:15 Moscow: resume persisted operations
+permissions:
+  contents: read
+  actions: read
+  issues: write
+concurrency:
+  group: postfield-store-delivery
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.event_name != 'release' || !github.event.release.prerelease
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      sha: ${{ steps.release.outputs.sha }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - id: release
+        run: node scripts/prepare-delivery.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+  stores:
+    needs: prepare
+    if: needs.prepare.outputs.tag != ''
+    strategy:
+      fail-fast: false
+      matrix:
+        store: [chrome, opera, edge, firefox]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: ${{ matrix.store }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: gh release download "$RELEASE_TAG" --dir artifacts --pattern 'postfield-*.zip' --pattern release-manifest.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
+      - run: npm run check:packages
+      - run: node scripts/node-run.mjs "$RESUME"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESUME: ${{ github.event_name == 'schedule' && '--resume' || '' }}
+          STORE: ${{ matrix.store }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
+          RELEASE_SHA: ${{ needs.prepare.outputs.sha }}
+          CWS_PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
+          CWS_ITEM_ID: ${{ vars.CWS_ITEM_ID }}
+          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          EDGE_PRODUCT_ID: ${{ vars.EDGE_PRODUCT_ID }}
+          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
+          AMO_ADDON_ID: ${{ vars.AMO_ADDON_ID }}
+          AMO_LICENSE_CONFIGURED: ${{ vars.AMO_LICENSE_CONFIGURED }}
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}

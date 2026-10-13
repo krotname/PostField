@@ -9,3 +9,22 @@
 | Форма и защита значения | `npm test`: отсутствуют forms и form-session, 2 failed suites | 49 tests passed: секции, Shadow DOM, ручное значение, устаревший ответ |
 
 Новые страны имеют только правила формата; автоопределение для них отключено до независимого контрольного корпуса.
+# Реализация 0.1.0
+
+| Поведение | Подтверждённый red | Green |
+|---|---|---|
+| Локальный ключ | Нет IndexedDbCredentials | 2 теста fake-indexeddb |
+| Привилегированные сообщения и согласие | Нет MessageService | Контракт sender/origin/key |
+| Страница и динамические поля | Нет PageController | DOM и ручной индекс |
+| Manifest четырёх браузеров | Нет manifestFor | 5 тестов пакетов |
+| Ручное назначение | Нет manual-mapping; MAP unknown_message | 2 DOM + message тест |
+| Доставка без дублирования | Нет runner | 5 сценариев durable journal |
+| HTTP магазинов | Нет stores | Контракты OAuth/JWT/ApiKey и Opera fail-closed |
+| CWS IN_PROGRESS/FAILED | ready вместо waiting | Точные enum v2 |
+| Журнал | Нет github-journal | Запрет чужих этапов/URL/секретов |
+| Firefox runtime ID | Forbidden при корректном moz-extension URL | Runtime ID отделён от случайного UUID |
+| Границы SOLID | Нет boundary-rules; обход через ./../ и re-export | 5 тестов нормализации и AST-проверки |
+| Настройки сайтов | write сохраняет 110 origins, пути и дубликаты | 3 теста, общий фильтр чтения и записи |
+| Стабильный релиз | Нет quality-gate | 13 сценариев полных, недостаточных и повреждённых доказательств |
+
+В E2E первый запуск выявил недостающую версию тестового Chromium, затем ненадёжный перехват fetch service worker. HTTP-порт заменён до запуска worker в изолированной тестовой копии; pregrant localhost описан в ARCHITECTURE.md. Сам продукт и канонические ZIP этим не изменяются. Исходники и lockfile доступны в source archive для повторной сборки. Live provider/store tests пока не выданы за выполненные.

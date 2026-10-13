@@ -2,13 +2,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { MessageService } from '../../src/browser/message-service.js';
 import type { SettingsStore, CredentialStore } from '../../src/application/ports.js';
 
-function setup(consent = false, origins: string[] = []) {
+function setup(consent = false, origins: string[] = [], base = 'chrome-extension://test/', extensionId = 'test') {
   const settings: SettingsStore = { read: async () => ({ consent, enabledOrigins: origins }), write: vi.fn(async () => {}) };
   const credentials: CredentialStore = { read: async () => 'test-key', write: vi.fn(async () => {}) };
   const lookup = { execute: vi.fn(async () => ({ kind: 'not_found' as const })), clearCache: vi.fn() };
   const browser = { activeTab: async () => ({ id: 7, url: 'https://shop.example/form' }), inject: vi.fn(async () => {}),
     fill: vi.fn(async () => ({ forms: 1 })), map: vi.fn(async () => ({ started: true })), sync: vi.fn(async () => {}), permitted: async () => true };
-  const service = new MessageService(settings, credentials, lookup, browser, 'chrome-extension://test/');
+  const service = new MessageService(settings, credentials, lookup, browser, base, extensionId);
   return { service, credentials, lookup, browser };
 }
 
@@ -16,6 +16,11 @@ const content = { id: 'test', tab: { id: 7 }, url: 'https://shop.example/form' }
 const address = { country: 'ru', city: 'Москва', street: 'Тверская улица', house: '13' };
 
 describe('privileged message boundary', () => {
+  it('uses Firefox runtime ID independently from the random moz-extension origin', async () => {
+    const { service } = setup(true, [], 'moz-extension://random-uuid/', 'postfield@krot.name');
+    expect(await service.handle({ type: 'STATE' }, { id: 'postfield@krot.name', url: 'moz-extension://random-uuid/options.html' })).toMatchObject({ ok: true });
+    expect(await service.handle({ type: 'STATE' }, { id: 'postfield@krot.name', url: 'moz-extension://foreign/options.html' })).toMatchObject({ ok: false });
+  });
   it('allows explicit field assignment only from the extension after consent', async () => {
     const { service, browser } = setup(true);
     expect(await service.handle({ type: 'MAP' }, content)).toMatchObject({ ok: false });

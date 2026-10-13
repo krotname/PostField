@@ -24,10 +24,11 @@ export class MessageService {
   private readonly manualTabs = new Map<number, { origin: string; expires: number }>();
   constructor(private readonly settings: SettingsStore, private readonly credentials: CredentialStore,
     private readonly lookup: LookupPort, private readonly browser: BrowserGateway, private readonly extensionBase: string,
+    private readonly extensionId: string,
     private readonly now: () => number = Date.now) {}
 
   private privileged(sender: MessageSender): boolean {
-    return sender.id === new URL(this.extensionBase).hostname
+    return sender.id === this.extensionId
       && (sender.url === `${this.extensionBase}popup.html` || sender.url === `${this.extensionBase}options.html`);
   }
 
@@ -42,7 +43,7 @@ export class MessageService {
   }
 
   async handle(message: unknown, sender: MessageSender): Promise<Reply> {
-    if (typeof message !== 'object' || message === null || sender.id !== new URL(this.extensionBase).hostname) return { ok: false, error: 'forbidden' };
+    if (typeof message !== 'object' || message === null || sender.id !== this.extensionId) return { ok: false, error: 'forbidden' };
     const request = message as Record<string, unknown>;
     if (request.type === 'CONTEXT') return { ok: true, data: await this.context(sender) };
     if (request.type === 'LOOKUP') {

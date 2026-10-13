@@ -1,0 +1,5 @@
+[
+  { "address": { "country": "ru", "city": "Санкт-Петербург", "street": "Политехническая улица", "house": "29" }, "postcode": "195251", "source": "https://doi.spbstu.ru/ru/pages/kontakty/" },
+  { "address": { "country": "ru", "city": "Новосибирск", "street": "улица Пирогова", "house": "1" }, "postcode": "630090", "source": "https://fp.nsu.ru/o-fakultete/kontakty/" },
+  { "address": { "country": "ru", "city": "Казань", "street": "Кремлевская улица", "house": "18" }, "postcode": "420008", "source": "https://www.kpfu.ru/" }
+]

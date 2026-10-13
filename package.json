@@ -16,6 +16,7 @@
     "build": "node scripts/build.mjs",
     "check:packages": "node scripts/verify-packages.mjs",
     "test:e2e": "playwright test",
+    "benchmark:ru": "node scripts/node-run.mjs benchmark",
     "check": "npm run typecheck && npm run check:boundaries && npm test && npm run build && npm run check:packages"
   },
   "devDependencies": {
@@ -29,7 +30,7 @@
     "fflate": "0.8.3",
     "jsdom": "30.1.2",
     "sharp": "0.35.5",
-    "typescript": "7.0.2",
+    "typescript": "6.0.3",
     "vitest": "5.0.4"
   }
 }
