@@ -14,6 +14,7 @@ function candidateFrom(value: unknown): AddressCandidate | null {
   const text = (field: string): string => typeof value[field] === 'string' ? (value[field] as string).slice(0, 300) : '';
   return { country: value.country_code, city: text('city') || text('town') || text('village'), street: text('street'),
     house: text('housenumber'), postcode: value.postcode, confidence: value.rank.confidence,
+    ...(text('state') ? { region: text('state') } : {}),
     resultType: text('result_type'), formatted: text('formatted') };
 }
 

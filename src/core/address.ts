@@ -14,6 +14,7 @@ export interface AddressCandidate {
   readonly city: string;
   readonly street: string;
   readonly house: string;
+  readonly region?: string;
   readonly postcode: string;
   readonly confidence: number;
   readonly resultType: string;

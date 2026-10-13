@@ -31,6 +31,11 @@ describe('Geoapify HTTP contract', () => {
       expect(fetcher).toHaveBeenCalledTimes(1);
     },
   );
+  it('retains provider state for checking a same-named city in another region', async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [{ ...raw, state: 'Свердловская область' }] })));
+    expect((await new GeoapifyProvider(credentials, fetcher).resolve({ ...address, region: 'Свердловская область' }))[0])
+      .toMatchObject({ region: 'Свердловская область' });
+  });
   it('does not request the provider without a saved key', async () => {
     const fetcher = vi.fn<typeof fetch>();
     await expect(new GeoapifyProvider({ ...credentials, read: async () => null }, fetcher).resolve(address)).rejects.toEqual(new ProviderError('missing_key'));

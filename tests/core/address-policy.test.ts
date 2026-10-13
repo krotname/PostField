@@ -24,6 +24,15 @@ describe('postcode decisions', () => {
   it('does not erase house suffixes while matching', () => {
     expect(classifyCandidates({ ...address, house: '13к1' }, [exact]).kind).not.toBe('confirmed');
   });
+  it('does not merge distinct house numbers by removing internal punctuation', () => {
+    expect(classifyCandidates({ ...address, house: '1.1' }, [{ ...exact, house: '11' }]).kind).not.toBe('confirmed');
+  });
+  it('requires a matching region whenever the input names one', () => {
+    const input = { ...address, region: 'Свердловская область' };
+    expect(classifyCandidates(input, [{ ...exact, region: 'Ставропольский край' }]).kind).not.toBe('confirmed');
+    expect(classifyCandidates(input, [exact]).kind).not.toBe('confirmed');
+    expect(classifyCandidates(input, [{ ...exact, region: ' СВЕРДЛОВСКАЯ область ' }]).kind).toBe('confirmed');
+  });
   it('deduplicates identical candidate records', () => {
     expect(classifyCandidates(address, [exact, exact]).kind).toBe('confirmed');
   });
