@@ -19,6 +19,7 @@ export interface AddressCandidate {
   readonly confidence: number;
   readonly resultType: string;
   readonly formatted: string;
+  readonly requiresPostcodeConfirmation?: boolean;
 }
 
 export type LookupErrorCode = 'missing_key' | 'unauthorized' | 'quota' | 'timeout' | 'offline' | 'invalid_response';

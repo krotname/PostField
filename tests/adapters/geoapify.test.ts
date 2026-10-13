@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { GeoapifyProvider } from '../../src/adapters/geoapify.js';
-import { ProviderError } from '../../src/application/lookup-postcode.js';
+import { LookupPostcode, ProviderError } from '../../src/application/lookup-postcode.js';
 import type { CredentialStore } from '../../src/application/ports.js';
 
 const credentials: CredentialStore = { read: async () => 'test-key', write: async () => {} };
@@ -8,6 +8,15 @@ const address = { country: 'ru' as const, city: 'Москва', street: 'Тве�
 const raw = { country_code: 'ru', city: 'Москва', street: 'Тверская улица', housenumber: '13', postcode: '125009', result_type: 'building', rank: { confidence: 1 }, formatted: 'Москва, Тверская улица, 13' };
 
 describe('Geoapify HTTP contract', () => {
+  it('requires postcode proof for a Russian house with full geocoding confidence', async () => {
+    // ФНС: Чапаева, 52, Петрозаводск — 185002; live Geoapify returned 185000.
+    const input = { country: 'ru' as const, city: 'Петрозаводск', street: 'Чапаева ул', house: '52' };
+    const response = { ...raw, city: input.city, street: 'улица Чапаева', housenumber: '52', postcode: '185000' };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+    expect(result.kind).toBe('ambiguous');
+    if (result.kind === 'ambiguous') expect(result.candidates[0]).toMatchObject({ postcode: '185000', requiresPostcodeConfirmation: true });
+  });
   it('sends only structured address, explicit country filter and no IP bias', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [raw] })));
     const provider = new GeoapifyProvider(credentials, fetcher);

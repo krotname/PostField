@@ -1,7 +1,15 @@
 {
-  "status": "not_run",
-  "cases": 0,
-  "wrongAutomatic": null,
-  "confirmedRate": null,
-  "reason": "Geoapify test key is unavailable; the independent Russia corpus is not complete."
+  "status": "insufficient",
+  "cases": 117,
+  "uniqueCases": 117,
+  "regions": 26,
+  "largestRegionShare": 0.06837606837606838,
+  "wrongAutomatic": 13,
+  "confirmedRate": 0.05982905982905983,
+  "unresolved": 97,
+  "errors": 5,
+  "checkedAt": "2026-10-13T22:13:09.167Z",
+  "evaluatedVersion": "0.1.0",
+  "evaluatedSourceSha": "46783c491d6526a35c8ef8308ef18e409e03a729",
+  "reason": "Live baseline evaluation on independent official public addresses failed. Geocoding confidence does not prove house-level postcode accuracy. Version 0.1.1 requires explicit confirmation for Russian Geoapify results and has not passed the stable automatic-fill quality gate."
 }

@@ -120,6 +120,9 @@ export class PageController {
     binding.ui.replaceChildren();
     binding.ui.textContent = labels[result.kind === 'error' ? result.code : result.kind] ?? '';
     if (result.kind !== 'ambiguous') return;
+    if (result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)) {
+      binding.ui.textContent = 'Точность индекса не подтверждена. Сверьте индекс перед выбором.';
+    }
     for (const candidate of result.candidates) {
       const button = this.document.createElement('button');
       button.type = 'button';
