@@ -1,0 +1,25 @@
+PostField Source-Available and Official Binary License
+Copyright (c) 2026 Andrei Ovcharenko (Kreout). All rights reserved.
+
+Source code is publicly available for inspection. You may clone the repository,
+make private modifications, build it, and use those builds for your own personal
+or internal business purposes. Forks made using GitHub's built-in functionality
+are permitted under GitHub's applicable terms.
+
+You may use and redistribute unmodified official PostField binary releases free
+of charge, for personal and business use, with this notice intact. No permission
+is granted to distribute modified binaries, publish derivatives in extension
+stores, sublicense the source, or use PostField branding without prior written
+permission from the copyright holder. Contributions submitted for inclusion must
+be your own work or accompanied by the necessary rights.
+
+Third-party components remain subject to their respective licenses. This license
+does not change those licenses or rights granted by them.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+Permission and support requests: mail@krot.name

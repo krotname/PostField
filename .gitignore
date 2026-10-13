@@ -1,0 +1,15 @@
+node_modules/
+dist/
+artifacts/
+coverage/
+.cache/
+.local/
+test-results/
+playwright-report/
+.env
+.env.*
+!.env.example
+*.log
+*.pem
+*.key
+*.crx
