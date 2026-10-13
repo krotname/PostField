@@ -51,15 +51,32 @@ export class PageController {
   };
 
   private scan(): void {
-    for (const [field, binding] of this.bindings) if (!field.isConnected) {
+    const groups = discoverAddressGroups(this.document);
+    const discovered = new Map(groups.map((group) => [group.postcode, group]));
+    for (const [field, binding] of this.bindings) {
+      if (field.isConnected && Object.values(binding.group.fields).every((input) => input.isConnected)
+        && (binding.manual || discovered.has(field))) continue;
       if (binding.timer) clearTimeout(binding.timer);
       binding.session.manualPostcodeChanged();
       binding.ui.remove();
       this.bindings.delete(field);
     }
-    for (const group of discoverAddressGroups(this.document)) {
+    for (const group of groups) {
       const existing = this.bindings.get(group.postcode);
-      if (existing) { if (!existing.manual) existing.group = group; continue; }
+      if (existing) {
+        if (!existing.manual) {
+          const changed = Object.keys({ ...existing.group.fields, ...group.fields })
+            .some((key) => existing.group.fields[key as keyof typeof group.fields] !== group.fields[key as keyof typeof group.fields]);
+          existing.group = group;
+          if (changed) {
+            if (existing.timer) clearTimeout(existing.timer);
+            existing.session.addressChanged();
+            existing.ui.replaceChildren();
+            if (this.automatic) this.schedule(existing);
+          }
+        }
+        continue;
+      }
       this.bind(group, false);
     }
   }

@@ -12,6 +12,17 @@ function setup(initial: DeliveryState | null = null) {
   return { store, journal };
 }
 describe('durable delivery', () => {
+  it.each(['uploaded', 'pending_review'] as const)('preserves %s operation IDs across a temporary credential outage', async (stage) => {
+    const initial: DeliveryState = { ...release, stage, uploadId: 'up', submissionId: 'sub' };
+    const { store, journal } = setup(initial);
+    store.ready = () => false;
+    expect(await deliver(release, store, journal)).toEqual(initial);
+    expect(journal.write).not.toHaveBeenCalled();
+    store.ready = () => true;
+    await deliver(release, store, journal);
+    expect(store.upload).not.toHaveBeenCalled();
+    expect(store.submit).toHaveBeenCalledTimes(stage === 'uploaded' ? 1 : 0);
+  });
   it('does not report moderation acceptance as publication', async () => {
     const { store, journal } = setup();
     expect((await deliver(release, store, journal)).stage).toBe('pending_review');

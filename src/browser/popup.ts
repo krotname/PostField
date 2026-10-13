@@ -1,6 +1,7 @@
 import { extension } from './extension-api.js';
 import { field, request, safeError } from './ui-client.js';
 import type { UiState } from './ui-client.js';
+import { hostPattern } from './host-pattern.js';
 
 let state: UiState | null = null;
 async function refresh(): Promise<void> {
@@ -26,12 +27,16 @@ field<HTMLInputElement>('automatic').addEventListener('change', () => {
   const origin = state?.origin;
   if (!origin) return;
   const enabled = toggle.checked;
-  const permission = enabled ? extension.permissions.request({ origins: [`${origin}/*`] }) : Promise.resolve(true);
+  const pattern = hostPattern(origin);
+  const permission = enabled ? extension.permissions.request({ origins: [pattern] }) : Promise.resolve(true);
   void permission.then(async (granted) => {
     if (!granted) { toggle.checked = false; field('status').textContent = 'Разрешение для сайта не выдано.'; return; }
     await request({ type: 'SITE_SET', origin, enabled });
     if (enabled) await request({ type: 'FILL' });
-    else await extension.permissions.remove({ origins: [`${origin}/*`] });
+    else if (!state?.enabledOrigins.some((other) => other !== origin && hostPattern(other) === pattern)) {
+      await extension.permissions.remove({ origins: [pattern] });
+    }
+    await refresh();
     field('status').textContent = enabled ? 'Автоматический режим включён.' : 'Автоматический режим отключён.';
   }).catch((error: unknown) => { toggle.checked = !enabled; field('status').textContent = safeError(error); });
 });

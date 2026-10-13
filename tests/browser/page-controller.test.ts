@@ -11,6 +11,19 @@ function form(): void {
 }
 
 describe('page controller', () => {
+  it('forgets a reused postcode when its former address controls are detached', async () => {
+    form();
+    const resolve = vi.fn(async () => ({ kind: 'not_found' } as const));
+    const controller = new PageController(document, resolve);
+    await controller.fill();
+    const postcode = document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!;
+    for (const field of document.querySelectorAll('input:not([autocomplete="postal-code"])')) field.remove();
+    postcode.removeAttribute('autocomplete');
+    expect(await controller.fill()).toBe(0);
+    expect(resolve).toHaveBeenCalledOnce();
+    expect(document.querySelector('[data-postfield-ui]')).toBeNull();
+    controller.stop();
+  });
   it('fills via the application layer and never submits the form', async () => {
     form();
     const submit = vi.fn();

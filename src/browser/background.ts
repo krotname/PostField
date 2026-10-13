@@ -5,6 +5,7 @@ import { LookupPostcode } from '../application/lookup-postcode.js';
 import { MessageService } from './message-service.js';
 import type { BrowserGateway } from './message-service.js';
 import { extension } from './extension-api.js';
+import { hostPattern } from './host-pattern.js';
 
 const settings = new LocalSettings(extension.storage.local);
 const credentials = new IndexedDbCredentials();
@@ -23,17 +24,17 @@ const gateway: BrowserGateway = {
     return { forms: 0 };
   },
   async map(tabId) {
-    const result: unknown = await extension.tabs.sendMessage(tabId, { type: 'MAP_FIELDS' }, { frameId: 0 });
+    const result: unknown = await extension.tabs.sendMessage(tabId, { type: 'MAP_FIELDS' });
     return { started: typeof result === 'object' && result !== null && 'started' in result && result.started === true };
   },
-  async permitted(origin) { return extension.permissions.contains({ origins: [`${origin}/*`] }); },
+  async permitted(origin) { return extension.permissions.contains({ origins: [hostPattern(origin)] }); },
   async sync(origins) {
     const scripts = await extension.scripting.getRegisteredContentScripts();
     const ids = scripts.filter((script) => script.id.startsWith('postfield-')).map((script) => script.id);
     if (ids.length) await extension.scripting.unregisterContentScripts({ ids });
     const permitted: string[] = [];
-    for (const origin of origins) if (await extension.permissions.contains({ origins: [`${origin}/*`] })) permitted.push(`${origin}/*`);
-    if (permitted.length) await extension.scripting.registerContentScripts([{ id: 'postfield-sites', matches: permitted,
+    for (const origin of origins) if (await extension.permissions.contains({ origins: [hostPattern(origin)] })) permitted.push(hostPattern(origin));
+    if (permitted.length) await extension.scripting.registerContentScripts([{ id: 'postfield-sites', matches: [...new Set(permitted)],
       js: ['content.js'], allFrames: true, runAt: 'document_idle', persistAcrossSessions: true }]);
     const tabs = await extension.tabs.query({});
     await Promise.allSettled(tabs.filter((tab) => tab.id !== undefined)

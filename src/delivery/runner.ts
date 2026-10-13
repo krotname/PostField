@@ -10,7 +10,10 @@ export async function deliver(release: ReleaseIdentity, store: StorePort, journa
   };
   if (state && ['published', 'rejected', 'needs_readback'].includes(state.stage)) return state;
   if (state && ['uploading', 'submitting'].includes(state.stage)) return save({ ...state, stage: 'needs_readback' });
-  if (!store.ready()) return save({ ...release, stage: 'requires_setup' });
+  if (!store.ready()) {
+    if (state && !['not_started', 'requires_setup'].includes(state.stage)) return state;
+    return save({ ...release, stage: 'requires_setup' });
+  }
   if (statusOnly && (!state || ['not_started', 'requires_setup'].includes(state.stage))) return { ...release, stage: 'not_started' };
   try {
     if (!state || ['not_started', 'requires_setup'].includes(state.stage)) {
