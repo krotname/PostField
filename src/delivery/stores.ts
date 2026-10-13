@@ -88,7 +88,7 @@ interface MozillaConfig { addonId: string; issuer: string; secret: string; licen
 export class MozillaStore implements StorePort {
   constructor(private readonly config: MozillaConfig, private readonly bytes: Buffer, private readonly sources: Buffer,
     private readonly version: string, private readonly fetcher: typeof fetch = fetch) {}
-  ready(): boolean { return Object.values(this.config).every(Boolean); }
+  ready(): boolean { return this.config.license === 'true' && Object.values(this.config).every(Boolean); }
   private headers(): Record<string, string> { return { Authorization: `JWT ${amoToken(this.config.issuer, this.config.secret)}` }; }
   private base(): string { return `https://addons.mozilla.org/api/v5/addons/addon/${encodeURIComponent(id(this.config.addonId))}/versions/`; }
   async upload(): Promise<{ uploadId: string }> {

@@ -38,6 +38,13 @@ describe('store HTTP contracts', () => {
     const payload = JSON.parse(Buffer.from(token.split('.')[1]!, 'base64url').toString()) as { iss: string; iat: number; exp: number; jti: string };
     expect(payload).toMatchObject({ iss: 'issuer', iat: 1000, exp: 1060 }); expect(payload.jti).toBeTruthy();
   });
+  it('Mozilla delivery requires an explicit confirmed license setup flag', () => {
+    const config = { addonId: 'postfield@krot.name', issuer: 'issuer', secret: 'secret', license: 'false' };
+    const create = (license: string) => new MozillaStore({ ...config, license }, Buffer.from('zip'), Buffer.from('source'), '0.1.0');
+    expect(create('false').ready()).toBe(false);
+    expect(create('custom license').ready()).toBe(false);
+    expect(create('true').ready()).toBe(true);
+  });
   it('Mozilla sends a listed upload and the immutable source archive at submission', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValueOnce(json({ uuid: 'up' })).mockResolvedValueOnce(json({ id: 123 }));
     const store = new MozillaStore({ addonId: 'postfield@krot.name', issuer: 'issuer', secret: 'secret', license: 'custom license' }, Buffer.from('zip'), Buffer.from('source'), '0.1.0', fetcher);
