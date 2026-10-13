@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PostField — настройки</title><link rel="stylesheet" href="ui.css"></head>
+<body class="options"><main>
+  <div class="brand"><img src="icons/48.png" width="40" height="40" alt=""><span>PostField</span></div>
+  <h1>Индекс по адресу в форме</h1>
+  <p class="lead">Укажите город, улицу и дом на сайте — PostField найдёт почтовый индекс. Первый выпуск поддерживает Россию.</p>
+  <form id="settings">
+    <label for="key">Ваш ключ Geoapify</label>
+    <input id="key" name="key" type="password" autocomplete="off" spellcheck="false" placeholder="Вставьте API-ключ">
+    <p id="key-state" class="hint"></p>
+    <p class="hint"><a href="https://myprojects.geoapify.com/" target="_blank" rel="noopener noreferrer">Получить ключ Geoapify</a>. Ключ хранится локально в расширении. Издатель его не получает.</p>
+    <label class="check"><input id="consent" type="checkbox"><span>Разрешаю отправлять Geoapify город, улицу, номер дома и при наличии регион для определения индекса. Адреса не сохраняются в истории PostField.</span></label>
+    <div class="actions"><button type="submit">Сохранить</button><button id="delete-key" type="button" class="secondary">Удалить ключ</button></div>
+  </form>
+  <p id="status" role="status" aria-live="polite"></p>
+  <section><h2>Вы управляете заполнением</h2><p>Откройте значок PostField на нужном сайте. Можно заполнить индекс один раз или включить автоматический режим только для этого сайта. Введённый вручную индекс сохраняется; неоднозначный результат требует выбора.</p><p>Для нестандартной формы доступно ручное назначение полей. Формы не отправляются автоматически.</p></section>
+  <section><h2>Разрешённые сайты</h2><ul id="origins"></ul><p class="hint">Отключить сайт можно в его всплывающем окне PostField. Отзыв согласия останавливает запросы на всех сайтах.</p></section>
+  <footer><a href="https://krotname.github.io/PostField/privacy.html" target="_blank" rel="noopener noreferrer">Приватность</a> · <a href="https://github.com/krotname/PostField/issues" target="_blank" rel="noopener noreferrer">Поддержка</a><p>Geocoding by <a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer">Geoapify</a> · © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a></p></footer>
+</main><script src="options.js"></script></body></html>

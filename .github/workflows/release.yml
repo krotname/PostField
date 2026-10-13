@@ -1,0 +1,64 @@
+name: GitHub Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version from package.json
+        type: string
+        required: true
+      preview:
+        description: Preview (store delivery waits for a stable release)
+        type: boolean
+        default: true
+permissions:
+  contents: read
+concurrency:
+  group: postfield-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+      id-token: write
+      attestations: write
+    outputs:
+      tag: ${{ steps.publish.outputs.tag }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+      - run: node scripts/release-guard.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_PREVIEW: ${{ inputs.preview }}
+      - run: npm ci
+      - run: npm run build && npm run check:packages
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4
+        with:
+          subject-path: artifacts/*
+      - id: publish
+        run: node scripts/create-release.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_PREVIEW: ${{ inputs.preview }}
+  deliver:
+    needs: release
+    if: ${{ !inputs.preview }}
+    uses: ./.github/workflows/store-delivery.yml
+    with:
+      tag: ${{ needs.release.outputs.tag }}
+    secrets: inherit
+    permissions:
+      contents: read
+      actions: read
+      issues: write
