@@ -15,7 +15,8 @@ function candidateFrom(value: unknown): AddressCandidate | null {
   return { country: value.country_code, city: text('city') || text('town') || text('village'), street: text('street'),
     house: text('housenumber'), postcode: value.postcode, confidence: value.rank.confidence,
     ...(text('state') ? { region: text('state') } : {}),
-    resultType: text('result_type'), formatted: text('formatted') };
+    resultType: text('result_type'), formatted: text('formatted'),
+    ...(value.country_code === 'ru' ? { requiresPostcodeConfirmation: true } : {}) };
 }
 
 export class GeoapifyProvider implements AddressProvider {

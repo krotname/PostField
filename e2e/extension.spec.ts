@@ -36,6 +36,9 @@ test('extension options, background, content script and DOM preserve manual inpu
       return api.runtime.sendMessage({ type: 'FILL' });
     });
     expect(await fill()).toMatchObject({ ok: true, data: { forms: 1 } });
+    await expect(form.locator('[data-postfield-ui]')).toContainText('Точность индекса не подтверждена');
+    await expect(form.locator('[autocomplete=postal-code]')).toHaveValue('');
+    await form.locator('[data-postfield-choice]').click();
     await expect(form.locator('[autocomplete=postal-code]')).toHaveValue('125009');
     await form.locator('[autocomplete=postal-code]').fill('654321');
     await fill();

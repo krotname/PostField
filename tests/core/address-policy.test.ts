@@ -9,6 +9,10 @@ const exact: AddressCandidate = {
 };
 
 describe('postcode decisions', () => {
+  it('requires postcode proof even when the address match is exact', () => {
+    expect(classifyCandidates(address, [{ ...exact, requiresPostcodeConfirmation: true }]).kind).toBe('ambiguous');
+    expect(classifyCandidates(address, [exact, { ...exact, requiresPostcodeConfirmation: true }]).kind).toBe('ambiguous');
+  });
   it('confirms one exact house match', () => {
     expect(classifyCandidates(address, [exact])).toEqual({ kind: 'confirmed', candidate: exact });
   });

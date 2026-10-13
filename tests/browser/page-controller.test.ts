@@ -11,6 +11,17 @@ function form(): void {
 }
 
 describe('page controller', () => {
+  it('explains missing postcode proof before an explicit choice', async () => {
+    form();
+    const candidate = exact.kind === 'confirmed' ? { ...exact.candidate, requiresPostcodeConfirmation: true } : (() => { throw new Error(); })();
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [candidate] }));
+    await controller.fill();
+    expect(document.querySelector('[data-postfield-ui]')?.textContent).toContain('Точность индекса не подтверждена');
+    expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('');
+    document.querySelector<HTMLButtonElement>('[data-postfield-choice]')?.click();
+    expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('125009');
+    controller.stop();
+  });
   it('forgets a reused postcode when its former address controls are detached', async () => {
     form();
     const resolve = vi.fn(async () => ({ kind: 'not_found' } as const));
