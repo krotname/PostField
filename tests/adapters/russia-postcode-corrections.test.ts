@@ -9,6 +9,28 @@ import recorded from '../fixtures/russia-known-errors.json';
 const credentials = { read: async () => 'synthetic-key', write: async () => {} };
 
 describe('recorded Russian postcode corrections', () => {
+  it.each([
+    { city: 'Новороссийск', region: 'Краснодарский край', street: 'проспект Дзержинского', house: '211', wrong: '353900', correct: '353925' },
+    { city: 'Барнаул', region: 'Алтайский край', street: 'Социалистический проспект', house: '47', wrong: '656000', correct: '656068' },
+    { city: 'Оренбург', region: 'Оренбургская область', street: 'Шарлыкское шоссе', house: '1/2', wrong: '460000', correct: '460019' },
+  ])('recognizes expanded street types in $city', async (entry) => {
+    const input: Address = { country: 'ru', city: entry.city, street: entry.street, house: entry.house, region: entry.region };
+    const response = { country_code: 'ru', city: input.city, street: input.street, housenumber: input.house,
+      state: input.region, postcode: entry.wrong, formatted: input.street, result_type: 'building', rank: { confidence: 1 } };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+    expect(result.kind).toBe('confirmed');
+    if (result.kind === 'confirmed') expect(result.candidate.postcode).toBe(entry.correct);
+  });
+  it.each(['Социалистический улица', 'Социалистический проезд', 'Социалистический пр'])('preserves street type and confirmation for %s', async (street) => {
+    const input: Address = { country: 'ru', region: 'Алтайский край', city: 'Барнаул', street, house: '47' };
+    const response = { country_code: 'ru', city: input.city, street, housenumber: input.house, state: input.region,
+      postcode: '656000', formatted: street, result_type: 'building', rank: { confidence: 1 } };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+    expect(result.kind).toBe('ambiguous');
+    if (result.kind === 'ambiguous') expect(result.candidates[0]?.postcode).toBe(street.endsWith(' пр') ? '656068' : '656000');
+  });
   it.each(recorded.filter((row) => row.baselineAutomatic))('corrects retained provider response for corpus row $corpusIndex', async ({ corpusIndex, response }) => {
     const reference = corpus[corpusIndex];
     expect(reference).toBeDefined();

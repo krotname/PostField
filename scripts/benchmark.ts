@@ -2,7 +2,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { GeoapifyProvider } from '../src/adapters/geoapify.js';
 import { LookupPostcode } from '../src/application/lookup-postcode.js';
 import { inspectCorpus } from './corpus.js';
-const { rows: corpus, eligible, uniqueCases, regions, largestRegionShare } = inspectCorpus(JSON.parse(await readFile(process.env.CORPUS_PATH ?? 'tests/fixtures/russia-corpus.json', 'utf8')));
+import catalogue from '../src/data/russia-postcode-corrections.json';
+const excluded = catalogue.entries.map((entry) => ({ ...entry.address, country: 'ru' as const }));
+const { rows: corpus, eligible, uniqueCases, regions, largestRegionShare } = inspectCorpus(
+  JSON.parse(await readFile(process.env.CORPUS_PATH ?? 'tests/fixtures/russia-corpus.json', 'utf8')), excluded);
 const key = process.env.GEOAPIFY_API_KEY;
 if (!key) throw new Error('GEOAPIFY_API_KEY_required');
 const provider = new GeoapifyProvider({ read: async () => key, write: async () => { throw new Error('readonly_benchmark'); } });
