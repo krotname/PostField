@@ -32,9 +32,12 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     const id = new URL(worker.url()).hostname;
     const options = await context.newPage();
     await options.goto(`chrome-extension://${id}/options.html`);
+    await expect(options.locator('#key-state')).toContainText('Ключ ещё не добавлен.');
     await options.locator('input[type=password]').fill('synthetic-key');
     await options.locator('input[type=checkbox]').check();
     await options.getByRole('button', { name: 'Сохранить' }).click();
+    await expect(options.getByRole('status')).toHaveText('Настройки сохранены.');
+    await expect(options.locator('input[type=checkbox]')).toBeChecked();
     await expect(options.locator('input[type=password]')).toHaveValue('');
     const form = await context.newPage();
     await form.goto('http://127.0.0.1:4173');
@@ -42,11 +45,15 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     await form.locator('[autocomplete=address-line1]').fill(scenario.street);
     await form.locator('[name=house]').fill(scenario.house);
     await form.bringToFront();
+    await expect.poll(() => options.evaluate(async () => {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      return tab?.url;
+    })).toBe('http://127.0.0.1:4173/');
     const fill = () => options.evaluate(async () => {
       const api = (globalThis as typeof globalThis & { chrome: typeof chrome }).chrome;
       return api.runtime.sendMessage({ type: 'FILL' });
     });
-    expect(await fill()).toMatchObject({ ok: true, data: { forms: 1 } });
+    expect(await fill()).toEqual({ ok: true, data: { forms: 1 } });
     if (!scenario.automatic) {
       await expect(form.locator('[data-postfield-ui]')).toContainText('Точность индекса не подтверждена');
       await expect(form.locator('[autocomplete=postal-code]')).toHaveValue('');
