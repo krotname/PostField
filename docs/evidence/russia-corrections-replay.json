@@ -1,0 +1,21 @@
+{
+  "evaluatedVersion": "0.1.2",
+  "mode": "offline_replay",
+  "liveMeasurementAt": "2026-10-13T22:13:09.167Z",
+  "cases": 117,
+  "responses": 112,
+  "firstPostcodeCorrect": 61,
+  "firstPostcodeWrong": 48,
+  "noPostcode": 3,
+  "noResponse": 5,
+  "exactHouseWrong": 30,
+  "confirmedCorrect": 14,
+  "wrongAutomatic": 0,
+  "unresolved": 103,
+  "firstPostcodeWrongRate": 0.41025641025641024,
+  "baselineWrongAutomatic": 13,
+  "baselineWrongAutomaticRate": 0.1111111111111111,
+  "externalRequests": 0,
+  "replayedRequests": 112,
+  "independentValidation": false
+}

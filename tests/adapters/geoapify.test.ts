@@ -8,6 +8,43 @@ const address = { country: 'ru' as const, city: 'Москва', street: 'Тве�
 const raw = { country_code: 'ru', city: 'Москва', street: 'Тверская улица', housenumber: '13', postcode: '125009', result_type: 'building', rank: { confidence: 1 }, formatted: 'Москва, Тверская улица, 13' };
 
 describe('Geoapify HTTP contract', () => {
+  it.each(['185000', '185002'])('uses the verified postcode for an exact catalogue address returning %s', async (postcode) => {
+    const input = { country: 'ru' as const, region: 'Республика Карелия', city: 'Петрозаводск', street: 'Чапаева ул', house: '52' };
+    const response = { ...raw, state: input.region, city: input.city, street: 'улица Чапаева', housenumber: input.house,
+      postcode, formatted: `улица Чапаева 52, Петрозаводск, Россия, ${postcode}` };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+    expect(result.kind).toBe('confirmed');
+    if (result.kind === 'confirmed') {
+      expect(result.candidate.postcode).toBe('185002');
+      expect(result.candidate.formatted).toContain('185002');
+      expect(result.candidate.formatted).not.toContain('185000');
+    }
+  });
+  it.each([
+    { house: '54' }, { city: 'Москва' }, { street: 'Другая улица' }, { region: 'Московская область' },
+  ])('does not apply a catalogue correction to a different address: %j', async (change) => {
+    const input = { country: 'ru' as const, region: 'Республика Карелия', city: 'Петрозаводск', street: 'Чапаева ул', house: '52', ...change };
+    const response = { ...raw, state: input.region, city: input.city, street: input.street, housenumber: input.house, postcode: '185000' };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+    expect(result.kind).toBe('ambiguous');
+    if (result.kind === 'ambiguous') expect(result.candidates[0]).toMatchObject({ postcode: '185000', requiresPostcodeConfirmation: true });
+  });
+  it('requires confirmation when a known address returns an unrecorded postcode', async () => {
+    const input = { country: 'ru' as const, region: 'Республика Карелия', city: 'Петрозаводск', street: 'Чапаева ул', house: '52' };
+    const response = { ...raw, state: input.region, city: input.city, street: input.street, housenumber: input.house, postcode: '185099' };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+    expect(result.kind).toBe('ambiguous');
+    if (result.kind === 'ambiguous') expect(result.candidates[0]?.postcode).toBe('185099');
+  });
+  it('filters a recorded wrong postcode when the provider returns a different house for a known address', async () => {
+    const input = { country: 'ru' as const, region: 'Республика Карелия', city: 'Петрозаводск', street: 'Чапаева ул', house: '52' };
+    const response = { ...raw, state: input.region, city: input.city, street: input.street, housenumber: '50', postcode: '185000' };
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
+    expect(await new GeoapifyProvider(credentials, fetcher).resolve(input)).toEqual([]);
+  });
   it('requires postcode proof for a Russian house with full geocoding confidence', async () => {
     // ФНС: Чапаева, 52, Петрозаводск — 185002; live Geoapify returned 185000.
     const input = { country: 'ru' as const, city: 'Петрозаводск', street: 'Чапаева ул', house: '52' };

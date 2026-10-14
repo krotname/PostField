@@ -1,0 +1,1841 @@
+[
+  {
+    "corpusIndex": 0,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Петрозаводск",
+          "street": "улица Чапаева",
+          "housenumber": "52",
+          "state": "Республика Карелия",
+          "postcode": "185000",
+          "result_type": "building",
+          "formatted": "улица Чапаева 52, Перевалка, Петрозаводск, KI, Россия, 185000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 4,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Новороссийск",
+          "street": "проспект Дзержинского",
+          "housenumber": "211",
+          "state": "Краснодарский край",
+          "postcode": "353900",
+          "result_type": "building",
+          "formatted": "проспект Дзержинского 211, Новороссийск, KD, Россия, 353900",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новороссийск",
+          "street": "проспект Дзержинского",
+          "housenumber": "211/3",
+          "state": "Краснодарский край",
+          "postcode": "353900",
+          "result_type": "building",
+          "formatted": "проспект Дзержинского 211/3, Новороссийск, KD, Россия, 353900",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новороссийск",
+          "street": "проспект Дзержинского",
+          "housenumber": "211 к2",
+          "state": "Краснодарский край",
+          "postcode": "353900",
+          "result_type": "building",
+          "formatted": "проспект Дзержинского 211 к2, Новороссийск, KD, Россия, 353900",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новороссийск",
+          "street": "проспект Дзержинского",
+          "housenumber": "211/5",
+          "state": "Краснодарский край",
+          "postcode": "353900",
+          "result_type": "building",
+          "formatted": "проспект Дзержинского 211/5, Новороссийск, KD, Россия, 353900",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новороссийск",
+          "street": "проспект Дзержинского",
+          "housenumber": "211/2",
+          "state": "Краснодарский край",
+          "postcode": "353900",
+          "result_type": "building",
+          "formatted": "проспект Дзержинского 211/2, Новороссийск, KD, Россия, 353900",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 6,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Кропоткин",
+          "street": "Красная улица",
+          "housenumber": "235",
+          "state": "Краснодарский край",
+          "postcode": "352392",
+          "result_type": "building",
+          "formatted": "Красная улица 235, Кропоткин, Краснодарский край, Россия, 352392",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Кропоткин",
+          "street": "Красная улица",
+          "housenumber": "235",
+          "state": "Краснодарский край",
+          "postcode": "352392",
+          "result_type": "amenity",
+          "formatted": "Федеральная Налоговая Служба, Красная улица 235, Кропоткин, Краснодарский край, Россия, 352392",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 8,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Сочи",
+          "street": "улица Кирова",
+          "housenumber": "41",
+          "state": "Краснодарский край",
+          "postcode": "354350",
+          "result_type": "amenity",
+          "formatted": "Межрайонная инспекция Федеральной налоговой службы №8 по Краснодарскому краю, улица Кирова 41, Адлер, Сочи, Краснодарский край, Россия, 354350",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 9,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Уссурийск",
+          "street": "улица Чичерина",
+          "housenumber": "93",
+          "state": "Приморский край",
+          "postcode": "692500",
+          "result_type": "building",
+          "formatted": "улица Чичерина 93, Центр, Уссурийск, Приморский край, Россия, 692500",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Уссурийск",
+          "street": "улица Чичерина",
+          "housenumber": "93",
+          "state": "Приморский край",
+          "postcode": "692500",
+          "result_type": "amenity",
+          "formatted": "Матисс, улица Чичерина 93, Центр, Уссурийск, Приморский край, Россия, 692500",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Уссурийск",
+          "street": "улица Чичерина",
+          "housenumber": "93",
+          "state": "Приморский край",
+          "postcode": "692500",
+          "result_type": "amenity",
+          "formatted": "Аптека25.рф, улица Чичерина 93, Центр, Уссурийск, Приморский край, Россия, 692500",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Уссурийск",
+          "street": "улица Чичерина",
+          "housenumber": "93",
+          "state": "Приморский край",
+          "postcode": "692500",
+          "result_type": "amenity",
+          "formatted": "Уссури, улица Чичерина 93, Центр, Уссурийск, Приморский край, Россия, 692500",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 11,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Владивосток",
+          "street": "Русская улица",
+          "housenumber": "19",
+          "state": "Приморский край",
+          "postcode": "690000",
+          "result_type": "building",
+          "formatted": "Русская улица 19, Владивосток, Приморский край, Россия, 690000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 13,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Владивосток",
+          "street": "Океанский проспект",
+          "housenumber": "40",
+          "state": "Приморский край",
+          "postcode": "690000",
+          "result_type": "building",
+          "formatted": "Океанский проспект 40, Центр, Владивосток, PR, Россия, 690000",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Владивосток",
+          "street": "Океанский проспект",
+          "housenumber": "40",
+          "state": "Приморский край",
+          "postcode": "690000",
+          "result_type": "building",
+          "formatted": "Океанский проспект 40, Центр, Владивосток, Приморский край, Россия, 690000",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Владивосток",
+          "street": "Океанский проспект",
+          "housenumber": "40",
+          "state": "Приморский край",
+          "postcode": "690000",
+          "result_type": "building",
+          "formatted": "Океанский проспект 40, Владивосток, Приморский край, Россия, 690000",
+          "rank": {
+            "confidence": 0.29924999999999996
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Владивосток",
+          "street": "Океанский проспект",
+          "housenumber": "40",
+          "state": "Приморский край",
+          "postcode": "690014",
+          "result_type": "building",
+          "formatted": "Океанский проспект 40, Владивосток, Приморский край, Россия, 690014",
+          "rank": {
+            "confidence": 0.29924999999999996
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Владивосток",
+          "street": "Океанский проспект",
+          "state": "Приморский край",
+          "postcode": "690000",
+          "result_type": "street",
+          "formatted": "Океанский проспект, Центр, Владивосток, Приморский край, Россия, 690000",
+          "rank": {
+            "confidence": 0.29924999999999996
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 16,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Иркутск",
+          "street": "Советская улица",
+          "housenumber": "55",
+          "state": "Иркутская область",
+          "postcode": "664047",
+          "result_type": "building",
+          "formatted": "Советская улица 55, Иркутск, Иркутская область, Россия, 664047",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Иркутск",
+          "street": "Советская улица",
+          "housenumber": "55",
+          "state": "Иркутская область",
+          "postcode": "664047",
+          "result_type": "amenity",
+          "formatted": "Межрайонная ИФНС России 20 по Иркутской области, Советская улица 55, Иркутск, Иркутская область, Россия, 664047",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 17,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Иркутск",
+          "street": "улица Декабрьских Событий",
+          "housenumber": "47",
+          "state": "Иркутская область",
+          "postcode": "664026",
+          "result_type": "building",
+          "formatted": "улица Декабрьских Событий 47, Правобережный округ, Иркутск, Иркутская область, Россия, 664026",
+          "rank": {
+            "confidence": 0.95
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 21,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "улица Мира",
+          "housenumber": "63",
+          "state": "Новосибирская область",
+          "postcode": "630000",
+          "result_type": "building",
+          "formatted": "улица Мира 63, Бугринская Роща, Новосибирск, Новосибирская область, Россия, 630000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 22,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "улица Костычева",
+          "housenumber": "20",
+          "state": "Новосибирская область",
+          "postcode": "630000",
+          "result_type": "building",
+          "formatted": "улица Костычева 20, Станиславский жилмассив, Новосибирск, Новосибирская область, Россия, 630000",
+          "rank": {
+            "confidence": 0.75
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "улица Костычева",
+          "state": "Новосибирская область",
+          "postcode": "630000",
+          "result_type": "street",
+          "formatted": "улица Костычева, Сад Кирова, Новосибирск, Новосибирская область, Россия, 630000",
+          "rank": {
+            "confidence": 0.5
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "улица Костычева",
+          "state": "Новосибирская область",
+          "postcode": "630000",
+          "result_type": "street",
+          "formatted": "улица Костычева, Новосибирск, Новосибирская область, Россия, 630000",
+          "rank": {
+            "confidence": 0.5
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 24,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "Октябрьская магистраль",
+          "housenumber": "4",
+          "state": "Новосибирская область",
+          "postcode": "630011",
+          "result_type": "building",
+          "formatted": "Октябрьская магистраль 4, Депутатский, Новосибирск, Новосибирская область, Россия, 630011",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "Октябрьская магистраль",
+          "housenumber": "4",
+          "state": "Новосибирская область",
+          "postcode": "630011",
+          "result_type": "amenity",
+          "formatted": "Эволюция, Октябрьская магистраль 4, Депутатский, Новосибирск, Новосибирская область, Россия, 630011",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "Октябрьская магистраль",
+          "housenumber": "4",
+          "state": "Новосибирская область",
+          "postcode": "630011",
+          "result_type": "amenity",
+          "formatted": "Интерстилс, Октябрьская магистраль 4, Депутатский, Новосибирск, Новосибирская область, Россия, 630011",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 25,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Новосибирск",
+          "street": "улица Новая Заря",
+          "housenumber": "45",
+          "state": "Новосибирская область",
+          "postcode": "630000",
+          "result_type": "building",
+          "formatted": "улица Новая Заря 45, Новосибирск, Новосибирская область, Россия, 630000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 26,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Пушкина",
+          "housenumber": "63",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "building",
+          "formatted": "улица Пушкина 63, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Пушкина",
+          "housenumber": "63",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "amenity",
+          "formatted": "Омский юридический колледж, улица Пушкина 63, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 27,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Маршала Жукова",
+          "housenumber": "72/1",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "building",
+          "formatted": "улица Маршала Жукова 72/1, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Маршала Жукова",
+          "housenumber": "72/1",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "amenity",
+          "formatted": "Управление Федеральной налоговой службы, улица Маршала Жукова 72/1, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Маршала Жукова",
+          "housenumber": "72/1",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "amenity",
+          "formatted": "Семейная, улица Маршала Жукова 72/1, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Маршала Жукова",
+          "housenumber": "72/1",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "amenity",
+          "formatted": "Магнит, улица Маршала Жукова 72/1, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Омск",
+          "street": "улица Маршала Жукова",
+          "housenumber": "72/1",
+          "state": "Омская область",
+          "postcode": "644000",
+          "result_type": "amenity",
+          "formatted": "Элемент Лизинг, улица Маршала Жукова 72/1, Куйбышевский, городской округ Омск, Омская область, Россия, 644000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 29,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Соликамск",
+          "street": "Калийная улица",
+          "housenumber": "125",
+          "state": "Пермский край",
+          "postcode": "618545",
+          "result_type": "amenity",
+          "formatted": "Межрайонная ИФНС России № 11 по Пермскому краю, Калийная улица 125, Соликамск, Пермский край, Россия, 618545",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 31,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Пермь",
+          "street": "улица Советской Армии",
+          "housenumber": "46",
+          "state": "Пермский край",
+          "postcode": "614022",
+          "result_type": "building",
+          "formatted": "улица Советской Армии 46, Ераничи, Пермь, Пермский край, Россия, 614022",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 33,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Пермь",
+          "street": "улица КИМ",
+          "housenumber": "91А",
+          "state": "Пермский край",
+          "postcode": "614070",
+          "result_type": "building",
+          "formatted": "улица КИМ 91А, Городские горки, Пермь, Пермский край, Россия, 614070",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 35,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "городской округ Волгодонск",
+          "street": "Ленинградская улица",
+          "housenumber": "10",
+          "state": "Ростовская область",
+          "postcode": "347360",
+          "result_type": "amenity",
+          "formatted": "Межрайонная ИФНС № 4 по Ростовской области, Ленинградская улица 10, Новый город, городской округ Волгодонск, Ростовская область, Россия, 347360",
+          "rank": {
+            "confidence": 0.81
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Волгодонск",
+          "street": "Ленинградская улица",
+          "housenumber": "10",
+          "state": "Ростовская область",
+          "postcode": "347360",
+          "result_type": "amenity",
+          "formatted": "Сбербанк, Ленинградская улица 10, Новый город, городской округ Волгодонск, Ростовская область, Россия, 347360",
+          "rank": {
+            "confidence": 0.81
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Волгодонск",
+          "street": "Ленинградская улица",
+          "housenumber": "10",
+          "state": "Ростовская область",
+          "postcode": "347360",
+          "result_type": "amenity",
+          "formatted": "Экспертно-криминалистический отдел, Ленинградская улица 10, Новый город, городской округ Волгодонск, Ростовская область, Россия, 347360",
+          "rank": {
+            "confidence": 0.81
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 36,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Шахты",
+          "street": "Советская улица",
+          "housenumber": "134А",
+          "state": "Ростовская область",
+          "postcode": "346507",
+          "result_type": "amenity",
+          "formatted": "Налоговая инспекция ИФНС №12, Советская улица 134А, Шахты, Ростовская область, Россия, 346507",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 37,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Каменск-Шахтинский",
+          "street": "улица Ленина",
+          "housenumber": "15",
+          "state": "Ростовская область",
+          "postcode": "347810",
+          "result_type": "building",
+          "formatted": "улица Ленина 15, Каменск-Шахтинский, Ростовская область, Россия, 347810",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 40,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Ростов-на-Дону",
+          "street": "Кировский проспект",
+          "housenumber": "100/74",
+          "state": "Ростовская область",
+          "postcode": "344006",
+          "result_type": "building",
+          "formatted": "Кировский проспект 100/74, Байковский хутор, Ростов-на-Дону, Ростовская область, Россия, 344006",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Ростов-на-Дону",
+          "street": "Кировский проспект",
+          "housenumber": "100",
+          "state": "Ростовская область",
+          "postcode": "344022",
+          "result_type": "building",
+          "formatted": "Кировский проспект 100, Ростов-на-Дону, Ростовская область, Россия, 344022",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Ростов-на-Дону",
+          "street": "Кировский проспект",
+          "housenumber": "100/74",
+          "state": "Ростовская область",
+          "postcode": "344006",
+          "result_type": "building",
+          "formatted": "Кировский проспект 100/74, Байковский хутор, Ростов-на-Дону, RO, Россия, 344006",
+          "rank": {
+            "confidence": 0.5984999999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Ропшинское сельское поселение",
+          "street": "4-й Кировский проезд",
+          "housenumber": "100",
+          "state": "Ленинградская область",
+          "postcode": "188513",
+          "result_type": "building",
+          "formatted": "4-й Кировский проезд 100, СНТ «Новоропшинское», Ропшинское сельское поселение, LN, Россия, 188513",
+          "rank": {
+            "confidence": 0.34123739343749987
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Ропшинское сельское поселение",
+          "street": "3-й Кировский проезд",
+          "housenumber": "74",
+          "state": "Ленинградская область",
+          "postcode": "188513",
+          "result_type": "building",
+          "formatted": "3-й Кировский проезд 74, СНТ «Новоропшинское», Ропшинское сельское поселение, LN, Россия, 188513",
+          "rank": {
+            "confidence": 0.07128269550281248
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 43,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Самара",
+          "street": "улица Сергея Лазо",
+          "housenumber": "2А",
+          "state": "Самарская область",
+          "postcode": "443028",
+          "result_type": "building",
+          "formatted": "улица Сергея Лазо 2А, Красноглинский район, Самара, Самарская область, Россия, 443028",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Самара",
+          "street": "улица Сергея Лазо",
+          "housenumber": "2А",
+          "state": "Самарская область",
+          "postcode": "443112",
+          "result_type": "building",
+          "formatted": "улица Сергея Лазо 2А, Красноглинский район, Самара, Самарская область, Россия, 443112",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Самара",
+          "street": "улица Сергея Лазо",
+          "housenumber": "2А",
+          "state": "Самарская область",
+          "postcode": "443112",
+          "result_type": "amenity",
+          "formatted": "Сбербанк, улица Сергея Лазо 2А, Красноглинский район, Самара, Самарская область, Россия, 443112",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 50,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Екатеринбург",
+          "street": "улица Малышева",
+          "housenumber": "42",
+          "state": "Свердловская область",
+          "postcode": "620077",
+          "result_type": "amenity",
+          "formatted": "House of Offices, улица Малышева 42, Форум-Сити, Екатеринбург, Свердловская область, Россия, 620077",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Екатеринбург",
+          "street": "улица Малышева",
+          "housenumber": "42",
+          "state": "Свердловская область",
+          "postcode": "620077",
+          "result_type": "amenity",
+          "formatted": "Спорттовары, улица Малышева 42, Форум-Сити, Екатеринбург, Свердловская область, Россия, 620077",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Екатеринбург",
+          "street": "улица Малышева",
+          "housenumber": "42",
+          "state": "Свердловская область",
+          "postcode": "620014",
+          "result_type": "amenity",
+          "formatted": "Счастливый взгляд, улица Малышева 42, Екатеринбург, Свердловская область, Россия, 620014",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Екатеринбург",
+          "street": "улица Малышева",
+          "housenumber": "42",
+          "state": "Свердловская область",
+          "postcode": "620077",
+          "result_type": "amenity",
+          "formatted": "VIPLASER.EKB, улица Малышева 42, Форум-Сити, Екатеринбург, Свердловская область, Россия, 620077",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Екатеринбург",
+          "street": "улица Малышева",
+          "housenumber": "42",
+          "state": "Свердловская область",
+          "postcode": "620077",
+          "result_type": "amenity",
+          "formatted": "Робек, улица Малышева 42, Форум-Сити, Екатеринбург, Свердловская область, Россия, 620077",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 52,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Каменск-Уральский",
+          "street": "улица Кунавина",
+          "housenumber": "2",
+          "state": "Свердловская область",
+          "postcode": "623428",
+          "result_type": "building",
+          "formatted": "улица Кунавина 2, Октябрьский, Каменск-Уральский, Свердловская область, Россия, 623428",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Каменск-Уральский",
+          "street": "улица Кунавина",
+          "housenumber": "2",
+          "state": "Свердловская область",
+          "postcode": "623428",
+          "result_type": "amenity",
+          "formatted": "Бухара, улица Кунавина 2, Октябрьский, Каменск-Уральский, Свердловская область, Россия, 623428",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Каменск-Уральский",
+          "street": "улица Кунавина",
+          "housenumber": "2",
+          "state": "Свердловская область",
+          "postcode": "623428",
+          "result_type": "amenity",
+          "formatted": "Бизнес-центр \"Петровский\", улица Кунавина 2, Октябрьский, Каменск-Уральский, Свердловская область, Россия, 623428",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Каменск-Уральский",
+          "street": "улица Кунавина",
+          "housenumber": "2",
+          "state": "Свердловская область",
+          "postcode": "623428",
+          "result_type": "amenity",
+          "formatted": "SPAavto, улица Кунавина 2, Октябрьский, Каменск-Уральский, Свердловская область, Россия, 623428",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Каменск-Уральский",
+          "street": "улица Кунавина",
+          "housenumber": "2",
+          "state": "Свердловская область",
+          "postcode": "623428",
+          "result_type": "amenity",
+          "formatted": "ИФНС №22 по Свердловской Области, улица Кунавина 2, Октябрьский, Каменск-Уральский, Свердловская область, Россия, 623428",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 68,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "городской округ Казань",
+          "street": "улица Бондаренко",
+          "housenumber": "3",
+          "state": "Республика Татарстан",
+          "postcode": "420044",
+          "result_type": "building",
+          "formatted": "улица Бондаренко 3, Дружба, городской округ Казань, TT, Россия, 420044",
+          "rank": {
+            "confidence": 0.81
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Казань",
+          "street": "улица Бондаренко",
+          "housenumber": "3Б",
+          "state": "Республика Татарстан",
+          "postcode": "420044",
+          "result_type": "building",
+          "formatted": "улица Бондаренко 3Б, Дружба, городской округ Казань, TT, Россия, 420044",
+          "rank": {
+            "confidence": 0.7695
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Казань",
+          "street": "улица Бондаренко",
+          "housenumber": "3",
+          "state": "Татарстан",
+          "postcode": "420044",
+          "result_type": "building",
+          "formatted": "улица Бондаренко 3, Дружба, городской округ Казань, Татарстан, Россия, 420044",
+          "rank": {
+            "confidence": 0.5
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Казань",
+          "street": "улица Бондаренко",
+          "housenumber": "3Б",
+          "state": "Татарстан",
+          "postcode": "420094",
+          "result_type": "building",
+          "formatted": "улица Бондаренко 3Б, Казань, Татарстан, Россия, 420094",
+          "rank": {
+            "confidence": 0.475
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Казань",
+          "street": "улица Бондаренко",
+          "housenumber": "32 к3",
+          "state": "Татарстан",
+          "postcode": "420066",
+          "result_type": "building",
+          "formatted": "улица Бондаренко 32 к3, городской округ Казань, TT, Россия, 420066",
+          "rank": {
+            "confidence": 0.2412633539516064
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 69,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Казань",
+          "street": "Даурская улица",
+          "housenumber": "35",
+          "state": "Республика Татарстан",
+          "postcode": "422528",
+          "result_type": "building",
+          "formatted": "Даурская улица 35, Казань, TT, Россия, 422528",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 70,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Елабуга",
+          "street": "улица Чапаева",
+          "housenumber": "78",
+          "state": "Татарстан",
+          "postcode": "423600",
+          "result_type": "amenity",
+          "formatted": "Межрайонная инспекция Федеральной налоговой службы № 9 по Республике Татарстан, улица Чапаева 78, Елабуга, Татарстан, Россия, 423600",
+          "rank": {
+            "confidence": 0.9025
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 72,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Чистополь",
+          "street": "улица Ленина",
+          "housenumber": "2",
+          "state": "Республика Татарстан",
+          "postcode": "422982",
+          "result_type": "building",
+          "formatted": "улица Ленина 2, Чистополь, TT, Россия, 422982",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 74,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "городское поселение Альметьевск",
+          "street": "улица Сулеймановой",
+          "housenumber": "1",
+          "state": "Татарстан",
+          "postcode": "423400",
+          "result_type": "building",
+          "formatted": "улица Сулеймановой 1, городское поселение Альметьевск, Татарстан, Россия, 423400",
+          "rank": {
+            "confidence": 0.38475
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городское поселение Альметьевск",
+          "street": "улица Сулеймановой",
+          "housenumber": "1А",
+          "state": "Татарстан",
+          "postcode": "423400",
+          "result_type": "amenity",
+          "formatted": "Налоговая инспекция, улица Сулеймановой 1А, городское поселение Альметьевск, Татарстан, Россия, 423400",
+          "rank": {
+            "confidence": 0.405
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городское поселение Альметьевск",
+          "street": "улица Сулеймановой",
+          "housenumber": "1",
+          "state": "Татарстан",
+          "postcode": "423400",
+          "result_type": "amenity",
+          "formatted": "Вита Экспресс, улица Сулеймановой 1, городское поселение Альметьевск, Татарстан, Россия, 423400",
+          "rank": {
+            "confidence": 0.38475
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Альметьевск",
+          "state": "Республика Татарстан",
+          "result_type": "city",
+          "formatted": "Альметьевск, TT, Россия",
+          "rank": {
+            "confidence": 0.25
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 76,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Стерлитамак",
+          "street": "проспект Октября",
+          "housenumber": "34",
+          "state": "Республика Башкортостан",
+          "postcode": "453106",
+          "result_type": "building",
+          "formatted": "проспект Октября 34, Стерлитамак, BK, Россия, 453106",
+          "rank": {
+            "confidence": 0.5
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Стерлитамак",
+          "street": "улица 20 лет Октября",
+          "housenumber": "34",
+          "state": "Башкортостан",
+          "postcode": "453101",
+          "result_type": "building",
+          "formatted": "улица 20 лет Октября 34, Стерлитамак, BK, Россия, 453101",
+          "rank": {
+            "confidence": 0.3980024999999999
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Стерлитамак",
+          "street": "проспект Октября",
+          "housenumber": "34",
+          "state": "Башкортостан",
+          "postcode": "453128",
+          "result_type": "amenity",
+          "formatted": "Межрайонная инспекция ФНС России № 3 по Республике Башкортостан, проспект Октября 34, Стерлитамак, Башкортостан, Россия, 453128",
+          "rank": {
+            "confidence": 0.25
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Стерлитамак",
+          "state": "Республика Башкортостан",
+          "result_type": "city",
+          "formatted": "Стерлитамак, BK, Россия",
+          "rank": {
+            "confidence": 0.25
+          }
+        },
+        {
+          "country_code": "ru",
+          "state": "Республика Башкортостан",
+          "result_type": "county",
+          "formatted": "Стерлитамак, Россия",
+          "rank": {
+            "confidence": 0.125
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 77,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Уфа",
+          "street": "улица Левитана",
+          "housenumber": "14",
+          "state": "Республика Башкортостан",
+          "postcode": "450000",
+          "result_type": "building",
+          "formatted": "улица Левитана 14, Дёмский район, Уфа, BK, Россия, 450000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Уфа",
+          "street": "улица Левитана",
+          "housenumber": "14/1",
+          "state": "Башкортостан",
+          "postcode": "450000",
+          "result_type": "building",
+          "formatted": "улица Левитана 14/1, Дёмский район, Уфа, BK, Россия, 450000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Уфа",
+          "street": "улица Левитана",
+          "housenumber": "14/2",
+          "state": "Башкортостан",
+          "postcode": "450000",
+          "result_type": "building",
+          "formatted": "улица Левитана 14/2, Дёмский район, Уфа, BK, Россия, 450000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Уфа",
+          "street": "улица Левитана",
+          "housenumber": "14/3",
+          "state": "Башкортостан",
+          "postcode": "450000",
+          "result_type": "building",
+          "formatted": "улица Левитана 14/3, Дёмский район, Уфа, BK, Россия, 450000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 79,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Уфа",
+          "street": "Коммунистическая улица",
+          "housenumber": "59",
+          "state": "Республика Башкортостан",
+          "postcode": "450000",
+          "result_type": "building",
+          "formatted": "Коммунистическая улица 59, Уфа, BK, Россия, 450000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 85,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "улица Минина",
+          "housenumber": "20",
+          "state": "Нижегородская область",
+          "postcode": "603155",
+          "result_type": "amenity",
+          "formatted": "УФНС, улица Минина 20, Нижний Новгород, Нижегородская область, Россия, 603155",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 87,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "улица Фучика",
+          "housenumber": "6",
+          "state": "Нижегородская область",
+          "postcode": "603016",
+          "result_type": "building",
+          "formatted": "улица Фучика 6, Нижний Новгород, Нижегородская область, Россия, 603016",
+          "rank": {
+            "confidence": 0.63
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "улица Фучика",
+          "housenumber": "6",
+          "state": "Нижегородская область",
+          "postcode": "603016",
+          "result_type": "building",
+          "formatted": "улица Фучика 6, Нижний Новгород, NZ, Россия, 603016",
+          "rank": {
+            "confidence": 0.63
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "улица Юлиуса Фучика",
+          "housenumber": "38к3",
+          "state": "Нижегородская область",
+          "postcode": "603147",
+          "result_type": "building",
+          "formatted": "улица Юлиуса Фучика 38к3, Нижний Новгород, NZ, Россия, 603147",
+          "rank": {
+            "confidence": 0.5
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "улица Юлиуса Фучика",
+          "housenumber": "60лит24",
+          "state": "Нижегородская область",
+          "postcode": "607635",
+          "result_type": "building",
+          "formatted": "улица Юлиуса Фучика 60лит24, Нижний Новгород, NZ, Россия, 607635",
+          "rank": {
+            "confidence": 0.5
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "улица Юлиуса Фучика",
+          "housenumber": "60 к17",
+          "state": "Нижегородская область",
+          "postcode": "607635",
+          "result_type": "building",
+          "formatted": "улица Юлиуса Фучика 60 к17, Нижний Новгород, NZ, Россия, 607635",
+          "rank": {
+            "confidence": 0.5
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 89,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "Ижорская улица",
+          "housenumber": "50",
+          "state": "Нижегородская область",
+          "postcode": "603088",
+          "result_type": "building",
+          "formatted": "Ижорская улица 50, Нижний Новгород, Нижегородская область, Россия, 603088",
+          "rank": {
+            "confidence": 0.75
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Нижний Новгород",
+          "street": "Ижорская улица",
+          "state": "Нижегородская область",
+          "postcode": "603006",
+          "result_type": "street",
+          "formatted": "Ижорская улица, Нижний Новгород, Нижегородская область, Россия, 603006",
+          "rank": {
+            "confidence": 0.5
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 94,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Жуковский",
+          "street": "улица Баженова",
+          "housenumber": "11Б",
+          "state": "Московская область",
+          "postcode": "140188",
+          "result_type": "building",
+          "formatted": "улица Баженова 11Б, Быковка, Жуковский, Московская область, Россия, 140188",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 99,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Барнаул",
+          "street": "Социалистический проспект",
+          "housenumber": "47",
+          "state": "Алтайский край",
+          "postcode": "656000",
+          "result_type": "amenity",
+          "formatted": "Налоговая инспекция, Социалистический проспект 47, Барнаул, Алтайский край, Россия, 656000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 100,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Барнаул",
+          "street": "улица Максима Горького",
+          "housenumber": "36",
+          "state": "Алтайский край",
+          "postcode": "656000",
+          "result_type": "building",
+          "formatted": "улица Максима Горького 36, Барнаул, Алтайский край, Россия, 656000",
+          "rank": {
+            "confidence": 0.95
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Боровиха",
+          "street": "улица Максима Горького",
+          "housenumber": "36",
+          "state": "Алтайский край",
+          "postcode": "658044",
+          "result_type": "building",
+          "formatted": "улица Максима Горького 36, Боровиха, Алтайский край, Россия, 658044",
+          "rank": {
+            "confidence": 0.9025
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 103,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Красноярск",
+          "street": "улица 60 лет Октября",
+          "housenumber": "83А",
+          "state": "Красноярский край",
+          "postcode": "660000",
+          "result_type": "building",
+          "formatted": "улица 60 лет Октября 83А, Свердловский район, Красноярск, Красноярский край, Россия, 660000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 106,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Архангельск",
+          "street": "улица Свободы",
+          "housenumber": "33",
+          "state": "Архангельская область",
+          "postcode": "163061",
+          "result_type": "amenity",
+          "formatted": "УФНС России по Архангельской области и Ненецкому автономному округу, улица Свободы 33, Привокзальный, Архангельск, Архангельская область, Россия, 163061",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 108,
+    "baselineAutomatic": true,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Тюмень",
+          "street": "Товарное шоссе",
+          "housenumber": "15",
+          "state": "Тюменская область",
+          "postcode": "625000",
+          "result_type": "building",
+          "formatted": "Товарное шоссе 15, Затюменка, Тюмень, Тюменская область, Россия, 625000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 109,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Тюмень",
+          "street": "улица Малыгина",
+          "housenumber": "54",
+          "state": "Тюменская область",
+          "postcode": "625000",
+          "result_type": "building",
+          "formatted": "улица Малыгина 54, Тюмень, Тюменская область, Россия, 625000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Тюмень",
+          "street": "улица Малыгина",
+          "housenumber": "54",
+          "state": "Тюменская область",
+          "postcode": "625000",
+          "result_type": "amenity",
+          "formatted": "Межрайонная инспекция Федеральной налоговой службы России №6 по Тюменской области, улица Малыгина 54, Тюмень, Тюменская область, Россия, 625000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 110,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "городской округ Бузулук",
+          "street": "улица Суворова",
+          "housenumber": "70",
+          "state": "Оренбургская область",
+          "postcode": "461043",
+          "result_type": "building",
+          "formatted": "улица Суворова 70, 4-й микрорайон, городской округ Бузулук, Оренбургская область, Россия, 461043",
+          "rank": {
+            "confidence": 0.81
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "городской округ Бузулук",
+          "street": "улица Суворова",
+          "housenumber": "70",
+          "state": "Оренбургская область",
+          "postcode": "461043",
+          "result_type": "amenity",
+          "formatted": "Межрайонная ИФНС №3 по Оренбургской области, улица Суворова 70, 4-й микрорайон, городской округ Бузулук, Оренбургская область, Россия, 461043",
+          "rank": {
+            "confidence": 0.81
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 111,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "улица Орлова",
+          "housenumber": "133",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "ИФНС № 7, улица Орлова 133, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 112,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "Шарлыкское шоссе",
+          "housenumber": "1/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "building",
+          "formatted": "Шарлыкское шоссе 1/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "Шарлыкское шоссе",
+          "housenumber": "1/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "Мармелад, Шарлыкское шоссе 1/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "Шарлыкское шоссе",
+          "housenumber": "1/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "Твое, Шарлыкское шоссе 1/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "Шарлыкское шоссе",
+          "housenumber": "1/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "Mixit, Шарлыкское шоссе 1/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "Шарлыкское шоссе",
+          "housenumber": "1/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "Lime, Шарлыкское шоссе 1/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 114,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "улица Шевченко",
+          "housenumber": "26/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "Межрайонная ИФНС №12 по Оренбургской области, улица Шевченко 26/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        },
+        {
+          "country_code": "ru",
+          "city": "Оренбург",
+          "street": "улица Шевченко",
+          "housenumber": "26/2",
+          "state": "Оренбургская область",
+          "postcode": "460000",
+          "result_type": "amenity",
+          "formatted": "Столовая, улица Шевченко 26/2, Оренбург, Оренбургская область, Россия, 460000",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "corpusIndex": 115,
+    "baselineAutomatic": false,
+    "response": {
+      "results": [
+        {
+          "country_code": "ru",
+          "city": "Орск",
+          "street": "улица Станиславского",
+          "housenumber": "49",
+          "state": "Оренбургская область",
+          "postcode": "462428",
+          "result_type": "amenity",
+          "formatted": "Межрайонная ИФНС России №14 по Оренбургской области, улица Станиславского 49, Второй участок, Орск, Оренбургская область, Россия, 462428",
+          "rank": {
+            "confidence": 1
+          }
+        }
+      ]
+    }
+  }
+]

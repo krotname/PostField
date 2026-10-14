@@ -2,6 +2,7 @@ import { isCountryCode } from '../core/address.js';
 import type { Address, AddressCandidate } from '../core/address.js';
 import type { AddressProvider, CredentialStore } from '../application/ports.js';
 import { ProviderError } from '../application/lookup-postcode.js';
+import { correctRussianPostcode } from './russia-postcode-corrections.js';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -38,7 +39,9 @@ export class GeoapifyProvider implements AddressProvider {
       if (!response.ok) throw new ProviderError('offline');
       const body: unknown = await response.json();
       if (!isRecord(body) || !Array.isArray(body.results)) throw new ProviderError('invalid_response');
-      return body.results.slice(0, 5).map(candidateFrom).filter((candidate): candidate is AddressCandidate => candidate !== null);
+      return body.results.slice(0, 5).map(candidateFrom).filter((candidate): candidate is AddressCandidate => candidate !== null)
+        .map((candidate) => correctRussianPostcode(address, candidate))
+        .filter((candidate): candidate is AddressCandidate => candidate !== null);
     } catch (error: unknown) {
       if (error instanceof ProviderError) throw error;
       if (error instanceof SyntaxError) throw new ProviderError('invalid_response');
