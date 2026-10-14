@@ -2,6 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { inspectCorpus } from '../../scripts/corpus.js';
 const row = (index: number, region = `Регион ${index % 10}`) => ({ address: { country: 'ru', city: `Город ${index}`, street: 'улица Мира', house: '1', region }, postcode: '123456', source: 'https://university.test/contact' });
 describe('independent Russia corpus', () => {
+  it('rejects a catalogue address before it can count as independent evidence', () => {
+    const excluded = [{ ...row(0).address, country: 'ru' as const }];
+    expect(() => inspectCorpus([row(0)], excluded)).toThrow('catalogue_corpus_overlap');
+    expect(inspectCorpus([row(1)], excluded).uniqueCases).toBe(1);
+  });
+  it('recognizes training addresses despite street-type spelling changes', () => {
+    const source = { ...row(0), address: { ...row(0).address, street: 'Дзержинского пр-кт' } };
+    const excluded = [{ ...source.address, country: 'ru' as const, street: 'проспект Дзержинского' }];
+    expect(() => inspectCorpus([source], excluded)).toThrow('catalogue_corpus_overlap');
+  });
   it('rejects copies of the same normalized address before provider calls', () => {
     const rows = Array.from({ length: 100 }, () => row(0));
     expect(() => inspectCorpus(rows)).toThrow('duplicate_corpus_address');
