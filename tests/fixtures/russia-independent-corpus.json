@@ -442,17 +442,6 @@
   {
     "address": {
       "country": "ru",
-      "region": "Самарская область",
-      "city": "Самара",
-      "street": "Брусчатый переулок",
-      "house": "38"
-    },
-    "postcode": "443023",
-    "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_26/"
-  },
-  {
-    "address": {
-      "country": "ru",
       "region": "Республика Коми",
       "city": "Сыктывкар",
       "street": "ул. Пушкина",
@@ -603,17 +592,6 @@
     },
     "postcode": "628606",
     "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_06/"
-  },
-  {
-    "address": {
-      "country": "ru",
-      "region": "Самарская область",
-      "city": "Тольятти",
-      "street": "ул. Татищева",
-      "house": "12"
-    },
-    "postcode": "445031",
-    "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_2/"
   },
   {
     "address": {
@@ -1098,5 +1076,27 @@
     },
     "postcode": "400005",
     "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_14/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Подольск",
+      "street": "Комсомольская ул",
+      "house": "7"
+    },
+    "postcode": "142100",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_74/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Энтузиастов ш",
+      "house": "14"
+    },
+    "postcode": "111024",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_22/"
   }
 ]

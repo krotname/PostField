@@ -6,6 +6,8 @@ import historicalCorpus from '../tests/fixtures/russia-corpus.json';
 export interface CorpusCase { readonly address: Address; readonly postcode: string; readonly source: string }
 const normalize = (value: string): string => value.normalize('NFKC').trim().toLocaleLowerCase('ru').replace(/ё/g, 'е').replace(/\s+/g, ' ');
 const historicalAddresses = new Set(historicalCorpus.map((row) => correctionAddressKey({ ...row.address, country: 'ru' })));
+const sourceIdentity = (source: URL): string => `${source.origin}${source.pathname.replace(/\/+$/u, '')}`;
+const historicalSources = new Set(historicalCorpus.map(row => sourceIdentity(new URL(row.source))));
 
 /** Reject training addresses and duplicates before spending provider quota. */
 export function inspectCorpus(value: unknown, excludedAddresses: readonly Address[] = []): { rows: readonly CorpusCase[]; uniqueCases: number; regions: number; largestRegionShare: number; eligible: boolean } {
@@ -27,7 +29,7 @@ export function inspectCorpus(value: unknown, excludedAddresses: readonly Addres
     const address = row.address;
     const key = correctionAddressKey(address);
     if (excluded.has(key)) throw new Error('catalogue_corpus_overlap');
-    if (historicalAddresses.has(key)) throw new Error('historical_corpus_overlap');
+    if (historicalAddresses.has(key) || historicalSources.has(sourceIdentity(source))) throw new Error('historical_corpus_overlap');
     if (seen.has(key)) throw new Error('duplicate_corpus_address');
     seen.add(key);
     if (address.region?.trim()) {
