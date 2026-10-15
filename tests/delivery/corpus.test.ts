@@ -5,6 +5,17 @@ import catalogue from '../../src/data/russia-postcode-corrections.json';
 import { correctionAddressKey } from '../../src/adapters/russia-postcode-corrections.js';
 const row = (index: number, region = `Регион ${index % 10}`) => ({ address: { country: 'ru', city: `Город ${index}`, street: 'улица Мира', house: '1', region }, postcode: '123456', source: 'https://university.test/contact' });
 describe('independent Russia corpus', () => {
+  it.each([
+    ['Самара', 'Брусчатый переулок'],
+    ['Тольятти', 'ул. Татищева'],
+  ])('rejects historical source reuse despite alternate street spelling in %s', (city, street) => {
+    const historical = baseline.find(entry => entry.address.city === city && /Брусчат|Татищев/u.test(entry.address.street));
+    expect(historical).toBeDefined();
+    if (!historical) return;
+    const alias = { ...historical, source: `${historical.source}?view=print#address`,
+      address: { ...historical.address, street } };
+    expect(() => inspectCorpus([alias])).toThrow('historical_corpus_overlap');
+  });
   it('rejects a historical baseline address even when it is absent from the corrections catalogue', () => {
     const catalogueKeys = new Set(catalogue.entries.map((entry) => correctionAddressKey({ ...entry.address, country: 'ru' })));
     const historical = baseline.find((entry) => !catalogueKeys.has(correctionAddressKey({ ...entry.address, country: 'ru' })));

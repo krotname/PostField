@@ -2,14 +2,15 @@
   "assessment": "offline_policy_feasibility",
   "status": "blocked_by_manual_confirmation_policy",
   "packageVersion": "0.1.4",
-  "checkedAt": "2026-10-15T08:51:38.527Z",
+  "checkedAt": "2026-10-15T09:09:34.531Z",
   "corpus": {
     "path": "tests/fixtures/russia-independent-corpus.json",
     "cases": 100,
-    "regions": 41,
+    "regions": 40,
     "largestRegionShare": 0.09,
     "eligible": true,
     "historicalOverlap": 0,
+    "historicalSourceOverlap": 0,
     "catalogueOverlap": 0
   },
   "externalProviderRequests": 0,

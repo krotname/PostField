@@ -9,7 +9,7 @@ import provenance from '../../docs/evidence/russia-independent-corpus-provenance
 describe('unseen Russia addresses', () => {
   it('keeps a separate official corpus outside the historical baseline and correction catalogue', () => {
     const excluded = catalogue.entries.map(entry => ({ ...entry.address, country: 'ru' as const }));
-    expect(inspectCorpus(corpus, excluded)).toMatchObject({ eligible: true, uniqueCases: 100, regions: 41, largestRegionShare: 0.09 });
+    expect(inspectCorpus(corpus, excluded)).toMatchObject({ eligible: true, uniqueCases: 100, regions: 40, largestRegionShare: 0.09 });
     expect(provenance.providerRequests).toBe(0);
     expect(provenance.evidence).toHaveLength(corpus.length);
     for (const [index, row] of corpus.entries()) {

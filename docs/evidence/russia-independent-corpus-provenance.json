@@ -1,9 +1,10 @@
 {
-  "preparedAt": "2026-10-15T08:49:32.394Z",
+  "preparedAt": "2026-10-15T09:08:44.808Z",
   "cases": 100,
-  "regions": 41,
+  "regions": 40,
   "largestRegionShare": 0.09,
   "historicalOverlap": 0,
+  "historicalSourceOverlap": 0,
   "catalogueOverlap": 0,
   "providerRequests": 0,
   "selectedBeforeProviderEvaluation": true,
@@ -199,6 +200,28 @@
         "house": "46"
       },
       "reason": "source_postcode_conflict"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Самарская область",
+        "city": "Самара",
+        "street": "Брусчатый переулок",
+        "house": "38"
+      },
+      "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_26/",
+      "reason": "historical_source_reuse_alternate_street_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Самарская область",
+        "city": "Тольятти",
+        "street": "ул. Татищева",
+        "house": "12"
+      },
+      "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_2/",
+      "reason": "historical_source_reuse_alternate_street_spelling"
     }
   ],
   "evidence": [
@@ -443,12 +466,6 @@
       "httpStatus": 200
     },
     {
-      "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_26/",
-      "rawCorrespondenceAddress": "443023, г. Самара, Брусчатый переулок, д. 38",
-      "checkedAt": "2026-10-15T08:42:34.666452+00:00",
-      "httpStatus": 200
-    },
-    {
       "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_01/",
       "rawCorrespondenceAddress": "167981, г. Сыктывкар, ул. Пушкина, д. 5",
       "checkedAt": "2026-10-15T08:35:25.861282+00:00",
@@ -530,12 +547,6 @@
       "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_06/",
       "rawCorrespondenceAddress": "628606, Ханты-Мансийский автономный округ - Югра, г. Нижневартовск, Менделеева ул., д. 13",
       "checkedAt": "2026-10-15T08:35:21.271707+00:00",
-      "httpStatus": 200
-    },
-    {
-      "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_2/",
-      "rawCorrespondenceAddress": "445031, Самарская область, г. Тольятти, ул. Татищева, д. 12",
-      "checkedAt": "2026-10-15T08:42:34.419883+00:00",
       "httpStatus": 200
     },
     {
@@ -800,6 +811,18 @@
       "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_14/",
       "rawLegalAddress": ",400005,Волгоградская обл,,Волгоград г,,7-й Гвардейской ул,12,,",
       "checkedAt": "2026-10-15T08:34:44.495280+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_74/",
+      "rawLegalAddress": ",142100,Московская обл,,Подольск г,,Комсомольская ул,7,,",
+      "checkedAt": "2026-10-15T08:46:26.743835+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_22/",
+      "rawLegalAddress": ",111024,Москва г,,,,Энтузиастов ш,14,,",
+      "checkedAt": "2026-10-15T08:42:32.598068+00:00",
       "httpStatus": 200
     }
   ]
