@@ -1,0 +1,1102 @@
+[
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Бурятия",
+      "city": "Улан-Удэ",
+      "street": "Цивилева ул",
+      "house": "3"
+    },
+    "postcode": "670034",
+    "source": "https://www.nalog.gov.ru/rn03/ifns/imns03_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Коми",
+      "city": "Сыктывкар",
+      "street": "Первомайская ул",
+      "house": "53"
+    },
+    "postcode": "167000",
+    "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Марий Эл",
+      "city": "Йошкар-Ола",
+      "street": "Вознесенская ул",
+      "house": "71"
+    },
+    "postcode": "424000",
+    "source": "https://www.nalog.gov.ru/rn12/ifns/imns12_15_12/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Саха (Якутия)",
+      "city": "Якутск",
+      "street": "Губина ул",
+      "house": "2"
+    },
+    "postcode": "677018",
+    "source": "https://www.nalog.gov.ru/rn14/ifns/torm1402/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Удмуртская Республика",
+      "city": "Ижевск",
+      "street": "Коммунаров ул",
+      "house": "367"
+    },
+    "postcode": "426008",
+    "source": "https://www.nalog.gov.ru/rn18/ifns/imns18_1828/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Хакасия",
+      "city": "Абакан",
+      "street": "Крылова ул",
+      "house": "76"
+    },
+    "postcode": "655017",
+    "source": "https://www.nalog.gov.ru/rn19/ifns/imns19_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Чувашская Республика",
+      "city": "Чебоксары",
+      "street": "Нижегородская ул",
+      "house": "8"
+    },
+    "postcode": "428000",
+    "source": "https://www.nalog.gov.ru/rn21/ifns/ifns21_30/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ставропольский край",
+      "city": "Ставрополь",
+      "street": "Советская ул",
+      "house": "3"
+    },
+    "postcode": "355035",
+    "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_11/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Белгородская область",
+      "city": "Белгород",
+      "street": "Преображенская ул",
+      "house": "61"
+    },
+    "postcode": "308009",
+    "source": "https://www.nalog.gov.ru/rn31/ifns/ifns31_14/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Брянская область",
+      "city": "Брянск",
+      "street": "Крахмалева ул",
+      "house": "53"
+    },
+    "postcode": "241050",
+    "source": "https://www.nalog.gov.ru/rn32/ifns/ifns_bryansk/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Владимирская область",
+      "city": "Владимир",
+      "street": "Диктора Левитана ул",
+      "house": "2"
+    },
+    "postcode": "600001",
+    "source": "https://www.nalog.gov.ru/rn33/ifns/imns33_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Волгоград",
+      "street": "им В.И.Ленина пр-кт",
+      "house": "67а"
+    },
+    "postcode": "400078",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Воронеж",
+      "street": "Кирова ул",
+      "house": "28"
+    },
+    "postcode": "394006",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_012/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ивановская область",
+      "city": "Иваново",
+      "street": "Почтовая ул",
+      "house": "24"
+    },
+    "postcode": "153000",
+    "source": "https://www.nalog.gov.ru/rn37/ifns/imns3702/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Калужская область",
+      "city": "Калуга",
+      "street": "Московская ул",
+      "house": "282"
+    },
+    "postcode": "248021",
+    "source": "https://www.nalog.gov.ru/rn40/ifns/imns40_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Кемеровская область - Кузбасс",
+      "city": "Кемерово",
+      "street": "Октябрьский пр-кт",
+      "house": "32"
+    },
+    "postcode": "650066",
+    "source": "https://www.nalog.gov.ru/rn42/ifns/imns42_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Костромская область",
+      "city": "Кострома",
+      "street": "Конституции пл",
+      "house": "4"
+    },
+    "postcode": "156005",
+    "source": "https://www.nalog.gov.ru/rn44/ifns/ifns4400/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Курская область",
+      "city": "Курск",
+      "street": "Горького ул",
+      "house": "37"
+    },
+    "postcode": "305000",
+    "source": "https://www.nalog.gov.ru/rn46/ifns/imns46_00/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ленинградская область",
+      "city": "Всеволожск",
+      "street": "Колтушское ш",
+      "house": "138а"
+    },
+    "postcode": "188640",
+    "source": "https://www.nalog.gov.ru/rn47/ifns/ifns4728/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Липецкая область",
+      "city": "Липецк",
+      "street": "Октябрьская ул",
+      "house": "26"
+    },
+    "postcode": "398059",
+    "source": "https://www.nalog.gov.ru/rn48/ifns/imns48_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Видное",
+      "street": "Заводская ул",
+      "house": "22А"
+    },
+    "postcode": "142700",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/i_50_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Орловская область",
+      "city": "Орел",
+      "street": "Мира пл",
+      "house": "7а"
+    },
+    "postcode": "302030",
+    "source": "https://www.nalog.gov.ru/rn57/ifns/imns57_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Пензенская область",
+      "city": "Пенза",
+      "street": "Коммунистическая ул",
+      "house": "32"
+    },
+    "postcode": "440008",
+    "source": "https://www.nalog.gov.ru/rn58/ifns/sep_division_11/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Рязанская область",
+      "city": "Рязань",
+      "street": "Завражнова проезд",
+      "house": "5"
+    },
+    "postcode": "390013",
+    "source": "https://www.nalog.gov.ru/rn62/ifns/torm1/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Саратовская область",
+      "city": "Саратов",
+      "street": "Железнодорожная ул",
+      "house": "61/69"
+    },
+    "postcode": "410005",
+    "source": "https://www.nalog.gov.ru/rn64/ifns/ifns64_21/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Сахалинская область",
+      "city": "Южно-Сахалинск",
+      "street": "Карла Маркса ул",
+      "house": "14"
+    },
+    "postcode": "693020",
+    "source": "https://www.nalog.gov.ru/rn65/ifns/imns65_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Смоленская область",
+      "city": "Смоленск",
+      "street": "Гагарина пр-кт",
+      "house": "23в"
+    },
+    "postcode": "214040",
+    "source": "https://www.nalog.gov.ru/rn67/ifns/ifns67_04/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Тамбовская область",
+      "city": "Тамбов",
+      "street": "Интернациональная ул",
+      "house": "55"
+    },
+    "postcode": "392000",
+    "source": "https://www.nalog.gov.ru/rn68/ifns/imns68_3/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Тверская область",
+      "city": "Тверь",
+      "street": "Вагжанова ул",
+      "house": "23"
+    },
+    "postcode": "170100",
+    "source": "https://www.nalog.gov.ru/rn69/ifns/ifns69_10/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Тульская область",
+      "city": "Тула",
+      "street": "Тургеневская ул",
+      "house": "66"
+    },
+    "postcode": "300041",
+    "source": "https://www.nalog.gov.ru/rn71/ifns/imns71_10/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ульяновская область",
+      "city": "Ульяновск",
+      "street": "Кузнецова ул",
+      "house": "16А"
+    },
+    "postcode": "432000",
+    "source": "https://www.nalog.gov.ru/rn73/ifns/dimitrovgr/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Земляной вал ул",
+      "house": "9"
+    },
+    "postcode": "105064",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Санкт-Петербург",
+      "city": "Санкт-Петербург",
+      "street": "Большой В.О. пр-кт",
+      "house": "55б"
+    },
+    "postcode": "199178",
+    "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ханты-Мансийский автономный округ-Югра",
+      "city": "Ханты-Мансийск",
+      "street": "Дзержинского ул",
+      "house": "2"
+    },
+    "postcode": "628011",
+    "source": "https://www.nalog.gov.ru/rn86/ifns/beloyarsky/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Башкортостан",
+      "city": "Уфа",
+      "street": "проспект Октября",
+      "house": "95/2"
+    },
+    "postcode": "450075",
+    "source": "https://www.nalog.gov.ru/rn02/ifns/imns02_24/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Мордовия",
+      "city": "Саранск",
+      "street": "ул. Московская",
+      "house": "3/1"
+    },
+    "postcode": "430005",
+    "source": "https://www.nalog.gov.ru/rn13/ifns/chamzinka/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Алтайский край",
+      "city": "Барнаул",
+      "street": "Профинтерна ул.",
+      "house": "48а"
+    },
+    "postcode": "656002",
+    "source": "https://www.nalog.gov.ru/rn22/ifns/mri17/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Астраханская область",
+      "city": "Астрахань",
+      "street": "Губернатора Анатолия Гужвина пр-кт",
+      "house": "10"
+    },
+    "postcode": "414014",
+    "source": "https://www.nalog.gov.ru/rn30/ifns/op1/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Курганская область",
+      "city": "Курган",
+      "street": "ул. Климова",
+      "house": "60"
+    },
+    "postcode": "640002",
+    "source": "https://www.nalog.gov.ru/rn45/ifns/erc4500/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Мурманская область",
+      "city": "Мурманск",
+      "street": "ул. Заводская",
+      "house": "7"
+    },
+    "postcode": "183032",
+    "source": "https://www.nalog.gov.ru/rn51/ifns/imns51-05/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Самарская область",
+      "city": "Самара",
+      "street": "Брусчатый переулок",
+      "house": "38"
+    },
+    "postcode": "443023",
+    "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_26/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Коми",
+      "city": "Сыктывкар",
+      "street": "ул. Пушкина",
+      "house": "5"
+    },
+    "postcode": "167981",
+    "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Хакасия",
+      "city": "Черногорск",
+      "street": "пркт. Космонавтов",
+      "house": "1В"
+    },
+    "postcode": "655158",
+    "source": "https://www.nalog.gov.ru/rn19/ifns/imns19_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ставропольский край",
+      "city": "Пятигорск",
+      "street": "Коста Хетагурова ул",
+      "house": "57"
+    },
+    "postcode": "357500",
+    "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_ptg/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Камышин",
+      "street": "Короленко ул",
+      "house": "18"
+    },
+    "postcode": "403874",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Воронеж",
+      "street": "Переверткина ул",
+      "house": "5а"
+    },
+    "postcode": "394042",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_01/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Кемеровская область - Кузбасс",
+      "city": "Новокузнецк",
+      "street": "Грдины ул",
+      "house": "21"
+    },
+    "postcode": "654066",
+    "source": "https://www.nalog.gov.ru/rn42/ifns/imns42_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ленинградская область",
+      "city": "Выборг",
+      "street": "Гагарина ул",
+      "house": "27а"
+    },
+    "postcode": "188802",
+    "source": "https://www.nalog.gov.ru/rn47/ifns/imns4704/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Дмитров",
+      "street": "Пушкинская ул",
+      "house": "73"
+    },
+    "postcode": "141800",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_07/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Орловская область",
+      "city": "Орёл",
+      "street": "пл. Мира",
+      "house": "7"
+    },
+    "postcode": "302030",
+    "source": "https://www.nalog.gov.ru/rn57/ifns/imns57_40/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Саратовская область",
+      "city": "Саратов",
+      "street": "Пономарева ул",
+      "house": "24"
+    },
+    "postcode": "410049",
+    "source": "https://www.nalog.gov.ru/rn64/ifns/imns64_12/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Тверская область",
+      "city": "Тверь",
+      "street": "Октябрьский проспект",
+      "house": "26"
+    },
+    "postcode": "170043",
+    "source": "https://www.nalog.gov.ru/rn69/ifns/ifns69_10/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Переяславская Б. ул",
+      "house": "16"
+    },
+    "postcode": "129110",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Санкт-Петербург",
+      "city": "Санкт-Петербург",
+      "street": "Пархоменко пр-кт",
+      "house": "13"
+    },
+    "postcode": "194156",
+    "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ханты-Мансийский автономный округ-Югра",
+      "city": "Нижневартовск",
+      "street": "Менделеева ул.",
+      "house": "13"
+    },
+    "postcode": "628606",
+    "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_06/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Самарская область",
+      "city": "Тольятти",
+      "street": "ул. Татищева",
+      "house": "12"
+    },
+    "postcode": "445031",
+    "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_2/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Коми",
+      "city": "Ухта",
+      "street": "ул. Пушкина",
+      "house": "2"
+    },
+    "postcode": "169300",
+    "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_02/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ставропольский край",
+      "city": "Михайловск",
+      "street": "ул. Ленина",
+      "house": "156а"
+    },
+    "postcode": "356240",
+    "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_05/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Городище",
+      "street": "Маршала Чуйкова ул",
+      "house": "2"
+    },
+    "postcode": "403003",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_05/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Борисоглебск",
+      "street": "Свободы ул",
+      "house": "205"
+    },
+    "postcode": "397160",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Кемеровская область - Кузбасс",
+      "city": "Ленинск-Кузнецкий",
+      "street": "Кирова пр-кт",
+      "house": "85/2"
+    },
+    "postcode": "652515",
+    "source": "https://www.nalog.gov.ru/rn42/ifns/imns42_07/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ленинградская область",
+      "city": "Гатчина",
+      "street": "7 Армии ул",
+      "house": "12а"
+    },
+    "postcode": "188306",
+    "source": "https://www.nalog.gov.ru/rn47/ifns/imns4705/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Истра",
+      "street": "Советская ул",
+      "house": "12"
+    },
+    "postcode": "143500",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_17/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Саратовская область",
+      "city": "Саратов",
+      "street": "Соколовогорская ул",
+      "house": "8А"
+    },
+    "postcode": "410038",
+    "source": "https://www.nalog.gov.ru/rn64/ifns/imns64_20/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Анатолия Живова ул",
+      "house": "2"
+    },
+    "postcode": "123100",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Санкт-Петербург",
+      "city": "Санкт-Петербург",
+      "street": "Арсенальная наб",
+      "house": "13/1"
+    },
+    "postcode": "195009",
+    "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_04/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ханты-Мансийский автономный округ-Югра",
+      "city": "Сургут",
+      "street": "Геологическая ул.",
+      "house": "2"
+    },
+    "postcode": "628400",
+    "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_sr/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Коми",
+      "city": "Воркута",
+      "street": "ул. Яновского",
+      "house": "1"
+    },
+    "postcode": "169900",
+    "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_03/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ставропольский край",
+      "city": "Минеральные Воды",
+      "street": "ул. Железноводская",
+      "house": "30 б"
+    },
+    "postcode": "357202",
+    "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_09/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Михайловка",
+      "street": "Мичурина ул",
+      "house": "17а"
+    },
+    "postcode": "403343",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_06/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Лиски",
+      "street": "Советская ул",
+      "house": "2"
+    },
+    "postcode": "397901",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_11/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Кемеровская область - Кузбасс",
+      "city": "Новокузнецк",
+      "street": "Кутузова ул",
+      "house": "35"
+    },
+    "postcode": "654041",
+    "source": "https://www.nalog.gov.ru/rn42/ifns/mri4_42/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ленинградская область",
+      "city": "Кировск",
+      "street": "Энергетиков ул",
+      "house": "5"
+    },
+    "postcode": "187340",
+    "source": "https://www.nalog.gov.ru/rn47/ifns/imns4706/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Коломна",
+      "street": "Фрунзе ул",
+      "house": "43"
+    },
+    "postcode": "140410",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_22/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Саратовская область",
+      "city": "Саратов",
+      "street": "ул. им. Бирюзова С.С",
+      "house": "7А"
+    },
+    "postcode": "410010",
+    "source": "https://www.nalog.gov.ru/rn64/ifns/ifns64_22/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Тульская Б. ул",
+      "house": "15"
+    },
+    "postcode": "115191",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_06/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Санкт-Петербург",
+      "city": "Санкт-Петербург",
+      "street": "Большая Пороховская ул",
+      "house": "12/34"
+    },
+    "postcode": "195027",
+    "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_06/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ханты-Мансийский автономный округ-Югра",
+      "city": "Сургут",
+      "street": "Республики ул.",
+      "house": "73/1"
+    },
+    "postcode": "628412",
+    "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_srr/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Коми",
+      "city": "Печора",
+      "street": "Печорский проспект",
+      "house": "90а"
+    },
+    "postcode": "169600",
+    "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_05/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Урюпинск",
+      "street": "Ленина пр-т",
+      "house": "83"
+    },
+    "postcode": "403113",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_07/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Воронеж",
+      "street": "Варейкиса ул",
+      "house": "49"
+    },
+    "postcode": "394026",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_15/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ленинградская область",
+      "city": "Кингисепп",
+      "street": "Крикковское ш.",
+      "house": "49"
+    },
+    "postcode": "188480",
+    "source": "https://www.nalog.gov.ru/rn47/ifns/imns4707/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Ногинск",
+      "street": "Рабочая ул",
+      "house": "105"
+    },
+    "postcode": "142400",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_31/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Мытищинская 3-я ул",
+      "house": "16А"
+    },
+    "postcode": "129626",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_17/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Санкт-Петербург",
+      "city": "Санкт-Петербург",
+      "street": "Партизана Германа ул",
+      "house": "37"
+    },
+    "postcode": "198334",
+    "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_07/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Республика Коми",
+      "city": "Усинск",
+      "street": "ул. Нефтяников",
+      "house": "33"
+    },
+    "postcode": "169710",
+    "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_06/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Волгоград",
+      "street": "им Богданова ул",
+      "house": "2"
+    },
+    "postcode": "400011",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_10/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Воронеж",
+      "street": "Ленинский пр-кт",
+      "house": "92А"
+    },
+    "postcode": "394033",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_16/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Ленинградская область",
+      "city": "Кириши",
+      "street": "Советская ул",
+      "house": "18"
+    },
+    "postcode": "187110",
+    "source": "https://www.nalog.gov.ru/rn47/ifns/imns4727/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Серпухов",
+      "street": "Джона Рида ул",
+      "house": "7"
+    },
+    "postcode": "142200",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_43/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Шумкина ул",
+      "house": "25"
+    },
+    "postcode": "107113",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_18/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Санкт-Петербург",
+      "city": "Санкт-Петербург",
+      "street": "Дальневосточный пр-кт",
+      "house": "78"
+    },
+    "postcode": "193315",
+    "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_11/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Волгоград",
+      "street": "им командира Рудь ул",
+      "house": "3а"
+    },
+    "postcode": "400080",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_11/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Воронежская область",
+      "city": "Воронеж",
+      "street": "Космонавтов ул",
+      "house": "8А"
+    },
+    "postcode": "394038",
+    "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_18/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Щелково",
+      "street": "Советская ул",
+      "house": "4"
+    },
+    "postcode": "141100",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_50/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Щелковское ш",
+      "house": "90а"
+    },
+    "postcode": "105523",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_19/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Волгоград",
+      "street": "51-й Гвардейской ул",
+      "house": "38"
+    },
+    "postcode": "400094",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_13/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Московская область",
+      "city": "Орехово-Зуево",
+      "street": "Северная ул",
+      "house": "12в"
+    },
+    "postcode": "142613",
+    "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_73/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "город Москва",
+      "city": "Москва",
+      "street": "Зеленый пр-кт",
+      "house": "7а"
+    },
+    "postcode": "111141",
+    "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_20/"
+  },
+  {
+    "address": {
+      "country": "ru",
+      "region": "Волгоградская область",
+      "city": "Волгоград",
+      "street": "7-й Гвардейской ул",
+      "house": "12"
+    },
+    "postcode": "400005",
+    "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_14/"
+  }
+]

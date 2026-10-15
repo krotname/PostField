@@ -4,9 +4,9 @@ GitHub-hosted CI проверяет код и собирает четыре ZIP 
 
 | Магазин | API | Первый продукт | Готовность адаптера |
 |---|---|---|---|
-| Chrome | CWS v2, OAuth refresh | Новый item в кабинете | Contract tests; live setup отсутствует |
-| Edge | Update API 1.1, ApiKey | Первичная публикация Partner Center | Contract tests; live setup отсутствует |
-| Mozilla | AMO v5, короткий JWT | Новый listed addon и custom license | Contract tests; live setup отсутствует |
+| Chrome | CWS v2, OAuth refresh | Регистрация, затем новый item | OAuth refresh HTTP200; item отсутствует |
+| Edge | Update API 1.1, ApiKey | Новый InDraft product | Credentials настроены; первый release не выполнен |
+| Mozilla | AMO v5, короткий JWT | Новый listed addon и custom license | JWT HTTP200; карточка отсутствует |
 | Opera | HTTP кабинета | Новый package | Заблокирован до проверки контракта |
 
 Документация: [Chrome v2](https://developer.chrome.com/docs/webstore/api), [Edge API](https://learn.microsoft.com/en-us/microsoft-edge/extensions/update/api/using-addons-api), [AMO API](https://mozilla.github.io/addons-server/topics/api/addons.html), [Opera developer](https://dev.opera.com/extensions/). У Opera публичный opr.addons не является API публикации. Проверены маршруты официального клиента: `/api/file-upload/`, `/api/developer/packages/`, `/api/developer/package-versions/` и `submit_for_moderation/`, Accept `application/json; version=1.0`. OPTIONS подтверждает доступные методы. Новая HTTP-аутентификация и контракт ответов после загрузки ещё не проверены, поэтому OperaStore.ready() возвращает false. UI вместо API не запускается.
@@ -22,6 +22,8 @@ GitHub-hosted CI проверяет код и собирает четыре ZIP 
 
 Ключ Geoapify пользователя не является секретом магазина. Общий ключ в пакеты не встраивается. PR CI секретов доставки не получает. Недостаточная настройка заканчивается requires_setup и ненулевым кодом, а не фиктивной публикацией.
 
+Подтверждено 14.10.2026: все четыре environment созданы, Chrome OAuth и AMO JWT проверены настоящими HTTP-запросами. Новый Edge product a8f939c3-649a-476d-a638-660e09c8b742 существует в InDraft; privacy/support/homepage и single purpose сохранены и перечитаны. Не создавать второй draft. API1.1 ещё не прошёл update/upload с пакетом: сначала требуется первая публикация Partner Center. Непреодолённые условия: разрешённая регистрация Chrome ($5), выбор публичного имени общего AMO профиля krotname, первая listed карточка и custom license, свежая native HTTP auth Opera. Платежи и переименование не выполнялись. [Точный журнал настройки](https://github.com/krotname/PostField/issues/5) и [профиль](../PRODUCT_PROFILE.md). Изменение credentials не разрешает повтор неизвестного POST.
+
 ## Состояния и восстановление
 
 Журнал — отдельная GitHub issue на магазин и tag, связанная с неизменяемыми version/SHA/digest. Перед POST сохраняется uploading/submitting. Потерянный ответ или сбой записи после POST переводит операцию в needs_readback: автоповтор запрещён. Полученный operation ID сохраняется; незавершённая проверка продолжается через API по расписанию 08:15/20:15 МСК. Создание следующей submission разрешено только после подтверждённой загрузки. Разные магазины работают независимо.
@@ -33,3 +35,5 @@ pending_review означает ожидание решения. Chrome publishe
 ## Качество РФ
 
 Стабильный выпуск закрыт до корпуса ≥100 разных публичных адресов с подтверждёнными индексами из ≥10 регионов, доли каждого региона ≤20%, нуля ошибочных автоматических заполнений и ≥90% правильных подтверждений. Повторы после нормализации и повреждённые записи отклоняются до запроса к провайдеру. `docs/evidence/russia-quality.json` содержит живую оценку baseline 0.1.0: 117 адресов, 26 регионов, 13 неверных автоматических вставок, 5 ошибок, 5,98% правильных автоматических результатов; status=insufficient. Источники и пределы измерения: [RUSSIA_QUALITY.md](evidence/RUSSIA_QUALITY.md). С версии 0.1.1 Geoapify для РФ требует проверки и явного выбора; актуальная реализация не прошла порог автоматического заполнения. Live benchmark читает GEOAPIFY_API_KEY из окружения и выводит только агрегаты. Предварительный выпуск не запускает доставку в магазины.
+
+С 0.1.4 benchmark до чтения ключа отклоняет все 117 исторических адресов (`historical_corpus_overlap`), а не только 48 адресов каталога (`catalogue_corpus_overlap`); прежняя ошибка каталога имеет приоритет. Отдельный `tests/fixtures/russia-independent-corpus.json` содержит 100 новых адресов, 41 регион, максимум 9%. Корпус не входит в исправления. Live-запросы на нём не выполнялись: при текущей политике даже идеальные ответы дают 100 ручных вариантов и 0 автоматических подтверждений. [Offline-отчёт](evidence/russia-independent-policy.json) не является живым измерением и не открывает stable gate. До нового поведения, подтверждающего индекс дома вне каталога, повторные Geoapify-запросы не смогут выполнить порог ≥90%.
