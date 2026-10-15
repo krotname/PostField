@@ -1,7 +1,24 @@
 import { describe, expect, it } from 'vitest';
 import { inspectCorpus } from '../../scripts/corpus.js';
+import baseline from '../fixtures/russia-corpus.json';
+import catalogue from '../../src/data/russia-postcode-corrections.json';
+import { correctionAddressKey } from '../../src/adapters/russia-postcode-corrections.js';
 const row = (index: number, region = `Регион ${index % 10}`) => ({ address: { country: 'ru', city: `Город ${index}`, street: 'улица Мира', house: '1', region }, postcode: '123456', source: 'https://university.test/contact' });
 describe('independent Russia corpus', () => {
+  it('rejects a historical baseline address even when it is absent from the corrections catalogue', () => {
+    const catalogueKeys = new Set(catalogue.entries.map((entry) => correctionAddressKey({ ...entry.address, country: 'ru' })));
+    const historical = baseline.find((entry) => !catalogueKeys.has(correctionAddressKey({ ...entry.address, country: 'ru' })));
+    expect(historical).toBeDefined();
+    expect(() => inspectCorpus([historical])).toThrow('historical_corpus_overlap');
+  });
+  it('rejects historical baseline aliases before any provider evaluation', () => {
+    const historical = baseline.find((entry) => /ул$/u.test(entry.address.street));
+    expect(historical).toBeDefined();
+    if (!historical) return;
+    const alias = { ...historical, address: { ...historical.address, city: `г. ${historical.address.city}`,
+      street: `улица ${historical.address.street.replace(/\s+ул$/u, '')}` } };
+    expect(() => inspectCorpus([alias])).toThrow('historical_corpus_overlap');
+  });
   it('rejects a catalogue address before it can count as independent evidence', () => {
     const excluded = [{ ...row(0).address, country: 'ru' as const }];
     expect(() => inspectCorpus([row(0)], excluded)).toThrow('catalogue_corpus_overlap');

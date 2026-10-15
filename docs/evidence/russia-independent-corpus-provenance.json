@@ -1,0 +1,806 @@
+{
+  "preparedAt": "2026-10-15T08:49:32.394Z",
+  "cases": 100,
+  "regions": 41,
+  "largestRegionShare": 0.09,
+  "historicalOverlap": 0,
+  "catalogueOverlap": 0,
+  "providerRequests": 0,
+  "selectedBeforeProviderEvaluation": true,
+  "sourceType": "Официальные юридические и почтовые адреса ФНС",
+  "selection": "Детерминированный обход регионов по кругу; по одному следующему адресу каждого региона до 100. Без ответов Geoapify.",
+  "exclusions": [
+    {
+      "address": {
+        "country": "ru",
+        "region": "Ставропольский край",
+        "city": "Буденновск",
+        "street": "Л. Толстого ул",
+        "house": "138"
+      },
+      "reason": "source_postcode_conflict"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Кировская область",
+        "city": "Киров",
+        "street": "Воровского ул",
+        "house": "37"
+      },
+      "reason": "source_postcode_conflict"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "город Москва",
+        "city": "Москва",
+        "street": "Б.Тульская ул",
+        "house": "15"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Ставропольский край",
+        "city": "Cтаврополь",
+        "street": "ул Шпаковская",
+        "house": "72а"
+      },
+      "reason": "source_city_contains_latin_letter"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Ставропольский край",
+        "city": "Пятигорск",
+        "street": "ул. К. Хетагурова",
+        "house": "57"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Волгоградская область",
+        "city": "Волгоград",
+        "street": "ул. Богданова",
+        "house": "2"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Волгоградская область",
+        "city": "Волгоград",
+        "street": "ул. Командира Рудь",
+        "house": "3а"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Костромская область",
+        "city": "Кострома",
+        "street": "пл. Конституции",
+        "house": "4"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Ленинградская область",
+        "city": "Гатчина",
+        "street": "ул. 7-ой Армии",
+        "house": "12а"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Орловская область",
+        "city": "Орел",
+        "street": "пл. Мира",
+        "house": "7а"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Рязанская область",
+        "city": "Рязань",
+        "street": "проезд Завражнова",
+        "house": "5"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Самарская область",
+        "city": "Самара",
+        "street": "ул. Воронежская",
+        "house": "192 A"
+      },
+      "reason": "historical_house_with_latin_letter"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Самарская область",
+        "city": "Самара",
+        "street": "ул. С.Лазо",
+        "house": "2 а"
+      },
+      "reason": "historical_street_abbreviation"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "город Москва",
+        "city": "Москва",
+        "street": "ул. Б. Переяславская",
+        "house": "16"
+      },
+      "reason": "same_physical_house_alternate_spelling"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Московская область",
+        "city": "Химки",
+        "street": "Панфилова ул",
+        "house": "31"
+      },
+      "reason": "source_postcode_conflict"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Республика Башкортостан",
+        "city": "Уфа",
+        "street": "ул. 50 летия Октября",
+        "house": "13/1"
+      },
+      "reason": "historical_street_alternate_name"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Алтайский край",
+        "city": "Барнаул",
+        "street": "М. Горького ул.",
+        "house": "36"
+      },
+      "reason": "historical_street_alternate_name"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Кемеровская область - Кузбасс",
+        "city": "Кемерово",
+        "street": "Кузнецкий пр-кт",
+        "house": "11"
+      },
+      "reason": "source_postcode_conflict"
+    },
+    {
+      "address": {
+        "country": "ru",
+        "region": "Волгоградская область",
+        "city": "Волжский",
+        "street": "им Ленина пр-кт",
+        "house": "46"
+      },
+      "reason": "source_postcode_conflict"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "https://www.nalog.gov.ru/rn03/ifns/imns03_01/",
+      "rawLegalAddress": ",670034,Бурятия Респ,,Улан-Удэ г,,Цивилева ул,3,,",
+      "checkedAt": "2026-10-15T08:35:24.234518+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_01/",
+      "rawLegalAddress": "643,167000,Коми Респ,,Сыктывкар г,,Первомайская ул,53,,",
+      "checkedAt": "2026-10-15T08:35:25.861282+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn12/ifns/imns12_15_12/",
+      "rawLegalAddress": ",424000,Марий Эл Респ,,Йошкар-Ола г,,Вознесенская ул,71,,",
+      "checkedAt": "2026-10-15T08:35:28.383287+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn14/ifns/torm1402/",
+      "rawLegalAddress": ",677018,Саха (Якутия) Респ,,Якутск г,,Губина ул,2,,",
+      "checkedAt": "2026-10-15T08:35:31.883939+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn18/ifns/imns18_1828/",
+      "rawLegalAddress": ",426008,Удмуртская Респ,,Ижевск г,,Коммунаров ул,367,,",
+      "checkedAt": "2026-10-15T08:35:33.841310+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn19/ifns/imns19_02/",
+      "rawLegalAddress": ",655017,Хакасия Респ,,Абакан г,,Крылова ул,76,,",
+      "checkedAt": "2026-10-15T08:35:35.926266+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn21/ifns/ifns21_30/",
+      "rawLegalAddress": ",428000,,,Чебоксары г,,Нижегородская ул,8,,",
+      "checkedAt": "2026-10-15T08:35:39.080458+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_11/",
+      "rawLegalAddress": ",355035,,,Ставрополь г,,Советская ул,3,,",
+      "checkedAt": "2026-10-15T08:35:41.638047+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn31/ifns/ifns31_14/",
+      "rawLegalAddress": ",308009,Белгородская обл,,Белгород г,,Преображенская ул,61,,",
+      "checkedAt": "2026-10-15T08:35:47.692388+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn32/ifns/ifns_bryansk/",
+      "rawLegalAddress": ",241050,Брянская обл,,Брянск г,,Крахмалева ул,53,,",
+      "checkedAt": "2026-10-15T08:35:49.274002+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn33/ifns/imns33_02/",
+      "rawLegalAddress": ",600001,,,Владимир г,,Диктора Левитана ул,2,,",
+      "checkedAt": "2026-10-15T08:34:40.384240+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_02/",
+      "rawLegalAddress": ",400078,Волгоградская обл,,Волгоград г,,им В.И.Ленина пр-кт,67а,,",
+      "checkedAt": "2026-10-15T08:34:41.857158+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_012/",
+      "rawLegalAddress": ",394006,Воронежская обл,,Воронеж г,,Кирова ул,28,,",
+      "checkedAt": "2026-10-15T08:34:45.142004+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn37/ifns/imns3702/",
+      "rawLegalAddress": ",153000,Ивановская обл,,Иваново г,,Почтовая ул,24,,",
+      "checkedAt": "2026-10-15T08:34:46.860095+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn40/ifns/imns40_02/",
+      "rawLegalAddress": ",248021,,,Калуга г,,Московская ул,282,,",
+      "checkedAt": "2026-10-15T08:34:48.044724+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn42/ifns/imns42_01/",
+      "rawLegalAddress": ",650066,Кемеровская область - Кузбасс,,Кемерово г,,Октябрьский пр-кт,32,,",
+      "checkedAt": "2026-10-15T08:34:50.373767+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn44/ifns/ifns4400/",
+      "rawLegalAddress": ",156005,Костромская обл,,Кострома г,,Конституции пл,4,,",
+      "checkedAt": "2026-10-15T08:34:52.777834+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn46/ifns/imns46_00/",
+      "rawLegalAddress": ",305000,,,Курск г,,Горького ул,37,,",
+      "checkedAt": "2026-10-15T08:34:54.357416+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn47/ifns/ifns4728/",
+      "rawLegalAddress": ",188640,Ленинградская обл,,Всеволожск г,,Колтушское ш,138а,,",
+      "checkedAt": "2026-10-15T08:34:56.922365+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn48/ifns/imns48_02/",
+      "rawLegalAddress": ",398059,Липецкая обл,,Липецк г,,Октябрьская ул,26,,",
+      "checkedAt": "2026-10-15T08:34:58.093279+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/i_50_03/",
+      "rawLegalAddress": ",142700,Московская обл,,Видное г,,Заводская ул,22А,,",
+      "checkedAt": "2026-10-15T08:46:27.523459+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn57/ifns/imns57_03/",
+      "rawLegalAddress": ",302030,,,Орел г,,Мира пл,7а,,",
+      "checkedAt": "2026-10-15T08:35:02.577111+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn58/ifns/sep_division_11/",
+      "rawLegalAddress": ",440008,,,Пенза г,,Коммунистическая ул,32,,",
+      "checkedAt": "2026-10-15T08:35:06.821870+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn62/ifns/torm1/",
+      "rawLegalAddress": ",390013,Рязанская обл,,Рязань г,,Завражнова проезд,5,,",
+      "checkedAt": "2026-10-15T08:35:07.680428+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn64/ifns/ifns64_21/",
+      "rawLegalAddress": ",410005,,,Саратов г,,Железнодорожная ул,61/69,,",
+      "checkedAt": "2026-10-15T08:35:09.776928+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn65/ifns/imns65_01/",
+      "rawLegalAddress": ",693020,,,Южно-Сахалинск г,,Карла Маркса ул,14,,",
+      "checkedAt": "2026-10-15T08:35:11.062947+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn67/ifns/ifns67_04/",
+      "rawLegalAddress": ",214040,,,Смоленск г,,Гагарина пр-кт,23в,,",
+      "checkedAt": "2026-10-15T08:35:12.013317+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn68/ifns/imns68_3/",
+      "rawLegalAddress": ",392000,Тамбовская обл,,Тамбов г,,Интернациональная ул,55,,",
+      "checkedAt": "2026-10-15T08:35:13.704762+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn69/ifns/ifns69_10/",
+      "rawLegalAddress": ",170100,,,Тверь г,,Вагжанова ул,23,,",
+      "checkedAt": "2026-10-15T08:35:15.049447+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn71/ifns/imns71_10/",
+      "rawLegalAddress": ",300041,,,Тула г,,Тургеневская ул,66,,",
+      "checkedAt": "2026-10-15T08:35:16.886258+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn73/ifns/dimitrovgr/",
+      "rawLegalAddress": ",432000,,,Ульяновск г,,Кузнецова ул,16А,,",
+      "checkedAt": "2026-10-15T08:35:18.797337+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_01/",
+      "rawLegalAddress": ",105064,Москва г,,,,Земляной вал ул,9,,",
+      "checkedAt": "2026-10-15T08:42:30.888320+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_01/",
+      "rawLegalAddress": ",199178,Санкт-Петербург г,,,,Большой В.О. пр-кт,55б,,",
+      "checkedAt": "2026-10-15T08:42:33.050154+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn86/ifns/beloyarsky/",
+      "rawLegalAddress": ",628011,Ханты-Мансийский автономный округ-Югра,,Ханты-Мансийск г,,Дзержинского ул,2,,",
+      "checkedAt": "2026-10-15T08:35:23.387694+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn02/ifns/imns02_24/",
+      "rawCorrespondenceAddress": "450075, г.Уфа, проспект Октября, 95/2",
+      "checkedAt": "2026-10-15T08:46:28.090455+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn13/ifns/chamzinka/",
+      "rawCorrespondenceAddress": "430005, Республика Мордовия, г. Саранск, ул. Московская, д. 3/1",
+      "checkedAt": "2026-10-15T08:35:30.303370+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn22/ifns/mri17/",
+      "rawCorrespondenceAddress": "656002, Алтайский край, г. Барнаул, Профинтерна ул., д. 48а",
+      "checkedAt": "2026-10-15T08:46:29.246896+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn30/ifns/op1/",
+      "rawCorrespondenceAddress": "414014, Астрахань г, Губернатора Анатолия Гужвина пр-кт,10",
+      "checkedAt": "2026-10-15T08:35:45.548142+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn45/ifns/erc4500/",
+      "rawCorrespondenceAddress": "640002, г.Курган, ул. Климова, 60",
+      "checkedAt": "2026-10-15T08:34:53.282443+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn51/ifns/imns51-05/",
+      "rawCorrespondenceAddress": "183032, г. Мурманск, ул. Заводская, д. 7",
+      "checkedAt": "2026-10-15T08:34:59.476600+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_26/",
+      "rawCorrespondenceAddress": "443023, г. Самара, Брусчатый переулок, д. 38",
+      "checkedAt": "2026-10-15T08:42:34.666452+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_01/",
+      "rawCorrespondenceAddress": "167981, г. Сыктывкар, ул. Пушкина, д. 5",
+      "checkedAt": "2026-10-15T08:35:25.861282+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn19/ifns/imns19_03/",
+      "rawCorrespondenceAddress": "655158, Республика Хакасия, г.Черногорск, пркт. Космонавтов, 1В",
+      "checkedAt": "2026-10-15T08:35:36.071807+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_ptg/",
+      "rawLegalAddress": ",357500,Ставропольский край,,Пятигорск г,,Коста Хетагурова ул,57,,",
+      "checkedAt": "2026-10-15T08:35:42.792595+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_03/",
+      "rawLegalAddress": ",403874,Волгоградская обл,,Камышин г,,Короленко ул,18,,",
+      "checkedAt": "2026-10-15T08:34:41.831167+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_01/",
+      "rawLegalAddress": ",394042,Воронежская обл,,Воронеж г,,Переверткина ул,5а,,",
+      "checkedAt": "2026-10-15T08:34:45.166008+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn42/ifns/imns42_03/",
+      "rawLegalAddress": ",654066,Кемеровская область - Кузбасс,,Новокузнецк г,,Грдины ул,21,,",
+      "checkedAt": "2026-10-15T08:34:49.371013+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn47/ifns/imns4704/",
+      "rawLegalAddress": ",188802,Ленинградская обл,,Выборг г,,Гагарина ул,27а,,",
+      "checkedAt": "2026-10-15T08:34:57.192151+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_07/",
+      "rawLegalAddress": ",141800,Московская обл,,Дмитров г,,Пушкинская ул,73,,",
+      "checkedAt": "2026-10-15T08:46:27.024742+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn57/ifns/imns57_40/",
+      "rawCorrespondenceAddress": "302030, г.Орёл, пл. Мира, д.7",
+      "checkedAt": "2026-10-15T08:35:02.683975+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn64/ifns/imns64_12/",
+      "rawLegalAddress": ",410049,,,Саратов г,,Пономарева ул,24,,",
+      "checkedAt": "2026-10-15T08:35:09.350009+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn69/ifns/ifns69_10/",
+      "rawCorrespondenceAddress": "170043, г. Тверь, Октябрьский проспект, д. 26",
+      "checkedAt": "2026-10-15T08:35:15.049447+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_02/",
+      "rawLegalAddress": ",129110,Москва г,,,,Переяславская Б. ул,16,,",
+      "checkedAt": "2026-10-15T08:42:30.890321+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_02/",
+      "rawLegalAddress": ",194156,Санкт-Петербург г,,,,Пархоменко пр-кт,13,,",
+      "checkedAt": "2026-10-15T08:42:33.289285+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_06/",
+      "rawCorrespondenceAddress": "628606, Ханты-Мансийский автономный округ - Югра, г. Нижневартовск, Менделеева ул., д. 13",
+      "checkedAt": "2026-10-15T08:35:21.271707+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn63/ifns/imns63_2/",
+      "rawCorrespondenceAddress": "445031, Самарская область, г. Тольятти, ул. Татищева, д. 12",
+      "checkedAt": "2026-10-15T08:42:34.419883+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_02/",
+      "rawCorrespondenceAddress": "169300, Республика Коми, г. Ухта, ул. Пушкина, д. 2",
+      "checkedAt": "2026-10-15T08:35:27.556396+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_05/",
+      "rawCorrespondenceAddress": "356240, Шпаковский район, г. Михайловск, ул. Ленина, 156а",
+      "checkedAt": "2026-10-15T08:35:40.525977+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_05/",
+      "rawLegalAddress": ",403003,Волгоградская обл,Городищенский р-н,,Городище рп,Маршала Чуйкова ул,2,,",
+      "checkedAt": "2026-10-15T08:34:42.494648+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_03/",
+      "rawLegalAddress": ",397160,Воронежская обл,Борисоглебский р-н,Борисоглебск г,,Свободы ул,205,,",
+      "checkedAt": "2026-10-15T08:34:44.981962+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn42/ifns/imns42_07/",
+      "rawLegalAddress": ",652515,Кемеровская область - Кузбасс,,Ленинск-Кузнецкий г,,Кирова пр-кт,85/2,,",
+      "checkedAt": "2026-10-15T08:34:49.587179+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn47/ifns/imns4705/",
+      "rawLegalAddress": ",188306,Ленинградская обл,,Гатчина г,,7 Армии ул,12а,,",
+      "checkedAt": "2026-10-15T08:34:56.056534+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_17/",
+      "rawLegalAddress": ",143500,Московская обл,,Истра г,,Советская ул,12,,",
+      "checkedAt": "2026-10-15T08:46:27.513455+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn64/ifns/imns64_20/",
+      "rawLegalAddress": ",410038,Саратовская обл,,Саратов г,,Соколовогорская ул,8А,,",
+      "checkedAt": "2026-10-15T08:35:09.476137+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_03/",
+      "rawLegalAddress": ",123100,Москва г,,,,Анатолия Живова ул,2,,",
+      "checkedAt": "2026-10-15T08:42:30.851893+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_04/",
+      "rawLegalAddress": ",195009,Санкт-Петербург г,,,,Арсенальная наб,13/1,,",
+      "checkedAt": "2026-10-15T08:42:33.326524+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_sr/",
+      "rawCorrespondenceAddress": "628400, Ханты-Мансийский автономный округ - Югра, г. Сургут, Геологическая ул., д. 2",
+      "checkedAt": "2026-10-15T08:35:22.616326+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_03/",
+      "rawCorrespondenceAddress": "169900, Республика Коми, г. Воркута, ул. Яновского, д. 1",
+      "checkedAt": "2026-10-15T08:35:26.862477+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn26/ifns/ifns26_09/",
+      "rawCorrespondenceAddress": "357202, г. Минеральные Воды, ул. Железноводская, 30 б",
+      "checkedAt": "2026-10-15T08:35:40.563604+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_06/",
+      "rawLegalAddress": ",403343,Волгоградская обл,,Михайловка г,,Мичурина ул,17а,,",
+      "checkedAt": "2026-10-15T08:34:42.558155+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_11/",
+      "rawLegalAddress": ",397901,Воронежская обл,Лискинский р-н,Лиски г,,Советская ул,2,,",
+      "checkedAt": "2026-10-15T08:34:45.684117+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn42/ifns/mri4_42/",
+      "rawLegalAddress": ",654041,Кемеровская область - Кузбасс,,Новокузнецк г,,Кутузова ул,35,,",
+      "checkedAt": "2026-10-15T08:34:49.457051+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn47/ifns/imns4706/",
+      "rawLegalAddress": ",187340,Ленинградская обл,,Кировск г,,Энергетиков ул,5,,",
+      "checkedAt": "2026-10-15T08:34:55.933842+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_22/",
+      "rawLegalAddress": ",140410,Московская обл,,Коломна г,,Фрунзе ул,43,,",
+      "checkedAt": "2026-10-15T08:46:27.020735+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn64/ifns/ifns64_22/",
+      "rawCorrespondenceAddress": "410010, г. Саратов, ул. им. Бирюзова С.С, д. 7А",
+      "checkedAt": "2026-10-15T08:35:10.045379+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_06/",
+      "rawLegalAddress": ",115191,Москва г,,,,Тульская Б. ул,15,,",
+      "checkedAt": "2026-10-15T08:42:31.256355+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_06/",
+      "rawLegalAddress": ",195027,Санкт-Петербург г,,,,Большая Пороховская ул,12/34,,",
+      "checkedAt": "2026-10-15T08:42:33.610610+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn86/ifns/imns86_srr/",
+      "rawCorrespondenceAddress": "628412, Ханты-Мансийский автономный округ - Югра, г. Сургут, Республики ул., д. 73/1",
+      "checkedAt": "2026-10-15T08:35:22.279362+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_05/",
+      "rawCorrespondenceAddress": "169600, Республика Коми, г. Печора, Печорский проспект, д. 90а",
+      "checkedAt": "2026-10-15T08:35:27.061157+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_07/",
+      "rawLegalAddress": ",403113,Волгоградская обл,,Урюпинск г,,Ленина пр-т,83,,",
+      "checkedAt": "2026-10-15T08:34:42.754327+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_15/",
+      "rawLegalAddress": ",394026,Воронежская обл,,Воронеж г,,Варейкиса ул,49,,",
+      "checkedAt": "2026-10-15T08:34:46.262513+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn47/ifns/imns4707/",
+      "rawLegalAddress": ",188480,Ленинградская обл,,Кингисепп г,,Крикковское ш.,49,,",
+      "checkedAt": "2026-10-15T08:34:56.009514+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_31/",
+      "rawLegalAddress": ",142400,Московская обл,,Ногинск г,,Рабочая ул,105,,",
+      "checkedAt": "2026-10-15T08:46:26.921839+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_17/",
+      "rawLegalAddress": ",129626,Москва г,,,,Мытищинская 3-я ул,16А,,",
+      "checkedAt": "2026-10-15T08:42:32.063306+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_07/",
+      "rawLegalAddress": ",198334,Санкт-Петербург г,,,,Партизана Германа ул,37,,",
+      "checkedAt": "2026-10-15T08:42:33.628609+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn11/ifns/imns11_06/",
+      "rawCorrespondenceAddress": "169710, г. Усинск, ул. Нефтяников, д. 33",
+      "checkedAt": "2026-10-15T08:35:26.809990+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_10/",
+      "rawLegalAddress": ",400011,Волгоградская обл,,Волгоград г,,им Богданова ул,2,,",
+      "checkedAt": "2026-10-15T08:34:43.618939+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_16/",
+      "rawLegalAddress": ",394033,Воронежская обл,,Воронеж г,,Ленинский пр-кт,92А,,",
+      "checkedAt": "2026-10-15T08:34:45.910675+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn47/ifns/imns4727/",
+      "rawLegalAddress": ",187110,Ленинградская обл,,Кириши г,,Советская ул,18,,",
+      "checkedAt": "2026-10-15T08:34:56.829889+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_43/",
+      "rawLegalAddress": ",142200,Московская обл,,Серпухов г,,Джона Рида ул,7,,",
+      "checkedAt": "2026-10-15T08:46:27.240423+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_18/",
+      "rawLegalAddress": ",107113,Москва г,,,,Шумкина ул,25,,",
+      "checkedAt": "2026-10-15T08:42:32.369068+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn78/ifns/imns78_11/",
+      "rawLegalAddress": ",193315,Санкт-Петербург г,,,,Дальневосточный пр-кт,78,,",
+      "checkedAt": "2026-10-15T08:42:33.835235+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_11/",
+      "rawLegalAddress": ",400080,Волгоградская обл,,Волгоград г,,им командира Рудь ул,3а,,",
+      "checkedAt": "2026-10-15T08:34:43.786750+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn36/ifns/imns36_18/",
+      "rawLegalAddress": ",394038,Воронежская обл,,Воронеж г,,Космонавтов ул,8А,,",
+      "checkedAt": "2026-10-15T08:34:45.910675+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_50/",
+      "rawLegalAddress": ",141100,Московская обл,,Щелково г,,Советская ул,4,,",
+      "checkedAt": "2026-10-15T08:46:27.677922+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_19/",
+      "rawLegalAddress": ",105523,Москва г,,,,Щелковское ш,90а,,",
+      "checkedAt": "2026-10-15T08:42:32.207537+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_13/",
+      "rawLegalAddress": ",400094,Волгоградская обл,,Волгоград г,,51-й Гвардейской ул,38,,",
+      "checkedAt": "2026-10-15T08:34:44.066763+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn50/ifns/imns_50_73/",
+      "rawLegalAddress": ",142613,Московская обл,,Орехово-Зуево г,,Северная ул,12в,,",
+      "checkedAt": "2026-10-15T08:46:27.286760+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn77/ifns/imns77_20/",
+      "rawLegalAddress": ",111141,Москва г,,,,Зеленый пр-кт,7а,,",
+      "checkedAt": "2026-10-15T08:42:32.362067+00:00",
+      "httpStatus": 200
+    },
+    {
+      "source": "https://www.nalog.gov.ru/rn34/ifns/imns34_14/",
+      "rawLegalAddress": ",400005,Волгоградская обл,,Волгоград г,,7-й Гвардейской ул,12,,",
+      "checkedAt": "2026-10-15T08:34:44.495280+00:00",
+      "httpStatus": 200
+    }
+  ]
+}

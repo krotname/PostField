@@ -1,0 +1,28 @@
+{
+  "assessment": "offline_policy_feasibility",
+  "status": "blocked_by_manual_confirmation_policy",
+  "packageVersion": "0.1.4",
+  "checkedAt": "2026-10-15T08:51:38.527Z",
+  "corpus": {
+    "path": "tests/fixtures/russia-independent-corpus.json",
+    "cases": 100,
+    "regions": 41,
+    "largestRegionShare": 0.09,
+    "eligible": true,
+    "historicalOverlap": 0,
+    "catalogueOverlap": 0
+  },
+  "externalProviderRequests": 0,
+  "liveProviderValidation": false,
+  "qualityGatePassed": false,
+  "idealResponseSimulation": {
+    "method": "Production GeoapifyProvider and LookupPostcode with an injected synthetic HTTP transport. Every response has the exact expected address/postcode, confidence=1 and result_type=building.",
+    "cases": 100,
+    "confirmed": 0,
+    "manualChoice": 100,
+    "errors": 0,
+    "automaticConfirmationRate": 0
+  },
+  "requiredAutomaticConfirmationRate": 0.9,
+  "conclusion": "Новые российские адреса вне каталога требуют ручного выбора даже при идеальном ответе. Это ограничение политики, не замер точности Geoapify. Новый живой benchmark при неизменной политике не может пройти порог и не запускался."
+}
