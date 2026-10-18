@@ -41,7 +41,7 @@ export function discoverAddressGroups(root: Document | ShadowRoot | Element): Ad
   for (const scope of rootsUnder(root)) {
     const buckets = new Map<Element | Document | ShadowRoot, Map<string, { role: Role; field: AddressField }[]>>();
     for (const field of scope.querySelectorAll<AddressField>('input, select, textarea')) {
-      if (field.disabled || field.hidden || field.closest('[hidden]') || field.getAttribute('type') === 'hidden'
+      if (field.matches(':disabled') || field.hidden || field.closest('[hidden]') || field.getAttribute('type') === 'hidden'
         || field.getAttribute('type') === 'password' || field.closest('[data-postfield-ui]')) continue;
       const role = roleOf(field);
       if (!role || (role === 'postcode' && 'readOnly' in field && field.readOnly)) continue;

@@ -26,6 +26,8 @@ export class FormSession {
 
   manualPostcodeChanged(): void { this.revision++; this.ownedValue = null; this.choices = []; }
 
+  cancelLookup(): void { this.revision++; }
+
   async lookup(): Promise<FormResult> {
     this.addressChanged();
     if (this.readPostcode().trim() && this.readPostcode() !== this.ownedValue) return { kind: 'preserved' };

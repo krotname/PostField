@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PageController } from '../../src/browser/page-controller.js';
 import type { LookupResult } from '../../src/core/address.js';
 
-afterEach(() => { document.body.innerHTML = ''; });
+afterEach(() => { document.body.innerHTML = ''; vi.useRealTimers(); });
 const exact: LookupResult = { kind: 'confirmed', candidate: { country: 'ru', city: 'Москва', street: 'Тверская улица', house: '13',
   postcode: '125009', confidence: 1, resultType: 'building', formatted: 'Москва, Тверская улица, 13' } };
 function form(): void {
@@ -11,6 +11,75 @@ function form(): void {
 }
 
 describe('page controller', () => {
+  it('cancels scheduled automatic lookups while keeping explicit fill available', async () => {
+    vi.useFakeTimers();
+    form();
+    const resolve = vi.fn(async () => exact);
+    const controller = new PageController(document, resolve);
+    try {
+      controller.setAutomatic(true);
+      controller.setAutomatic(false);
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(resolve).not.toHaveBeenCalled();
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('');
+      await controller.fill();
+      expect(resolve).toHaveBeenCalledOnce();
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('125009');
+    } finally { controller.stop(); }
+  });
+  it('discards an in-flight automatic result even after automatic mode is enabled again', async () => {
+    vi.useFakeTimers();
+    form();
+    let complete!: (result: LookupResult) => void;
+    const resolve = vi.fn(() => new Promise<LookupResult>((done) => { complete = done; }));
+    const controller = new PageController(document, resolve);
+    try {
+      controller.setAutomatic(true);
+      await vi.advanceTimersByTimeAsync(900);
+      expect(resolve).toHaveBeenCalledOnce();
+      controller.setAutomatic(false);
+      controller.setAutomatic(true);
+      complete(exact);
+      await vi.advanceTimersByTimeAsync(0);
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('');
+      await vi.advanceTimersByTimeAsync(900);
+      expect(resolve).toHaveBeenCalledTimes(2);
+      complete(exact);
+      await vi.advanceTimersByTimeAsync(0);
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('125009');
+    } finally { controller.stop(); }
+  });
+  it('keeps an explicit request when automatic mode is disabled', async () => {
+    vi.useFakeTimers();
+    form();
+    let complete!: (result: LookupResult) => void;
+    const resolve = vi.fn(() => new Promise<LookupResult>((done) => { complete = done; }));
+    const controller = new PageController(document, resolve);
+    try {
+      controller.setAutomatic(true);
+      const request = controller.fill();
+      controller.setAutomatic(false);
+      complete(exact);
+      await request;
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('125009');
+      await vi.advanceTimersByTimeAsync(1000);
+      expect(resolve).toHaveBeenCalledOnce();
+    } finally { controller.stop(); }
+  });
+  it('still clears its own old postcode after automatic mode is disabled', async () => {
+    vi.useFakeTimers();
+    form();
+    const controller = new PageController(document, async () => exact);
+    try {
+      controller.setAutomatic(true);
+      await vi.advanceTimersByTimeAsync(900);
+      controller.setAutomatic(false);
+      const street = document.querySelector<HTMLInputElement>('[autocomplete="address-line1"]')!;
+      street.value = 'Тверская улица, 15';
+      street.dispatchEvent(new Event('input', { bubbles: true }));
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('');
+    } finally { controller.stop(); }
+  });
   it('explains missing postcode proof before an explicit choice', async () => {
     form();
     const candidate = exact.kind === 'confirmed' ? { ...exact.candidate, requiresPostcodeConfirmation: true } : (() => { throw new Error(); })();
