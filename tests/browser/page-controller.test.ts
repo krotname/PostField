@@ -9,8 +9,89 @@ const exact: LookupResult = { kind: 'confirmed', candidate: { country: 'ru', cit
 function form(): void {
   document.body.innerHTML = '<form><input autocomplete="address-level2" value="Москва"><input autocomplete="address-line1" value="Тверская улица, 13"><input autocomplete="postal-code"></form>';
 }
+const settleMutations = (): Promise<void> => new Promise((done) => setTimeout(done, 0));
+
+// Bound the hostile host even on the broken implementation so RED cannot starve timers.
+function hostileHost(root: Element): { observer: MutationObserver; removals: () => number } {
+  let removed = 0;
+  const observer = new MutationObserver(() => {
+    for (const ui of root.querySelectorAll('[data-postfield-ui]')) {
+      if (removed >= 8) return;
+      removed++;
+      ui.remove();
+    }
+  });
+  observer.observe(root, { childList: true, subtree: true });
+  return { observer, removals: () => removed };
+}
 
 describe('page controller', () => {
+  it('bounds hostile host removals per binding and lets explicit fill restore a fresh budget', async () => {
+    form();
+    const hostileForm = document.querySelector('form')!;
+    const healthyForm = hostileForm.cloneNode(true) as HTMLFormElement;
+    document.body.append(healthyForm);
+    const host = hostileHost(hostileForm);
+    const controller = new PageController(document, async () => exact);
+    try {
+      await controller.fill();
+      await settleMutations();
+      expect(host.removals()).toBe(4); // Initial UI plus three automatic restorations.
+      expect(hostileForm.querySelector('[data-postfield-ui]')).toBeNull();
+      expect(healthyForm.querySelector('[data-postfield-ui]')).not.toBeNull();
+      for (let i = 0; i < 3; i++) {
+        healthyForm.querySelector('[data-postfield-ui]')!.remove();
+        await settleMutations();
+        expect(healthyForm.querySelector('[data-postfield-ui]')).not.toBeNull();
+      }
+      expect(host.removals()).toBe(4); // Unrelated/UI mutations must not renew the budget.
+      await controller.fill();
+      await settleMutations();
+      expect(host.removals()).toBe(8);
+      expect(hostileForm.querySelector('[data-postfield-ui]')).toBeNull();
+      host.observer.disconnect();
+      await controller.fill();
+      expect(hostileForm.querySelector('[data-postfield-ui]')).not.toBeNull();
+      hostileForm.querySelector('[data-postfield-ui]')!.remove();
+      await settleMutations();
+      expect(hostileForm.querySelector('[data-postfield-ui]')).not.toBeNull();
+    } finally { host.observer.disconnect(); controller.stop(); }
+  });
+  it('restores several ordinary rerenders and renews restoration on repeated explicit fill', async () => {
+    form();
+    if (exact.kind !== 'confirmed') throw new Error('fixture');
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [exact.candidate] }));
+    try {
+      for (let cycle = 0; cycle < 2; cycle++) {
+        await controller.fill();
+        for (let rerender = 0; rerender < 3; rerender++) {
+          document.querySelector('form')!.replaceChildren(...document.querySelectorAll('input'));
+          await settleMutations();
+          expect(document.querySelector('[data-postfield-choice]')).not.toBeNull();
+        }
+        document.querySelector('[data-postfield-ui]')!.remove();
+        await settleMutations();
+        expect(document.querySelector('[data-postfield-ui]')).toBeNull();
+      }
+      await controller.fill();
+      document.querySelector<HTMLButtonElement>('[data-postfield-choice]')!.click();
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!.value).toBe('125009');
+    } finally { controller.stop(); }
+  });
+  it('does not restore removed UI after stop with a host mutation pending', async () => {
+    form();
+    const resolve = vi.fn(async () => exact);
+    const controller = new PageController(document, resolve);
+    try {
+      await controller.fill();
+      document.querySelector('[data-postfield-ui]')!.remove();
+      await Promise.resolve(); // Deliver the mutation before the queued scan.
+      controller.stop();
+      await settleMutations();
+      expect(document.querySelector('[data-postfield-ui]')).toBeNull();
+      expect(resolve).toHaveBeenCalledOnce();
+    } finally { controller.stop(); }
+  });
   it('restores candidate choices after a rerender removes the status UI', async () => {
     form();
     if (exact.kind !== 'confirmed') throw new Error('fixture');
