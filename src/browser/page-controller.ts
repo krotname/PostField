@@ -4,8 +4,11 @@ import { FormSession } from '../application/form-session.js';
 import type { FormResult } from '../application/form-session.js';
 import type { Address, LookupResult } from '../core/address.js';
 
-interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; uiRestorationsLeft: number; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
+interface UiBudget { remaining: number }
+interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; budget: UiBudget; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
 const automaticUiRestorations = 3;
+// Shared across replacement bindings, including replacement forms. Keep no DOM history.
+const automaticUiAdmissions = 32;
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
@@ -20,6 +23,8 @@ export class PageController {
   private writing = false;
   private stopped = false;
   private scanPending = false;
+  private uiAdmissionsLeft = automaticUiAdmissions;
+  private uiBudgets = new WeakMap<Node, UiBudget>();
 
   constructor(private readonly document: Document, private readonly resolve: (address: Address) => Promise<LookupResult>) {
     const Observer = document.defaultView?.MutationObserver ?? MutationObserver;
@@ -35,6 +40,7 @@ export class PageController {
   }
 
   setAutomatic(enabled: boolean): void {
+    if (this.stopped) return;
     if (this.automatic === enabled) return;
     this.automatic = enabled;
     if (enabled) {
@@ -66,6 +72,11 @@ export class PageController {
   };
 
   private scan(explicit = false): void {
+    if (this.stopped) return;
+    if (explicit) {
+      this.uiAdmissionsLeft = automaticUiAdmissions;
+      this.uiBudgets = new WeakMap();
+    }
     const groups = discoverAddressGroups(this.document);
     const discovered = new Map(groups.map((group) => [group.postcode, group]));
     for (const [field, binding] of this.bindings) {
@@ -79,12 +90,6 @@ export class PageController {
     for (const group of groups) {
       const existing = this.bindings.get(group.postcode);
       if (existing) {
-        // Only explicit fill renews the budget: our own UI mutations also trigger scans.
-        if (explicit) existing.uiRestorationsLeft = automaticUiRestorations;
-        if (!existing.ui.isConnected && (explicit || existing.uiRestorationsLeft > 0)) {
-          if (!explicit) existing.uiRestorationsLeft--;
-          group.postcode.insertAdjacentElement('afterend', existing.ui);
-        }
         if (!existing.manual) {
           const changed = Object.keys({ ...existing.group.fields, ...group.fields })
             .some((key) => existing.group.fields[key as keyof typeof group.fields] !== group.fields[key as keyof typeof group.fields]);
@@ -98,31 +103,72 @@ export class PageController {
         }
         continue;
       }
-      this.bind(group, false);
+      this.bind(group, false, explicit);
     }
+    // Manual groups need not be discoverable. Restore the same UI/session so choices survive.
+    for (const binding of this.bindings.values()) {
+      if (explicit) binding.budget = this.budgetFor(binding.group);
+      if (!binding.ui.isConnected && (explicit || binding.budget.remaining > 0)) {
+        if (!explicit) binding.budget.remaining--;
+        binding.group.postcode.insertAdjacentElement('afterend', binding.ui);
+      }
+    }
+    // Drop observer registrations on detached shadow roots along with obsolete bindings.
+    this.observer.disconnect();
+    this.observer.observe(this.document, { childList: true, subtree: true, attributes: true,
+      attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value'] });
+    for (const binding of this.bindings.values()) this.observeRoot(binding.group);
   }
 
   assign(group: AddressGroup): void {
+    if (this.stopped) return;
     const existing = this.bindings.get(group.postcode);
     if (existing) { existing.session.manualPostcodeChanged(); existing.group = group; existing.manual = true; }
-    else this.bind(group, true);
+    else this.bind(group, true, true);
   }
 
-  private bind(group: AddressGroup, manual: boolean): void {
+  private uiScope(group: AddressGroup): Node {
+    return group.postcode.closest('fieldset, [data-address-group], form') ?? group.postcode.getRootNode();
+  }
+
+  private budgetFor(group: AddressGroup): UiBudget {
+    const scope = this.uiScope(group);
+    let budget = this.uiBudgets.get(scope);
+    if (!budget) {
+      budget = { remaining: automaticUiRestorations };
+      this.uiBudgets.set(scope, budget);
+    }
+    return budget;
+  }
+
+  private observeRoot(group: AddressGroup): void {
+    const root = group.postcode.getRootNode();
+    if (root !== this.document && group.postcode.isConnected) this.observer.observe(root, { childList: true, subtree: true });
+  }
+
+  private bind(group: AddressGroup, manual: boolean, explicit: boolean): void {
       const ui = this.document.createElement('div');
       ui.dataset.postfieldUi = 'true';
       ui.setAttribute('role', 'status');
       ui.setAttribute('aria-live', 'polite');
       ui.style.cssText = 'font:13px/1.4 system-ui,sans-serif;color:#153a61;margin:4px 0;max-width:460px';
-      group.postcode.insertAdjacentElement('afterend', ui);
-      const binding: Binding = { group, ui, manual, uiRestorationsLeft: automaticUiRestorations, session: new FormSession(this.resolve, () => readAddress(binding.group),
+      const previousBudget = this.uiBudgets.get(this.uiScope(group));
+      const budget = this.budgetFor(group);
+      const admitted = explicit || (this.uiAdmissionsLeft > 0 && (!previousBudget || budget.remaining > 0));
+      if (admitted) {
+        if (!explicit) {
+          this.uiAdmissionsLeft--;
+          if (previousBudget) budget.remaining--;
+        }
+        group.postcode.insertAdjacentElement('afterend', ui);
+      }
+      const binding: Binding = { group, ui, manual, budget: admitted ? budget : { remaining: 0 }, session: new FormSession(this.resolve, () => readAddress(binding.group),
         () => binding.group.postcode.value, (value) => {
           this.writing = true;
           try { writePostcode(binding.group.postcode, value); } finally { this.writing = false; }
         }) };
       this.bindings.set(group.postcode, binding);
-      const root = group.postcode.getRootNode();
-      if (root !== this.document) this.observer.observe(root, { childList: true, subtree: true });
+      this.observeRoot(group);
       if (this.automatic) this.schedule(binding);
   }
 
@@ -188,5 +234,6 @@ export class PageController {
       binding.ui.remove();
     }
     this.bindings.clear();
+    this.uiBudgets = new WeakMap();
   }
 }

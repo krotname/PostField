@@ -26,6 +26,106 @@ function hostileHost(root: Element): { observer: MutationObserver; removals: () 
 }
 
 describe('page controller', () => {
+  it.each(['field', 'container'] as const)('bounds hostile %s replacements without starving healthy forms', async (replacement) => {
+    form();
+    const healthy = document.querySelector('form')!.cloneNode(true) as HTMLFormElement;
+    const markup = healthy.outerHTML;
+    const slot = document.createElement('section');
+    document.querySelector('form')!.replaceWith(slot);
+    slot.innerHTML = healthy.outerHTML;
+    document.body.append(healthy);
+    let replacements = 0;
+    // A hard host-side fuse makes the broken implementation fail rather than hang.
+    const host = new MutationObserver((records) => {
+      const inserted = records.some((record) => [...record.addedNodes].some((node) =>
+        node instanceof HTMLElement && node.matches('[data-postfield-ui]') && slot.contains(node)));
+      if (!inserted || replacements >= 64) return;
+      replacements++;
+      if (replacement === 'container') slot.innerHTML = markup;
+      else {
+        const postcode = slot.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!;
+        postcode.replaceWith(postcode.cloneNode());
+      }
+    });
+    host.observe(slot, { childList: true, subtree: true });
+    const controller = new PageController(document, async () => exact);
+    try {
+      await controller.fill();
+      await settleMutations();
+      expect(replacements).toBeGreaterThan(0);
+      expect(replacements).toBeLessThan(64);
+      expect(replacements).toBe(replacement === 'field' ? 4 : 33);
+      const exhausted = replacements;
+      for (let i = 0; i < 3; i++) {
+        healthy.querySelector('[data-postfield-ui]')!.remove();
+        await settleMutations();
+        expect(healthy.querySelector('[data-postfield-ui]')).not.toBeNull();
+      }
+      expect(replacements).toBe(exhausted);
+      host.disconnect();
+      expect(await controller.fill()).toBe(2);
+      expect(slot.querySelector('[data-postfield-ui]')).not.toBeNull();
+      slot.querySelector('[data-postfield-ui]')!.remove();
+      await settleMutations();
+      expect(slot.querySelector('[data-postfield-ui]')).not.toBeNull();
+      expect(slot.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!.value).toBe('125009');
+    } finally { host.disconnect(); controller.stop(); }
+  });
+
+  it('drops detached manual mappings and rejects their pending results and choices', async () => {
+    document.body.innerHTML = '<form><input value="Москва"><input value="Тверская улица, 13"><input></form>';
+    const [city, street, postcode] = [...document.querySelectorAll('input')];
+    if (!city || !street || !postcode || exact.kind !== 'confirmed') throw new Error('fixture');
+    let complete!: (result: LookupResult) => void;
+    const controller = new PageController(document, () => new Promise((done) => { complete = done; }));
+    try {
+      controller.assign({ postcode, fields: { city, street } });
+      const pending = controller.fill();
+      document.querySelector('form')!.remove();
+      await settleMutations();
+      complete(exact);
+      await pending;
+      expect(postcode.value).toBe('');
+      expect(await controller.fill()).toBe(0);
+      expect(document.querySelector('[data-postfield-ui]')).toBeNull();
+    } finally { controller.stop(); }
+  });
+
+  it('restores undiscoverable manual choices, renews their budget and preserves the mapping', async () => {
+    document.body.innerHTML = '<form><input value="Москва"><input value="Тверская улица, 13"><input></form>';
+    const [city, street, postcode] = [...document.querySelectorAll('input')];
+    if (!city || !street || !postcode || exact.kind !== 'confirmed') throw new Error('fixture');
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [exact.candidate] }));
+    try {
+      controller.assign({ postcode, fields: { city, street } });
+      for (let cycle = 0; cycle < 2; cycle++) {
+        expect(await controller.fill()).toBe(1);
+        for (let i = 0; i < 3; i++) {
+          document.querySelector('[data-postfield-ui]')!.remove();
+          await settleMutations();
+          expect(document.querySelector('[data-postfield-choice]')).not.toBeNull();
+        }
+        document.querySelector('[data-postfield-ui]')!.remove();
+        await settleMutations();
+        expect(document.querySelector('[data-postfield-ui]')).toBeNull();
+      }
+      await controller.fill();
+      document.querySelector<HTMLButtonElement>('[data-postfield-choice]')!.click();
+      expect(postcode.value).toBe('125009');
+      postcode.value = '999999';
+      postcode.dispatchEvent(new Event('input', { bubbles: true }));
+      await controller.fill();
+      expect(postcode.value).toBe('999999');
+      document.querySelector('[data-postfield-ui]')!.remove();
+      controller.stop();
+      await settleMutations();
+      expect(await controller.fill()).toBe(0);
+      controller.assign({ postcode, fields: { city, street } });
+      controller.setAutomatic(true);
+      expect(document.querySelector('[data-postfield-ui]')).toBeNull();
+    } finally { controller.stop(); }
+  });
+
   it('bounds hostile host removals per binding and lets explicit fill restore a fresh budget', async () => {
     form();
     const hostileForm = document.querySelector('form')!;
