@@ -68,8 +68,8 @@ export class PageController {
     const groups = discoverAddressGroups(this.document);
     const discovered = new Map(groups.map((group) => [group.postcode, group]));
     for (const [field, binding] of this.bindings) {
-      if (field.isConnected && Object.values(binding.group.fields).every((input) => input.isConnected)
-        && (binding.manual || discovered.has(field))) continue;
+      if (field.isConnected && (binding.manual
+        ? Object.values(binding.group.fields).every((input) => input.isConnected) : discovered.has(field))) continue;
       if (binding.timer) clearTimeout(binding.timer);
       binding.session.manualPostcodeChanged();
       binding.ui.remove();
