@@ -78,6 +78,7 @@ export class PageController {
     for (const group of groups) {
       const existing = this.bindings.get(group.postcode);
       if (existing) {
+        if (!existing.ui.isConnected) group.postcode.insertAdjacentElement('afterend', existing.ui);
         if (!existing.manual) {
           const changed = Object.keys({ ...existing.group.fields, ...group.fields })
             .some((key) => existing.group.fields[key as keyof typeof group.fields] !== group.fields[key as keyof typeof group.fields]);
