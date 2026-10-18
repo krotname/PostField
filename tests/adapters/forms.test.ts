@@ -5,6 +5,15 @@ import { discoverAddressGroups, readAddress, writePostcode } from '../../src/ada
 beforeEach(() => { document.body.innerHTML = ''; });
 
 describe('address fields', () => {
+  it('ignores disabled fieldsets while keeping controls in their first legend available', () => {
+    const fields = '<input autocomplete="address-level2" value="Москва"><input autocomplete="address-line1" value="Тверская, 13"><input autocomplete="postal-code">';
+    document.body.innerHTML = `<form><fieldset disabled><legend>${fields}</legend>${fields}</fieldset></form>`;
+    const groups = discoverAddressGroups(document);
+    expect(groups).toHaveLength(1);
+    expect(groups[0]?.postcode.closest('legend')).not.toBeNull();
+    document.body.innerHTML = `<form><fieldset disabled>${fields}</fieldset></form>`;
+    expect(discoverAddressGroups(document)).toHaveLength(0);
+  });
   it('reads city and combined street/house without transmitting apartment or name', () => {
     document.body.innerHTML = `<form>
       <input autocomplete="name" value="PRIVATE NAME">

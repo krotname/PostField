@@ -4,7 +4,7 @@ import { FormSession } from '../application/form-session.js';
 import type { FormResult } from '../application/form-session.js';
 import type { Address, LookupResult } from '../core/address.js';
 
-interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; timer?: ReturnType<typeof setTimeout> }
+interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
@@ -33,7 +33,21 @@ export class PageController {
     document.addEventListener('change', this.changed, true);
   }
 
-  setAutomatic(enabled: boolean): void { this.automatic = enabled; if (enabled) this.scan(); }
+  setAutomatic(enabled: boolean): void {
+    if (this.automatic === enabled) return;
+    this.automatic = enabled;
+    if (enabled) {
+      this.scan();
+      for (const binding of this.bindings.values()) if (!binding.timer) this.schedule(binding);
+    } else {
+      for (const binding of this.bindings.values()) {
+        if (binding.timer) clearTimeout(binding.timer);
+        delete binding.timer;
+        if (binding.automaticRequest) binding.session.cancelLookup();
+        delete binding.automaticRequest;
+      }
+    }
+  }
 
   private changed = (event: Event): void => {
     if (this.writing || this.stopped) return;
@@ -107,13 +121,23 @@ export class PageController {
 
   private schedule(binding: Binding): void {
     if (binding.timer) clearTimeout(binding.timer);
-    binding.timer = setTimeout(() => { void this.lookup(binding); }, 900);
+    binding.timer = setTimeout(() => {
+      delete binding.timer;
+      if (this.automatic) void this.lookup(binding, true);
+    }, 900);
   }
 
-  private async lookup(binding: Binding): Promise<void> {
-    const result = await binding.session.lookup();
-    if (this.stopped || result.kind === 'stale') return;
-    this.render(binding, result);
+  private async lookup(binding: Binding, automatic = false): Promise<void> {
+    const request = automatic ? Symbol() : undefined;
+    if (request) binding.automaticRequest = request;
+    else delete binding.automaticRequest;
+    try {
+      const result = await binding.session.lookup();
+      if (this.stopped || result.kind === 'stale') return;
+      this.render(binding, result);
+    } finally {
+      if (binding.automaticRequest === request) delete binding.automaticRequest;
+    }
   }
 
   private render(binding: Binding, result: FormResult): void {
@@ -138,7 +162,11 @@ export class PageController {
 
   async fill(): Promise<number> {
     this.scan();
-    await Promise.all([...this.bindings.values()].map((binding) => this.lookup(binding)));
+    await Promise.all([...this.bindings.values()].map((binding) => {
+      if (binding.timer) clearTimeout(binding.timer);
+      delete binding.timer;
+      return this.lookup(binding);
+    }));
     return this.bindings.size;
   }
 
