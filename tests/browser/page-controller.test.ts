@@ -11,6 +11,25 @@ function form(): void {
 }
 
 describe('page controller', () => {
+  it('restores candidate choices after a rerender removes the status UI', async () => {
+    form();
+    if (exact.kind !== 'confirmed') throw new Error('fixture');
+    const resolve = vi.fn(async (): Promise<LookupResult> => ({ kind: 'ambiguous', candidates: [exact.candidate] }));
+    const controller = new PageController(document, resolve);
+    try {
+      await controller.fill();
+      const postcode = document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!;
+      const city = document.querySelector<HTMLInputElement>('[autocomplete="address-level2"]')!.cloneNode() as HTMLInputElement;
+      const street = document.querySelector<HTMLInputElement>('[autocomplete="address-line1"]')!.cloneNode() as HTMLInputElement;
+      document.querySelector('form')!.replaceChildren(city, street, postcode);
+      await new Promise<void>((done) => setTimeout(done, 0));
+      await controller.fill();
+      const choice = document.querySelector<HTMLButtonElement>('[data-postfield-ui] button');
+      expect(choice).not.toBeNull();
+      choice!.click();
+      expect(postcode.value).toBe('125009');
+    } finally { controller.stop(); }
+  });
   it('clears its old postcode when a dynamic form replaces address controls', async () => {
     form();
     const resolve = vi.fn(async () => exact);
