@@ -4,11 +4,9 @@ import { FormSession } from '../application/form-session.js';
 import type { FormResult } from '../application/form-session.js';
 import type { Address, LookupResult } from '../core/address.js';
 
-interface UiBudget { remaining: number }
-interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; budget: UiBudget; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
-const automaticUiRestorations = 3;
-// Shared across replacement bindings, including replacement forms. Keep no DOM history.
-const automaticUiAdmissions = 32;
+interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
+// Yield to host timers even when every UI insertion triggers another rerender.
+const scanDelay = 25;
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
@@ -22,17 +20,11 @@ export class PageController {
   private automatic = false;
   private writing = false;
   private stopped = false;
-  private scanPending = false;
-  private uiAdmissionsLeft = automaticUiAdmissions;
-  private uiBudgets = new WeakMap<Node, UiBudget>();
+  private scanTimer?: ReturnType<typeof setTimeout>;
 
   constructor(private readonly document: Document, private readonly resolve: (address: Address) => Promise<LookupResult>) {
     const Observer = document.defaultView?.MutationObserver ?? MutationObserver;
-    this.observer = new Observer(() => {
-      if (this.scanPending || this.stopped) return;
-      this.scanPending = true;
-      queueMicrotask(() => { this.scanPending = false; if (!this.stopped) this.scan(); });
-    });
+    this.observer = new Observer(() => this.scheduleScan());
     this.observer.observe(document, { childList: true, subtree: true, attributes: true,
       attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value'] });
     document.addEventListener('input', this.changed, true);
@@ -71,12 +63,16 @@ export class PageController {
     }
   };
 
-  private scan(explicit = false): void {
+  private scheduleScan(): void {
+    if (this.stopped || this.scanTimer !== undefined) return;
+    this.scanTimer = setTimeout(() => {
+      delete this.scanTimer;
+      this.scan();
+    }, scanDelay);
+  }
+
+  private scan(): void {
     if (this.stopped) return;
-    if (explicit) {
-      this.uiAdmissionsLeft = automaticUiAdmissions;
-      this.uiBudgets = new WeakMap();
-    }
     const groups = discoverAddressGroups(this.document);
     const discovered = new Map(groups.map((group) => [group.postcode, group]));
     for (const [field, binding] of this.bindings) {
@@ -103,17 +99,18 @@ export class PageController {
         }
         continue;
       }
-      this.bind(group, false, explicit);
+      this.bind(group, false);
     }
     // Manual groups need not be discoverable. Restore the same UI/session so choices survive.
     for (const binding of this.bindings.values()) {
-      if (explicit) binding.budget = this.budgetFor(binding.group);
-      if (!binding.ui.isConnected && (explicit || binding.budget.remaining > 0)) {
-        if (!explicit) binding.budget.remaining--;
+      if (!binding.ui.isConnected) {
         binding.group.postcode.insertAdjacentElement('afterend', binding.ui);
       }
     }
     // Drop observer registrations on detached shadow roots along with obsolete bindings.
+    // Synchronous input/change handlers can mutate the host after the groups snapshot.
+    // Preserve those records (and our own writes) as a coalesced follow-up pass.
+    if (this.observer.takeRecords().length) this.scheduleScan();
     this.observer.disconnect();
     this.observer.observe(this.document, { childList: true, subtree: true, attributes: true,
       attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value'] });
@@ -124,21 +121,7 @@ export class PageController {
     if (this.stopped) return;
     const existing = this.bindings.get(group.postcode);
     if (existing) { existing.session.manualPostcodeChanged(); existing.group = group; existing.manual = true; }
-    else this.bind(group, true, true);
-  }
-
-  private uiScope(group: AddressGroup): Node {
-    return group.postcode.closest('fieldset, [data-address-group], form') ?? group.postcode.getRootNode();
-  }
-
-  private budgetFor(group: AddressGroup): UiBudget {
-    const scope = this.uiScope(group);
-    let budget = this.uiBudgets.get(scope);
-    if (!budget) {
-      budget = { remaining: automaticUiRestorations };
-      this.uiBudgets.set(scope, budget);
-    }
-    return budget;
+    else this.bind(group, true);
   }
 
   private observeRoot(group: AddressGroup): void {
@@ -146,23 +129,14 @@ export class PageController {
     if (root !== this.document && group.postcode.isConnected) this.observer.observe(root, { childList: true, subtree: true });
   }
 
-  private bind(group: AddressGroup, manual: boolean, explicit: boolean): void {
+  private bind(group: AddressGroup, manual: boolean): void {
       const ui = this.document.createElement('div');
       ui.dataset.postfieldUi = 'true';
       ui.setAttribute('role', 'status');
       ui.setAttribute('aria-live', 'polite');
       ui.style.cssText = 'font:13px/1.4 system-ui,sans-serif;color:#153a61;margin:4px 0;max-width:460px';
-      const previousBudget = this.uiBudgets.get(this.uiScope(group));
-      const budget = this.budgetFor(group);
-      const admitted = explicit || (this.uiAdmissionsLeft > 0 && (!previousBudget || budget.remaining > 0));
-      if (admitted) {
-        if (!explicit) {
-          this.uiAdmissionsLeft--;
-          if (previousBudget) budget.remaining--;
-        }
-        group.postcode.insertAdjacentElement('afterend', ui);
-      }
-      const binding: Binding = { group, ui, manual, budget: admitted ? budget : { remaining: 0 }, session: new FormSession(this.resolve, () => readAddress(binding.group),
+      group.postcode.insertAdjacentElement('afterend', ui);
+      const binding: Binding = { group, ui, manual, session: new FormSession(this.resolve, () => readAddress(binding.group),
         () => binding.group.postcode.value, (value) => {
           this.writing = true;
           try { writePostcode(binding.group.postcode, value); } finally { this.writing = false; }
@@ -214,7 +188,7 @@ export class PageController {
   }
 
   async fill(): Promise<number> {
-    this.scan(true);
+    this.scan();
     await Promise.all([...this.bindings.values()].map((binding) => {
       if (binding.timer) clearTimeout(binding.timer);
       delete binding.timer;
@@ -225,6 +199,8 @@ export class PageController {
 
   stop(): void {
     this.stopped = true;
+    if (this.scanTimer !== undefined) clearTimeout(this.scanTimer);
+    delete this.scanTimer;
     this.observer.disconnect();
     this.document.removeEventListener('input', this.changed, true);
     this.document.removeEventListener('change', this.changed, true);
@@ -234,6 +210,5 @@ export class PageController {
       binding.ui.remove();
     }
     this.bindings.clear();
-    this.uiBudgets = new WeakMap();
   }
 }
