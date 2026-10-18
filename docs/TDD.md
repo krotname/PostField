@@ -2,6 +2,18 @@
 
 Каждый цикл фиксирует наблюдаемое поведение, реальный red и целевой green. Это журнал разработки, а не замена тестов.
 
+## Lifecycle восстановления после замены input и контейнера (#11)
+
+18.10.2026: P1 `PRRT_kwDOVIITLc6tnxqs`, P2 `PRRT_kwDOVIITLc6tnxqv`.
+
+RED 08:50:38: `npm test -- tests/browser/page-controller.test.ts --maxWorkers=1`, exit 1: 3 failed, 14 passed. Оба replacement-сценария достигли предохранителя host observer (64), ручная нераспознаваемая группа потеряла кнопку выбора после удаления UI. Предохранитель прекращает действия host и гарантирует завершение RED. Затем replacement harness уточнён: host реагирует именно на добавленный UI, а не на любое изменение при наличии старого UI; шаблон контейнера сохранён до появления UI соседней формы.
+
+GREEN 08:53:28: `npm test -- tests/browser/page-controller.test.ts tests/application/form-session.test.ts tests/adapters/forms.test.ts tests/browser/manual-mapping.test.ts --maxWorkers=1`, exit 0: 33 passed (18 controller, 6 session, 7 forms, 2 manual mapping). `npm run typecheck`, exit 0.
+
+Бюджет трёх восстановлений общий для контейнера и хранится в WeakMap; замена input его не обновляет. Конечный бюджет контроллера допускает максимум 32 новых автоматических UI до следующего explicit fill и выдерживает замену самого контейнера. Тесты фиксируют ровно 4 hostile field replacements и 33 container replacements после одного explicit fill; соседняя форма сохраняет три собственных восстановления. Explicit fill обновляет бюджеты и восстанавливает обе формы. Общий проход по живым bindings возвращает UI ручной группы вместе с кнопками, не полагаясь на discoverAddressGroups. Проверены два цикла исчерпания/обновления, выбор кандидата, ручной индекс, удаление ручной группы во время запроса и невозможность оживить остановленный controller.
+
+Удалённые bindings удаляются, таймеры и результаты инвалидируются. WeakMap не удерживает удалённые контейнеры; регистрации observer пересобираются по живым bindings, освобождая отсоединённые ShadowRoot.
+
 ## Ограничение восстановления UI при удаляющем host observer
 
 18.10.2026, поздний P1 к #10: `MutationObserver` страницы удаляет каждый `[data-postfield-ui]`, а `scan()` возвращал его без лимита, поддерживая бесконечную цепочку microtasks. Harness намеренно прекращает удаления после 8, чтобы даже RED завершался и отдавал управление таймеру.
