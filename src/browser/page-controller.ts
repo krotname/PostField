@@ -4,7 +4,8 @@ import { FormSession } from '../application/form-session.js';
 import type { FormResult } from '../application/form-session.js';
 import type { Address, LookupResult } from '../core/address.js';
 
-interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
+interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; uiRestorationsLeft: number; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
+const automaticUiRestorations = 3;
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
@@ -64,7 +65,7 @@ export class PageController {
     }
   };
 
-  private scan(): void {
+  private scan(explicit = false): void {
     const groups = discoverAddressGroups(this.document);
     const discovered = new Map(groups.map((group) => [group.postcode, group]));
     for (const [field, binding] of this.bindings) {
@@ -78,7 +79,12 @@ export class PageController {
     for (const group of groups) {
       const existing = this.bindings.get(group.postcode);
       if (existing) {
-        if (!existing.ui.isConnected) group.postcode.insertAdjacentElement('afterend', existing.ui);
+        // Only explicit fill renews the budget: our own UI mutations also trigger scans.
+        if (explicit) existing.uiRestorationsLeft = automaticUiRestorations;
+        if (!existing.ui.isConnected && (explicit || existing.uiRestorationsLeft > 0)) {
+          if (!explicit) existing.uiRestorationsLeft--;
+          group.postcode.insertAdjacentElement('afterend', existing.ui);
+        }
         if (!existing.manual) {
           const changed = Object.keys({ ...existing.group.fields, ...group.fields })
             .some((key) => existing.group.fields[key as keyof typeof group.fields] !== group.fields[key as keyof typeof group.fields]);
@@ -109,7 +115,7 @@ export class PageController {
       ui.setAttribute('aria-live', 'polite');
       ui.style.cssText = 'font:13px/1.4 system-ui,sans-serif;color:#153a61;margin:4px 0;max-width:460px';
       group.postcode.insertAdjacentElement('afterend', ui);
-      const binding: Binding = { group, ui, manual, session: new FormSession(this.resolve, () => readAddress(binding.group),
+      const binding: Binding = { group, ui, manual, uiRestorationsLeft: automaticUiRestorations, session: new FormSession(this.resolve, () => readAddress(binding.group),
         () => binding.group.postcode.value, (value) => {
           this.writing = true;
           try { writePostcode(binding.group.postcode, value); } finally { this.writing = false; }
@@ -162,7 +168,7 @@ export class PageController {
   }
 
   async fill(): Promise<number> {
-    this.scan();
+    this.scan(true);
     await Promise.all([...this.bindings.values()].map((binding) => {
       if (binding.timer) clearTimeout(binding.timer);
       delete binding.timer;
