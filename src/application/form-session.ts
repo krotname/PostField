@@ -48,7 +48,9 @@ export class FormSession {
     const address = this.readAddress();
     if (!address || addressKey(address) !== this.lastKey || !this.choices.includes(candidate)
       || (this.readPostcode().trim() && this.readPostcode() !== this.ownedValue)) return false;
-    return this.apply(candidate);
+    const applied = this.apply(candidate);
+    if (applied) this.revision++;
+    return applied;
   }
 
   private apply(candidate: AddressCandidate): boolean {

@@ -7,6 +7,22 @@ const second = { ...first, house: '15' };
 const confirmed: LookupResult = { kind: 'confirmed', candidate: { ...first, postcode: '125009', confidence: 1, resultType: 'building', formatted: 'address' } };
 
 describe('safe form session', () => {
+  it('preserves an explicit candidate choice while a newer lookup is pending', async () => {
+    if (confirmed.kind !== 'confirmed') throw new Error('fixture');
+    const selected = { ...confirmed.candidate, postcode: '123456' };
+    let complete!: (result: LookupResult) => void;
+    const resolve = vi.fn<() => Promise<LookupResult>>()
+      .mockResolvedValueOnce({ kind: 'ambiguous', candidates: [selected] })
+      .mockImplementationOnce(() => new Promise((done) => { complete = done; }));
+    let postcode = '';
+    const session = new FormSession(resolve, () => first, () => postcode, (value) => { postcode = value; });
+    await session.lookup();
+    const pending = session.lookup();
+    expect(session.choose(selected)).toBe(true);
+    complete(confirmed);
+    expect(await pending).toEqual({ kind: 'stale' });
+    expect(postcode).toBe('123456');
+  });
   it('leaves a manually entered postcode untouched', async () => {
     const resolve = vi.fn<(address: Address) => Promise<LookupResult>>().mockResolvedValue(confirmed);
     const write = vi.fn<(value: string) => void>();

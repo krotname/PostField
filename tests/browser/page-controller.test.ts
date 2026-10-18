@@ -11,6 +11,27 @@ function form(): void {
 }
 
 describe('page controller', () => {
+  it('clears its old postcode when a dynamic form replaces address controls', async () => {
+    form();
+    const resolve = vi.fn(async () => exact);
+    const controller = new PageController(document, resolve);
+    try {
+      await controller.fill();
+      const postcode = document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!;
+      expect(postcode.value).toBe('125009');
+      const street = document.querySelector<HTMLInputElement>('[autocomplete="address-line1"]')!;
+      const replacement = street.cloneNode() as HTMLInputElement;
+      replacement.value = 'Другая улица, 5';
+      street.replaceWith(replacement);
+      await new Promise<void>((done) => setTimeout(done, 0));
+      expect(postcode.value).toBe('');
+      postcode.value = '999999';
+      postcode.dispatchEvent(new Event('input', { bubbles: true }));
+      replacement.replaceWith(street);
+      await new Promise<void>((done) => setTimeout(done, 0));
+      expect(postcode.value).toBe('999999');
+    } finally { controller.stop(); }
+  });
   it('cancels scheduled automatic lookups while keeping explicit fill available', async () => {
     vi.useFakeTimers();
     form();
