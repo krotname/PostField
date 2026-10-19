@@ -37,6 +37,13 @@ describe('postcode decisions', () => {
     expect(classifyCandidates(input, [exact]).kind).not.toBe('confirmed');
     expect(classifyCandidates(input, [{ ...exact, region: ' СВЕРДЛОВСКАЯ область ' }]).kind).toBe('confirmed');
   });
+  it.each([{ confidence: 0.8 }, { resultType: 'street' }])(
+    'keeps contradictory match evidence regardless of response order: %j', (difference) => {
+      const weaker = { ...exact, ...difference };
+      expect(classifyCandidates(address, [weaker, exact]).kind).toBe('ambiguous');
+      expect(classifyCandidates(address, [exact, weaker]).kind).toBe('ambiguous');
+    },
+  );
   it('deduplicates identical candidate records', () => {
     expect(classifyCandidates(address, [exact, exact]).kind).toBe('confirmed');
   });

@@ -46,7 +46,7 @@ export function classifyCandidates(address: Address, candidates: readonly Addres
   const unique = [...new Map(candidates.filter((candidate) => candidate.country === address.country
     && normalizePostcode(candidate.country, candidate.postcode) !== null)
     .map((candidate) => [JSON.stringify([candidate.country, candidate.city, candidate.street, candidate.house, candidate.region, candidate.postcode,
-      candidate.requiresPostcodeConfirmation === true]), candidate])).values()];
+      candidate.requiresPostcodeConfirmation === true, candidate.confidence, candidate.resultType]), candidate])).values()];
   if (unique.length === 0) return { kind: 'not_found' };
   const candidate = unique[0];
   if (unique.length === 1 && candidate && candidate.requiresPostcodeConfirmation !== true && candidate.confidence === 1 && candidate.resultType === 'building'
