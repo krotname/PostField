@@ -1,4 +1,5 @@
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#152d42;background:#f5f8fb;font-size:15px;color-scheme:light}
+.settings-fields{border:0;margin:0;padding:0;min-width:0}
 *{box-sizing:border-box}body{margin:0}main{margin:auto;padding:28px}.options main{max-width:780px}.popup{width:400px}.popup main{padding:22px}
 .brand{display:flex;align-items:center;gap:10px;color:#0c4a6e;font-weight:750;letter-spacing:.02em}.source-badge{margin-left:auto;border:1px solid #c9dce8;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:600}
 h1{font-size:25px;line-height:1.2;margin:25px 0 14px}h2{font-size:17px;margin:0 0 10px}p{line-height:1.55}.lead{color:#41596e;margin-bottom:24px}.hint{font-size:12px;color:#536a7e;overflow-wrap:anywhere}.notice{background:#e2eef6;padding:14px;border-radius:10px;font-size:13px;line-height:1.6}

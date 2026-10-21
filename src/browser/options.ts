@@ -21,6 +21,7 @@ function providerFields(): void {
 }
 
 async function refresh(): Promise<void> {
+  field<HTMLFieldSetElement>('settings-fields').disabled = true;
   state = await request<UiState>({ type: 'STATE' });
   field<HTMLInputElement>('consent').checked = state.consent;
   field<HTMLInputElement>(`provider-${state.providerId}`).checked = true;
@@ -32,6 +33,7 @@ async function refresh(): Promise<void> {
   list.replaceChildren();
   for (const origin of state.manualOrigins) { const item = document.createElement('li'); item.textContent = origin; list.append(item); }
   if (!state.manualOrigins.length) { const item = document.createElement('li'); item.textContent = 'Ручных исключений нет.'; list.append(item); }
+  field<HTMLFieldSetElement>('settings-fields').disabled = false;
 }
 for (const radio of document.querySelectorAll<HTMLInputElement>('input[name="provider"]')) radio.addEventListener('change', () => {
   field<HTMLInputElement>('key').value = ''; field<HTMLInputElement>('secret').value = ''; providerFields();

@@ -7,6 +7,6 @@ export async function openOptions(context: BrowserContext, id: string): Promise<
   const url = `chrome-extension://${id}/options.html`;
   await expect.poll(() => context.pages().some((page) => page.url() === url)).toBe(true);
   const page = context.pages().find((entry) => entry.url() === url)!;
-  await expect(page.locator('#consent')).toBeVisible();
+  await expect(page.locator('#consent')).toBeEnabled();
   return page;
 }
