@@ -12,6 +12,7 @@ export interface CredentialStore {
 export interface UserSettings {
   readonly consent: boolean;
   readonly enabledOrigins: readonly string[];
+  readonly manualOrigins?: readonly string[];
 }
 
 export interface SettingsStore {

@@ -8,8 +8,8 @@ async function refresh(): Promise<void> {
   field<HTMLButtonElement>('delete-key').disabled = !state.hasKey;
   const list = field<HTMLUListElement>('origins');
   list.replaceChildren();
-  for (const origin of state.enabledOrigins) { const item = document.createElement('li'); item.textContent = origin; list.append(item); }
-  if (!state.enabledOrigins.length) { const item = document.createElement('li'); item.textContent = 'Пока нет сайтов с автоматическим режимом.'; list.append(item); }
+  for (const origin of state.manualOrigins) { const item = document.createElement('li'); item.textContent = origin; list.append(item); }
+  if (!state.manualOrigins.length) { const item = document.createElement('li'); item.textContent = 'Все сайты — в режиме «Авто».'; list.append(item); }
 }
 field<HTMLFormElement>('settings').addEventListener('submit', (event) => {
   event.preventDefault();

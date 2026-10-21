@@ -27,7 +27,7 @@ describe('privileged message boundary', () => {
     expect(browser.map).not.toHaveBeenCalled();
     expect(await service.handle({ type: 'MAP' }, { id: 'test', url: 'chrome-extension://test/popup.html' })).toMatchObject({ ok: true, data: { started: true } });
     expect(browser.map).toHaveBeenCalledWith(7);
-    expect(await service.handle({ type: 'CONTEXT' }, content)).toMatchObject({ data: { allowed: true, automatic: false } });
+    expect(await service.handle({ type: 'CONTEXT' }, content)).toMatchObject({ data: { allowed: true, automatic: true } });
   });
   it('prevents content scripts from changing keys or reading privileged settings', async () => {
     const { service, credentials } = setup(true);
@@ -40,10 +40,10 @@ describe('privileged message boundary', () => {
     expect(await service.handle({ type: 'LOOKUP', address }, content)).toMatchObject({ ok: true, data: { kind: 'requires_consent' } });
     expect(lookup.execute).not.toHaveBeenCalled();
   });
-  it('blocks unenabled origins even with a valid key', async () => {
+  it('automatically enables new HTTP origins after key and consent', async () => {
     const { service, lookup } = setup(true);
-    expect(await service.handle({ type: 'LOOKUP', address }, content)).toMatchObject({ ok: true, data: { kind: 'site_disabled' } });
-    expect(lookup.execute).not.toHaveBeenCalled();
+    expect(await service.handle({ type: 'LOOKUP', address }, content)).toMatchObject({ ok: true, data: { kind: 'not_found' } });
+    expect(lookup.execute).toHaveBeenCalledOnce();
   });
   it('accepts an enabled origin and strips extra input properties', async () => {
     const { service, lookup } = setup(true, ['https://shop.example']);

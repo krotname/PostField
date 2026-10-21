@@ -12,6 +12,7 @@ const labels: Record<string, string> = {
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
   missing_key: 'Добавьте ключ Geoapify в настройках', unauthorized: 'Проверьте ключ Geoapify', quota: 'Лимит Geoapify исчерпан',
   timeout: 'Geoapify не ответил вовремя', offline: 'Нет связи с Geoapify', invalid_response: 'Ответ Geoapify не распознан',
+  http: 'Ошибка HTTP Geoapify', service: 'Нет связи со службой PostField. Обновите страницу', storage: 'Не удалось прочитать сохранённый ключ',
 };
 
 export class PageController {
@@ -26,9 +27,10 @@ export class PageController {
     const Observer = document.defaultView?.MutationObserver ?? MutationObserver;
     this.observer = new Observer(() => this.scheduleScan());
     this.observer.observe(document, { childList: true, subtree: true, attributes: true,
-      attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value'] });
+      attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value', 'hidden', 'aria-hidden', 'aria-label', 'aria-labelledby', 'style', 'class'] });
     document.addEventListener('input', this.changed, true);
     document.addEventListener('change', this.changed, true);
+    this.scan();
   }
 
   setAutomatic(enabled: boolean): void {
@@ -104,7 +106,7 @@ export class PageController {
     // Manual groups need not be discoverable. Restore the same UI/session so choices survive.
     for (const binding of this.bindings.values()) {
       if (!binding.ui.isConnected) {
-        binding.group.postcode.insertAdjacentElement('afterend', binding.ui);
+        this.placeStatus(binding.group, binding.ui);
       }
     }
     // Drop observer registrations on detached shadow roots along with obsolete bindings.
@@ -113,7 +115,7 @@ export class PageController {
     if (this.observer.takeRecords().length) this.scheduleScan();
     this.observer.disconnect();
     this.observer.observe(this.document, { childList: true, subtree: true, attributes: true,
-      attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value'] });
+      attributeFilter: ['autocomplete', 'name', 'id', 'disabled', 'readonly', 'value', 'hidden', 'aria-hidden', 'aria-label', 'aria-labelledby', 'style', 'class'] });
     for (const binding of this.bindings.values()) this.observeRoot(binding.group);
   }
 
@@ -134,8 +136,8 @@ export class PageController {
       ui.dataset.postfieldUi = 'true';
       ui.setAttribute('role', 'status');
       ui.setAttribute('aria-live', 'polite');
-      ui.style.cssText = 'font:13px/1.4 system-ui,sans-serif;color:#153a61;margin:4px 0;max-width:460px';
-      group.postcode.insertAdjacentElement('afterend', ui);
+      ui.style.cssText = 'display:block;position:static;clear:both;flex:0 0 auto;grid-column:1 / -1;width:100%;box-sizing:border-box;font:13px/1.4 system-ui,sans-serif;color:#153a61;margin:4px 0;max-width:460px;max-height:180px;overflow:auto;white-space:normal';
+      this.placeStatus(group, ui);
       const binding: Binding = { group, ui, manual, session: new FormSession(this.resolve, () => readAddress(binding.group),
         () => binding.group.postcode.value, (value) => {
           this.writing = true;
@@ -144,6 +146,19 @@ export class PageController {
       this.bindings.set(group.postcode, binding);
       this.observeRoot(group);
       if (this.automatic) this.schedule(binding);
+  }
+
+  private placeStatus(group: AddressGroup, ui: HTMLElement): void {
+    const table = group.postcode.closest('table');
+    if (table) { table.insertAdjacentElement('afterend', ui); return; }
+    let wrapper: Element = group.postcode;
+    while (wrapper.parentElement && !wrapper.parentElement.matches('form,fieldset,[role="dialog"],body')
+      && wrapper.parentElement.querySelectorAll('input,select,textarea').length === 1) wrapper = wrapper.parentElement;
+    const row = wrapper.parentElement;
+    const style = row && this.document.defaultView?.getComputedStyle(row);
+    if (row && !row.matches('form,fieldset,[role="dialog"],body') && style?.display.includes('flex')
+      && (!style.flexDirection || style.flexDirection.startsWith('row'))) wrapper = row;
+    wrapper.insertAdjacentElement('afterend', ui);
   }
 
   private schedule(binding: Binding): void {
@@ -170,6 +185,13 @@ export class PageController {
   private render(binding: Binding, result: FormResult): void {
     binding.ui.replaceChildren();
     binding.ui.textContent = labels[result.kind === 'error' ? result.code : result.kind] ?? '';
+    if (result.kind === 'error') {
+      const retry = this.document.createElement('button');
+      retry.type = 'button'; retry.dataset.postfieldRetry = 'true'; retry.textContent = 'Повторить';
+      retry.style.cssText = 'margin:4px 8px;padding:4px 8px;cursor:pointer';
+      retry.addEventListener('click', () => { retry.disabled = true; void this.lookup(binding); });
+      binding.ui.append(retry);
+    }
     if (result.kind !== 'ambiguous') return;
     if (result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)) {
       binding.ui.textContent = 'Точность индекса не подтверждена. Сверьте индекс перед выбором.';

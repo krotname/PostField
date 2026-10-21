@@ -1,7 +1,7 @@
 import { extension } from './extension-api.js';
 import type { Reply } from './message-service.js';
 
-export interface UiState { consent: boolean; hasKey: boolean; enabledOrigins: string[]; origin: string | null }
+export interface UiState { consent: boolean; hasKey: boolean; enabledOrigins: string[]; manualOrigins: string[]; origin: string | null }
 export async function request<T>(message: object): Promise<T> {
   const reply: Reply = await extension.runtime.sendMessage(message);
   if (!reply.ok) throw new Error(reply.error);

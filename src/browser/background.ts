@@ -33,10 +33,12 @@ const gateway: BrowserGateway = {
     const ids = scripts.filter((script) => script.id.startsWith('postfield-')).map((script) => script.id);
     if (ids.length) await extension.scripting.unregisterContentScripts({ ids });
     const permitted: string[] = [];
-    for (const origin of origins) if (await extension.permissions.contains({ origins: [hostPattern(origin)] })) permitted.push(hostPattern(origin));
+    for (const pattern of origins) if (await extension.permissions.contains({ origins: [pattern] })) permitted.push(pattern);
     if (permitted.length) await extension.scripting.registerContentScripts([{ id: 'postfield-sites', matches: [...new Set(permitted)],
       js: ['content.js'], allFrames: true, runAt: 'document_idle', persistAcrossSessions: true }]);
     const tabs = await extension.tabs.query({});
+    if (permitted.length) await Promise.allSettled(tabs.filter((tab) => tab.id !== undefined && /^https?:\/\//u.test(tab.url ?? ''))
+      .map((tab) => gateway.inject(tab.id!)));
     await Promise.allSettled(tabs.filter((tab) => tab.id !== undefined)
       .map((tab) => extension.tabs.sendMessage(tab.id!, { type: 'CONFIG_CHANGED' })));
   },
@@ -49,7 +51,7 @@ extension.runtime.onMessage.addListener((message: unknown, sender, respond) => {
 });
 async function restore(): Promise<void> {
   const stored = await settings.read();
-  await gateway.sync(stored.consent ? stored.enabledOrigins : []);
+  await gateway.sync(stored.consent ? ['http://*/*', 'https://*/*'] : []);
 }
 extension.runtime.onInstalled.addListener(() => { void restore().catch(() => {}); });
 extension.runtime.onStartup.addListener(() => { void restore().catch(() => {}); });

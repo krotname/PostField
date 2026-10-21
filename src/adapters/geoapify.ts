@@ -17,14 +17,15 @@ function candidateFrom(value: unknown): AddressCandidate | null {
     house: text('housenumber'), postcode: value.postcode, confidence: value.rank.confidence,
     ...(text('state') ? { region: text('state') } : {}),
     resultType: text('result_type'), formatted: text('formatted'),
-    ...(value.country_code === 'ru' ? { requiresPostcodeConfirmation: true } : {}) };
+    };
 }
 
 export class GeoapifyProvider implements AddressProvider {
   constructor(private readonly credentials: CredentialStore, private readonly fetcher: typeof fetch = fetch) {}
 
   async resolve(address: Address, signal?: AbortSignal): Promise<readonly AddressCandidate[]> {
-    const key = await this.credentials.read();
+    let key: string | null;
+    try { key = await this.credentials.read(); } catch { throw new ProviderError('storage'); }
     if (!key) throw new ProviderError('missing_key');
     const url = new URL('https://api.geoapify.com/v1/geocode/search');
     url.search = new URLSearchParams({ apiKey: key, city: address.city, street: address.street, housenumber: address.house,
@@ -32,11 +33,12 @@ export class GeoapifyProvider implements AddressProvider {
       bias: 'countrycode:none', format: 'json', limit: '5', lang: address.country === 'ru' ? 'ru' : 'en' }).toString();
     try {
       const timeout = AbortSignal.timeout(10_000);
-      const response = await this.fetcher(url, { method: 'GET', credentials: 'omit', redirect: 'error',
+      const fetcher = this.fetcher;
+      const response = await fetcher(url, { method: 'GET', credentials: 'omit', redirect: 'error',
         referrerPolicy: 'no-referrer', signal: signal ? AbortSignal.any([timeout, signal]) : timeout });
       if (response.status === 401 || response.status === 403) throw new ProviderError('unauthorized');
       if (response.status === 429) throw new ProviderError('quota');
-      if (!response.ok) throw new ProviderError('offline');
+      if (!response.ok) throw new ProviderError('http');
       const body: unknown = await response.json();
       if (!isRecord(body) || !Array.isArray(body.results)) throw new ProviderError('invalid_response');
       return body.results.slice(0, 5).map(candidateFrom).filter((candidate): candidate is AddressCandidate => candidate !== null)

@@ -6,6 +6,8 @@ import { join, resolve } from 'node:path';
 for (const scenario of [
   { name: 'manual', city: 'Москва', street: 'Тверская улица', house: '13', region: 'Москва',
     providerPostcode: '125009', expectedPostcode: '125009', automatic: false },
+  { name: 'automatic', city: 'Москва', street: 'Тверская улица', house: '13', region: 'Москва',
+    providerPostcode: '125009', expectedPostcode: '125009', automatic: true },
   { name: 'correction', city: 'Петрозаводск', street: 'улица Чапаева', house: '52', region: 'Республика Карелия',
     providerPostcode: '185000', expectedPostcode: '185002', automatic: true },
 ]) {
@@ -13,9 +15,8 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
   const root = await mkdtemp(join(tmpdir(), 'postfield-e2e-'));
   const extensionPath = join(root, 'extension');
   await cp(resolve('dist/chrome'), extensionPath, { recursive: true });
-  // Isolated fixture host is pregranted; production packages keep optional site permissions.
+  // Production and the isolated fixture use the same HTTP(S) permissions.
   const manifest = JSON.parse(await readFile(join(extensionPath, 'manifest.json'), 'utf8')) as { host_permissions: string[] };
-  manifest.host_permissions.push('http://127.0.0.1/*');
   await writeFile(join(extensionPath, 'manifest.json'), JSON.stringify(manifest));
   // Inject only the external HTTP port before the service worker captures fetch.
   // Chromium does not route extension worker requests consistently across releases.
@@ -25,8 +26,9 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     formatted: `${scenario.city}, ${scenario.street}, ${scenario.house}, ${scenario.providerPostcode}`,
     result_type: 'building', rank: { confidence: 1 } }] };
   await writeFile(background, `globalThis.fetch = async () => new Response(${JSON.stringify(JSON.stringify(fixture))}, {status:200});\n${await readFile(background, 'utf8')}`);
-  const context = await chromium.launchPersistentContext(join(root, 'profile'), { channel: 'chromium', headless: true,
+  const launch = () => chromium.launchPersistentContext(join(root, 'profile'), { channel: 'chromium', headless: true,
     args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`] });
+  let context = await launch();
   try {
     const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
     const id = new URL(worker.url()).hostname;
@@ -49,16 +51,16 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       return tab?.url;
     })).toBe('http://127.0.0.1:4173/');
+    if (!scenario.automatic) {
+      expect(await options.evaluate(() => chrome.runtime.sendMessage({ type: 'SITE_SET', origin: 'http://127.0.0.1:4173', enabled: false }))).toMatchObject({ ok: true });
+      await form.waitForTimeout(1100);
+      await expect(form.locator('[autocomplete=postal-code]')).toHaveValue('');
+    }
     const fill = () => options.evaluate(async () => {
       const api = (globalThis as typeof globalThis & { chrome: typeof chrome }).chrome;
       return api.runtime.sendMessage({ type: 'FILL' });
     });
-    expect(await fill()).toEqual({ ok: true, data: { forms: 1 } });
-    if (!scenario.automatic) {
-      await expect(form.locator('[data-postfield-ui]')).toContainText('Точность индекса не подтверждена');
-      await expect(form.locator('[autocomplete=postal-code]')).toHaveValue('');
-      await form.locator('[data-postfield-choice]').click();
-    }
+    if (!scenario.automatic) expect(await fill()).toEqual({ ok: true, data: { forms: 1 } });
     await expect(form.locator('[autocomplete=postal-code]')).toHaveValue(scenario.expectedPostcode);
     await form.locator('[autocomplete=postal-code]').fill('654321');
     await fill();
@@ -69,6 +71,15 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     expect(JSON.stringify(leak)).not.toContain('synthetic-key');
     await options.screenshot({ path: `output/playwright/options-${scenario.name}.png`, fullPage: true });
     await form.screenshot({ path: `output/playwright/checkout-${scenario.name}.png`, fullPage: true });
+    await context.close();
+    context = await launch();
+    const reopened = await context.newPage();
+    await reopened.goto(`chrome-extension://${id}/options.html`);
+    await expect(reopened.locator('#key-state')).toContainText('Ключ сохранён');
+    await expect(reopened.locator('#consent')).toBeChecked();
+    const stored = await reopened.evaluate(async () => (await chrome.runtime.sendMessage({ type: 'STATE' })).data);
+    expect(stored.manualOrigins).toEqual(scenario.automatic ? [] : ['http://127.0.0.1:4173']);
+    expect(stored.hasKey).toBe(true);
   } finally { await context.close(); await rm(root, { recursive: true, force: true }); }
 });
 }
