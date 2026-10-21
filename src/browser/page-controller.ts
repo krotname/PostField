@@ -10,9 +10,10 @@ const scanDelay = 25;
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
-  missing_key: 'Добавьте ключ Geoapify в настройках', unauthorized: 'Проверьте ключ Geoapify', quota: 'Лимит Geoapify исчерпан',
-  timeout: 'Geoapify не ответил вовремя', offline: 'Нет связи с Geoapify', invalid_response: 'Ответ Geoapify не распознан',
-  http: 'Ошибка HTTP Geoapify', service: 'Нет связи со службой PostField. Обновите страницу', storage: 'Не удалось прочитать сохранённый ключ',
+  missing_key: 'Добавьте ключи выбранного источника в настройках', unauthorized: 'Источник отклонил ключ. Проверьте настройки',
+  balance: 'DaData: проверьте баланс и подтверждение почты в личном кабинете', quota: 'Источник ограничил запросы. Повторите позже',
+  timeout: 'Источник не ответил вовремя', offline: 'Нет связи с выбранным источником', invalid_response: 'Ответ источника не распознан',
+  http: 'Ошибка HTTP источника', service: 'Нет связи со службой PostField. Обновите страницу', storage: 'Не удалось прочитать сохранённый ключ',
 };
 
 export class PageController {
@@ -23,7 +24,8 @@ export class PageController {
   private stopped = false;
   private scanTimer?: ReturnType<typeof setTimeout>;
 
-  constructor(private readonly document: Document, private readonly resolve: (address: Address) => Promise<LookupResult>) {
+  constructor(private readonly document: Document, private readonly resolve: (address: Address) => Promise<LookupResult>,
+    private readonly changeProvider: () => void = () => {}) {
     const Observer = document.defaultView?.MutationObserver ?? MutationObserver;
     this.observer = new Observer(() => this.scheduleScan());
     this.observer.observe(document, { childList: true, subtree: true, attributes: true,
@@ -184,18 +186,22 @@ export class PageController {
 
   private render(binding: Binding, result: FormResult): void {
     binding.ui.replaceChildren();
-    binding.ui.textContent = labels[result.kind === 'error' ? result.code : result.kind] ?? '';
-    if (result.kind === 'error') {
+    binding.ui.textContent = result.kind === 'ambiguous' && result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)
+      ? 'Точность индекса не подтверждена. Сверьте индекс перед выбором.'
+      : labels[result.kind === 'error' ? result.code : result.kind] ?? '';
+    if (result.kind === 'error' || result.kind === 'not_found' || result.kind === 'ambiguous') {
       const retry = this.document.createElement('button');
       retry.type = 'button'; retry.dataset.postfieldRetry = 'true'; retry.textContent = 'Повторить';
       retry.style.cssText = 'margin:4px 8px;padding:4px 8px;cursor:pointer';
       retry.addEventListener('click', () => { retry.disabled = true; void this.lookup(binding); });
       binding.ui.append(retry);
+      const change = this.document.createElement('button');
+      change.type = 'button'; change.dataset.postfieldProvider = 'true'; change.textContent = 'Сменить источник';
+      change.style.cssText = retry.style.cssText;
+      change.addEventListener('click', this.changeProvider);
+      binding.ui.append(change);
     }
     if (result.kind !== 'ambiguous') return;
-    if (result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)) {
-      binding.ui.textContent = 'Точность индекса не подтверждена. Сверьте индекс перед выбором.';
-    }
     for (const candidate of result.candidates) {
       const button = this.document.createElement('button');
       button.type = 'button';

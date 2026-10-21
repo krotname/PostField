@@ -48,7 +48,7 @@ describe('privileged message boundary', () => {
   it('accepts an enabled origin and strips extra input properties', async () => {
     const { service, lookup } = setup(true, ['https://shop.example']);
     expect(await service.handle({ type: 'LOOKUP', address: { ...address, name: 'PRIVATE', apartment: '9', apiKey: 'fake' } }, content)).toMatchObject({ ok: true });
-    expect(lookup.execute).toHaveBeenCalledWith(address);
+    expect(lookup.execute).toHaveBeenCalledWith(address, expect.any(AbortSignal));
   });
   it('returns presence, never the key, to the options page', async () => {
     const { service } = setup(true);

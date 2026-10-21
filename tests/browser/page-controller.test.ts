@@ -118,9 +118,10 @@ describe('page controller', () => {
       const newStreet = street.cloneNode() as HTMLInputElement;
       newStreet.value = 'Другая улица, 5';
       street.replaceWith(newStreet);
-      await settleMutations();
-      expect(replacement).toBeDefined();
-      expect(replacement!.querySelector('[data-postfield-ui]')).not.toBeNull();
+      await vi.waitFor(() => {
+        expect(replacement).toBeDefined();
+        expect(replacement!.querySelector('[data-postfield-ui]')).not.toBeNull();
+      });
       expect(await controller.fill()).toBe(1);
     } finally { controller.stop(); }
   });
@@ -221,7 +222,7 @@ describe('page controller', () => {
       document.querySelector('form')!.replaceChildren(city, street, postcode);
       await settleMutations();
       await controller.fill();
-      const choice = document.querySelector<HTMLButtonElement>('[data-postfield-ui] button');
+      const choice = document.querySelector<HTMLButtonElement>('[data-postfield-choice]');
       expect(choice).not.toBeNull();
       choice!.click();
       expect(postcode.value).toBe('125009');
@@ -320,10 +321,14 @@ describe('page controller', () => {
   it('explains missing postcode proof before an explicit choice', async () => {
     form();
     const candidate = exact.kind === 'confirmed' ? { ...exact.candidate, requiresPostcodeConfirmation: true } : (() => { throw new Error(); })();
-    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [candidate] }));
+    const changeProvider = vi.fn();
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [candidate] }), changeProvider);
     await controller.fill();
     expect(document.querySelector('[data-postfield-ui]')?.textContent).toContain('Точность индекса не подтверждена');
     expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('');
+    expect(document.querySelector('[data-postfield-retry]')).not.toBeNull();
+    document.querySelector<HTMLButtonElement>('[data-postfield-provider]')?.click();
+    expect(changeProvider).toHaveBeenCalledOnce();
     document.querySelector<HTMLButtonElement>('[data-postfield-choice]')?.click();
     expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('125009');
     controller.stop();

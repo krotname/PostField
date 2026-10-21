@@ -9,7 +9,7 @@ export function normalizeComponent(value: string, kind: 'city' | 'street' | 'hou
   if (country === 'ru') {
     if (kind === 'city') result = result.replace(/^(?:город|г)\s+/u, '');
     if (kind === 'street') result = result.replace(/^(?:улица|ул)\s+/u, '').replace(/\s+(?:улица|ул)$/u, '');
-    if (kind === 'house') result = result.replace(/^(?:дом|д)\.?\s*/u, '').replace(/\s*корпус\s*/gu, 'к').replace(/\s*строение\s*/gu, 'с');
+    if (kind === 'house') result = result.replace(/^(?:дом|д)\.?\s*/u, '').replace(/\s*корп(?:ус)?\.?\s*/gu, 'к').replace(/\s*стр(?:оение)?\.?\s*/gu, 'с');
   }
   return kind === 'house' ? result.replace(/\s/gu, '') : result;
 }
@@ -46,13 +46,20 @@ export function classifyCandidates(address: Address, candidates: readonly Addres
   const unique = [...new Map(candidates.filter((candidate) => candidate.country === address.country
     && normalizePostcode(candidate.country, candidate.postcode) !== null)
     .map((candidate) => [JSON.stringify([candidate.country, candidate.city, candidate.street, candidate.house, candidate.region, candidate.postcode,
-      candidate.requiresPostcodeConfirmation === true, candidate.confidence, candidate.resultType]), candidate])).values()];
+      candidate.requiresPostcodeConfirmation === true, candidate.confidence, candidate.resultType, candidate.quality]), candidate])).values()];
   if (unique.length === 0) return { kind: 'not_found' };
-  const candidate = unique[0];
-  if (unique.length === 1 && candidate && candidate.requiresPostcodeConfirmation !== true && candidate.confidence === 1 && candidate.resultType === 'building'
-    && (!address.region?.trim() || (!!candidate.region && normalizeWords(address.region) === normalizeWords(candidate.region)))
+  const exact = unique.filter((candidate) => (!address.region?.trim() || (!!candidate.region && normalizeWords(address.region) === normalizeWords(candidate.region)))
     && (['city', 'street', 'house'] as const).every((part) => normalizeComponent(address[part], part, address.country)
-      === normalizeComponent(candidate[part], part, address.country))) {
+      === normalizeComponent(candidate[part], part, address.country)));
+  const candidate = exact[0];
+  const quality = candidate?.quality;
+  const reliable = quality?.source === 'photon' ? quality.explicitAddress
+    : quality?.source === 'dadata' ? quality.qc === 0 && quality.qcHouse === 2 && [0, 5].includes(quality.qcComplete)
+      && quality.actuality === '0' && !!quality.houseId && !quality.unparsed
+      : candidate?.confidence === 1 && candidate.resultType === 'building';
+  // Geoapify's contradictory rank evidence and known corrections retain the conservative policy.
+  const scope = quality?.source === 'photon' || quality?.source === 'dadata' ? exact : unique;
+  if (scope.length === 1 && candidate && candidate.requiresPostcodeConfirmation !== true && reliable) {
     return { kind: 'confirmed', candidate: { ...candidate, postcode: normalizePostcode(candidate.country, candidate.postcode) ?? candidate.postcode } };
   }
   return { kind: 'ambiguous', candidates: unique };

@@ -16,13 +16,16 @@ export interface AddressCandidate {
   readonly house: string;
   readonly region?: string;
   readonly postcode: string;
-  readonly confidence: number;
+  readonly confidence?: number;
+  readonly quality?: { readonly source: 'photon'; readonly explicitAddress: boolean }
+    | { readonly source: 'dadata'; readonly qc: number; readonly qcHouse: number; readonly qcComplete: number;
+      readonly actuality: string; readonly houseId: string; readonly unparsed: boolean };
   readonly resultType: string;
   readonly formatted: string;
   readonly requiresPostcodeConfirmation?: boolean;
 }
 
-export type LookupErrorCode = 'missing_key' | 'unauthorized' | 'quota' | 'timeout' | 'offline' | 'http' | 'service' | 'storage' | 'invalid_response';
+export type LookupErrorCode = 'missing_key' | 'unauthorized' | 'balance' | 'quota' | 'timeout' | 'offline' | 'http' | 'service' | 'storage' | 'invalid_response';
 export type LookupResult =
   | { readonly kind: 'confirmed'; readonly candidate: AddressCandidate }
   | { readonly kind: 'ambiguous'; readonly candidates: readonly AddressCandidate[] }

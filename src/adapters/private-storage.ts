@@ -1,4 +1,5 @@
 import type { CredentialStore } from '../application/ports.js';
+import type { KeyProviderId } from '../core/providers.js';
 
 export class IndexedDbCredentials implements CredentialStore {
   private database: Promise<IDBDatabase> | null = null;
@@ -14,21 +15,21 @@ export class IndexedDbCredentials implements CredentialStore {
     return this.database;
   }
 
-  async read(): Promise<string | null> {
+  async read(providerId: KeyProviderId = 'geoapify'): Promise<string | null> {
     const database = await this.open();
     return new Promise((resolve, reject) => {
-      const request = database.transaction('credentials', 'readonly').objectStore('credentials').get('geoapify');
+      const request = database.transaction('credentials', 'readonly').objectStore('credentials').get(providerId);
       request.onsuccess = () => resolve(typeof request.result === 'string' ? request.result : null);
       request.onerror = () => reject(new Error('private_storage_unavailable'));
     });
   }
 
-  async write(key: string | null): Promise<void> {
+  async write(key: string | null, providerId: KeyProviderId = 'geoapify'): Promise<void> {
     const database = await this.open();
     return new Promise((resolve, reject) => {
       const transaction = database.transaction('credentials', 'readwrite');
       const store = transaction.objectStore('credentials');
-      if (key) store.put(key, 'geoapify'); else store.delete('geoapify');
+      if (key) store.put(key, providerId); else store.delete(providerId);
       transaction.oncomplete = () => resolve();
       transaction.onerror = () => reject(new Error('private_storage_unavailable'));
       transaction.onabort = () => reject(new Error('private_storage_unavailable'));
