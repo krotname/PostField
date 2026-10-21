@@ -22,7 +22,7 @@ export interface AddressCandidate {
   readonly requiresPostcodeConfirmation?: boolean;
 }
 
-export type LookupErrorCode = 'missing_key' | 'unauthorized' | 'quota' | 'timeout' | 'offline' | 'invalid_response';
+export type LookupErrorCode = 'missing_key' | 'unauthorized' | 'quota' | 'timeout' | 'offline' | 'http' | 'service' | 'storage' | 'invalid_response';
 export type LookupResult =
   | { readonly kind: 'confirmed'; readonly candidate: AddressCandidate }
   | { readonly kind: 'ambiguous'; readonly candidates: readonly AddressCandidate[] }

@@ -16,11 +16,11 @@ export class LocalSettings implements SettingsStore {
   constructor(private readonly storage: LocalStoragePort) {}
 
   async read(): Promise<UserSettings> {
-    const stored: Record<string, unknown> = await this.storage.get(['consent', 'enabledOrigins']);
-    return { consent: stored.consent === true, enabledOrigins: validOrigins(stored.enabledOrigins) };
+    const stored: Record<string, unknown> = await this.storage.get(['consent', 'enabledOrigins', 'manualOrigins']);
+    return { consent: stored.consent === true, enabledOrigins: validOrigins(stored.enabledOrigins), manualOrigins: validOrigins(stored.manualOrigins) };
   }
 
   async write(settings: UserSettings): Promise<void> {
-    await this.storage.set({ consent: settings.consent === true, enabledOrigins: validOrigins(settings.enabledOrigins) });
+    await this.storage.set({ consent: settings.consent === true, enabledOrigins: validOrigins(settings.enabledOrigins), manualOrigins: validOrigins(settings.manualOrigins) });
   }
 }

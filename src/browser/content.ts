@@ -14,11 +14,11 @@ if (!page.__postfieldInstalled) {
     const context = reply.ok ? reply.data as { allowed?: boolean; automatic?: boolean } : null;
     if (!context?.allowed) { cancelMapping?.(); controller?.stop(); controller = null; return; }
     controller ??= new PageController(document, async (address) => {
-      const response: Reply = await extension.runtime.sendMessage({ type: 'LOOKUP', address }).catch(() => ({ ok: false, error: 'offline' }));
-      if (!response.ok) return { kind: 'error', code: 'offline' };
+      const response: Reply | null = await extension.runtime.sendMessage({ type: 'LOOKUP', address }).catch(() => null);
+      if (!response || !response.ok) return { kind: 'error', code: 'service' };
       const result = response.data as { kind?: string };
       if (['confirmed', 'ambiguous', 'not_found', 'incomplete', 'unsupported', 'error'].includes(result.kind ?? '')) return response.data as LookupResult;
-      return { kind: 'incomplete' };
+      return { kind: 'error', code: 'service' };
     });
     controller.setAutomatic(context.automatic === true);
   }

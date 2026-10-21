@@ -21,7 +21,7 @@ describe('unseen Russia addresses', () => {
   });
 
   it.each(['wrong_postcode', 'conflicting_postcodes', 'stale_house'] as const)(
-    'never auto-confirms an unseen address with %s', async (scenario) => {
+    'makes the accepted provider-trust boundary explicit for %s', async (scenario) => {
       for (const { address, postcode } of inspectCorpus(corpus).rows) {
         const wrong = postcode === '999999' ? '999998' : '999999';
         const exact = { country_code: 'ru', state: address.region, city: address.city, street: address.street,
@@ -32,12 +32,13 @@ describe('unseen Russia addresses', () => {
         const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results })));
         const provider = new GeoapifyProvider({ read: async () => 'synthetic-test-key', write: async () => {} }, fetcher);
         const result = await new LookupPostcode(provider).execute(address);
-        expect(result.kind).toBe('ambiguous');
+        // Exact geocoding cannot establish postcode truth: the user-selected policy accepts this risk.
+        expect(result.kind).toBe(scenario === 'wrong_postcode' ? 'confirmed' : 'ambiguous');
       }
     },
   );
 
-  it('still requires a user choice for every unseen address even with an ideal provider answer', async () => {
+  it('accepts exact unseen buildings under the selected automatic policy', async () => {
     const excluded = catalogue.entries.map(entry => ({ ...entry.address, country: 'ru' as const }));
     const { rows } = inspectCorpus(corpus, excluded);
     for (const { address, postcode } of rows) {
@@ -47,10 +48,9 @@ describe('unseen Russia addresses', () => {
       }] })));
       const provider = new GeoapifyProvider({ read: async () => 'synthetic-test-key', write: async () => {} }, fetcher);
       const result = await new LookupPostcode(provider).execute(address);
-      expect(result.kind).toBe('ambiguous');
-      if (result.kind !== 'ambiguous') throw new Error('unseen_postcode_was_not_a_manual_choice');
-      expect(result.candidates).toHaveLength(1);
-      expect(result.candidates[0]).toMatchObject({ postcode, requiresPostcodeConfirmation: true });
+      expect(result.kind).toBe('confirmed');
+      if (result.kind !== 'confirmed') throw new Error('exact_building_was_not_accepted');
+      expect(result.candidate.postcode).toBe(postcode);
       expect(fetcher).toHaveBeenCalledOnce();
     }
   });

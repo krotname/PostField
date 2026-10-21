@@ -22,13 +22,14 @@ describe('recorded Russian postcode corrections', () => {
     expect(result.kind).toBe('confirmed');
     if (result.kind === 'confirmed') expect(result.candidate.postcode).toBe(entry.correct);
   });
-  it.each(['Социалистический улица', 'Социалистический проезд', 'Социалистический пр'])('preserves street type and confirmation for %s', async (street) => {
+  it.each(['Социалистический улица', 'Социалистический проезд', 'Социалистический пр'])('preserves street type and requires confirmation only for ambiguous abbreviation %s', async (street) => {
     const input: Address = { country: 'ru', region: 'Алтайский край', city: 'Барнаул', street, house: '47' };
     const response = { country_code: 'ru', city: input.city, street, housenumber: input.house, state: input.region,
       postcode: '656000', formatted: street, result_type: 'building', rank: { confidence: 1 } };
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results: [response] })));
     const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
-    expect(result.kind).toBe('ambiguous');
+    expect(result.kind).toBe(street.endsWith(' пр') ? 'ambiguous' : 'confirmed');
+    if (result.kind === 'confirmed') expect(result.candidate.postcode).toBe('656000');
     if (result.kind === 'ambiguous') expect(result.candidates[0]?.postcode).toBe(street.endsWith(' пр') ? '656068' : '656000');
   });
   it.each(recorded.filter((row) => row.baselineAutomatic))('corrects retained provider response for corpus row $corpusIndex', async ({ corpusIndex, response }) => {

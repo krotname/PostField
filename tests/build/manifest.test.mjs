@@ -9,7 +9,7 @@ describe('browser packaging', () => {
     expect(manifest.version).toBe('0.1.0');
     expect(manifest.key).toBeUndefined();
     expect(manifest.update_url).toBeUndefined();
-    expect(manifest.host_permissions).toEqual(['https://api.geoapify.com/*']);
+    expect(manifest.host_permissions).toEqual(['https://*/*', 'http://*/*']);
     expect(manifest.content_scripts).toBeUndefined();
   });
   it('declares real address/key transmission and a new Firefox ID', () => {

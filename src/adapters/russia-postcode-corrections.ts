@@ -37,7 +37,11 @@ export function correctRussianPostcode(address: Address, candidate: AddressCandi
       && sameRegion(address.region?.trim() || candidate.region, entry.address.region)
       && [entry.observedPostcode, entry.correctPostcode].includes(candidate.postcode);
   });
-  if (!correction) return candidate;
+  if (!correction) {
+    // Keep known-problem houses conservative when region or postcode contradicts the catalogue.
+    const known = catalogue.entries.some((entry) => sameHouse(address, { ...entry.address, country: 'ru' }));
+    return known ? { ...candidate, requiresPostcodeConfirmation: true } : candidate;
+  }
   const house: Address = { ...correction.address, country: 'ru' };
   if (!sameHouse(candidate, house) || !sameRegion(candidate.region, correction.address.region)) {
     return candidate.postcode === correction.observedPostcode ? null : candidate;

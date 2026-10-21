@@ -32,29 +32,34 @@ export class MessageService {
       && (sender.url === `${this.extensionBase}popup.html` || sender.url === `${this.extensionBase}options.html`);
   }
 
-  private async context(sender: MessageSender): Promise<{ consent: boolean; allowed: boolean; automatic: boolean }> {
+  private async context(sender: MessageSender): Promise<{ consent: boolean; allowed: boolean; automatic: boolean; lookupAllowed: boolean }> {
     const stored = await this.settings.read();
     const origin = originOf(sender.url);
     const tabId = sender.tab?.id;
     const manual = tabId === undefined ? undefined : this.manualTabs.get(tabId);
-    const automatic = !!origin && stored.enabledOrigins.includes(origin) && await this.browser.permitted(origin);
-    return { consent: stored.consent, automatic, allowed: stored.consent && (automatic
-      || (!!origin && !!manual && manual.origin === origin && manual.expires > this.now())) };
+    const permitted = !!origin && await this.browser.permitted(origin);
+    const automatic = stored.consent && permitted && !(stored.manualOrigins ?? []).includes(origin!) && !!await this.credentials.read();
+    const manualAllowed = !!origin && !!manual && manual.origin === origin && manual.expires > this.now();
+    return { consent: stored.consent, automatic, allowed: stored.consent && (permitted || manualAllowed),
+      lookupAllowed: stored.consent && (automatic || manualAllowed) };
   }
 
   async handle(message: unknown, sender: MessageSender): Promise<Reply> {
     if (typeof message !== 'object' || message === null || sender.id !== this.extensionId) return { ok: false, error: 'forbidden' };
     const request = message as Record<string, unknown>;
-    if (request.type === 'CONTEXT') return { ok: true, data: await this.context(sender) };
+    if (request.type === 'CONTEXT') {
+      const { consent, allowed, automatic } = await this.context(sender);
+      return { ok: true, data: { consent, allowed, automatic } };
+    }
     if (request.type === 'LOOKUP') {
       const context = await this.context(sender);
       if (!context.consent) return { ok: true, data: { kind: 'requires_consent' } };
-      if (!context.allowed || sender.tab?.id === undefined) return { ok: true, data: { kind: 'site_disabled' } };
+      if (!context.lookupAllowed || sender.tab?.id === undefined) return { ok: true, data: { kind: 'site_disabled' } };
       if (!isAddress(request.address)) return { ok: false, error: 'invalid_address' };
       const address: Address = { country: request.address.country, city: request.address.city, street: request.address.street,
         house: request.address.house, ...(request.address.region ? { region: request.address.region } : {}) };
       const result = await this.lookup.execute(address);
-      if (!(await this.context(sender)).allowed) return { ok: true, data: { kind: 'site_disabled' } };
+      if (!(await this.context(sender)).lookupAllowed) return { ok: true, data: { kind: 'site_disabled' } };
       return { ok: true, data: result };
     }
     if (!this.privileged(sender)) return { ok: false, error: 'forbidden' };
@@ -71,20 +76,23 @@ export class MessageService {
         await this.settings.write({ ...settings, consent: request.consent });
         this.lookup.clearCache();
         this.manualTabs.clear();
-        await this.browser.sync(request.consent ? settings.enabledOrigins : []);
+        await this.browser.sync(request.consent ? ['http://*/*', 'https://*/*'] : []);
         return { ok: true, data: { saved: true } };
       }
-      case 'DELETE_KEY': await this.credentials.write(null); this.lookup.clearCache(); return { ok: true, data: { deleted: true } };
+      case 'DELETE_KEY': await this.credentials.write(null); this.lookup.clearCache(); this.manualTabs.clear();
+        await this.browser.sync((await this.settings.read()).consent ? ['http://*/*', 'https://*/*'] : []);
+        return { ok: true, data: { deleted: true } };
       case 'SITE_SET': {
         const origin = originOf(request.origin);
         const tab = await this.browser.activeTab();
         if (!origin || origin !== request.origin || origin !== originOf(tab?.url) || typeof request.enabled !== 'boolean') return { ok: false, error: 'invalid_origin' };
         if (request.enabled && !await this.browser.permitted(origin)) return { ok: false, error: 'permission_required' };
         const settings = await this.settings.read();
-        const origins = settings.enabledOrigins.filter((entry) => entry !== origin);
-        if (request.enabled) origins.push(origin);
-        await this.settings.write({ ...settings, enabledOrigins: origins.slice(0, 100) });
-        await this.browser.sync(settings.consent ? origins : []);
+        const origins = (settings.manualOrigins ?? []).filter((entry) => entry !== origin);
+        if (!request.enabled) origins.push(origin);
+        await this.settings.write({ ...settings, manualOrigins: origins.slice(-100) });
+        this.manualTabs.clear();
+        await this.browser.sync(settings.consent ? ['http://*/*', 'https://*/*'] : []);
         return { ok: true, data: { enabled: request.enabled } };
       }
       case 'MAP':
