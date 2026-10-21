@@ -1,7 +1,9 @@
 import { GeoapifyProvider } from '../adapters/geoapify.js';
+import { PhotonProvider } from '../adapters/photon.js';
+import { DaDataProvider } from '../adapters/dadata.js';
 import { IndexedDbCredentials } from '../adapters/private-storage.js';
 import { LocalSettings } from '../adapters/settings-storage.js';
-import { LookupPostcode } from '../application/lookup-postcode.js';
+import { ProviderLookup } from '../application/provider-lookup.js';
 import { MessageService } from './message-service.js';
 import type { BrowserGateway } from './message-service.js';
 import { extension } from './extension-api.js';
@@ -9,8 +11,9 @@ import { hostPattern } from './host-pattern.js';
 
 const settings = new LocalSettings(extension.storage.local);
 const credentials = new IndexedDbCredentials();
-const lookup = new LookupPostcode(new GeoapifyProvider(credentials));
+const lookup = new ProviderLookup(settings, { photon: new PhotonProvider(), geoapify: new GeoapifyProvider(credentials), dadata: new DaDataProvider(credentials) });
 const gateway: BrowserGateway = {
+  async openOptions() { await extension.runtime.openOptionsPage(); },
   async activeTab() {
     const [tab] = await extension.tabs.query({ active: true, currentWindow: true });
     return tab?.id !== undefined && tab.url ? { id: tab.id, url: tab.url } : null;
@@ -51,8 +54,11 @@ extension.runtime.onMessage.addListener((message: unknown, sender, respond) => {
 });
 async function restore(): Promise<void> {
   const stored = await settings.read();
+  await settings.write(stored);
   await gateway.sync(stored.consent ? ['http://*/*', 'https://*/*'] : []);
 }
-extension.runtime.onInstalled.addListener(() => { void restore().catch(() => {}); });
+extension.runtime.onInstalled.addListener((details) => {
+  void restore().then(async () => { if (details.reason === 'install') await extension.runtime.openOptionsPage(); }).catch(() => {});
+});
 extension.runtime.onStartup.addListener(() => { void restore().catch(() => {}); });
 extension.permissions.onRemoved.addListener(() => { void restore().catch(() => {}); });

@@ -9,8 +9,12 @@ if (!page.__postfieldInstalled) {
   page.__postfieldInstalled = true;
   let controller: PageController | null = null;
   let cancelMapping: (() => void) | null = null;
-  async function configure(): Promise<void> {
+  let revision = 0;
+  async function configure(reset = false): Promise<void> {
+    const current = ++revision;
+    if (reset) { cancelMapping?.(); controller?.stop(); controller = null; }
     const reply: Reply = await extension.runtime.sendMessage({ type: 'CONTEXT' });
+    if (revision !== current) return;
     const context = reply.ok ? reply.data as { allowed?: boolean; automatic?: boolean } : null;
     if (!context?.allowed) { cancelMapping?.(); controller?.stop(); controller = null; return; }
     controller ??= new PageController(document, async (address) => {
@@ -19,7 +23,7 @@ if (!page.__postfieldInstalled) {
       const result = response.data as { kind?: string };
       if (['confirmed', 'ambiguous', 'not_found', 'incomplete', 'unsupported', 'error'].includes(result.kind ?? '')) return response.data as LookupResult;
       return { kind: 'error', code: 'service' };
-    });
+    }, () => { void extension.runtime.sendMessage({ type: 'OPEN_OPTIONS' }).catch(() => {}); });
     controller.setAutomatic(context.automatic === true);
   }
   extension.runtime.onMessage.addListener((message: unknown, _sender, respond) => {
@@ -36,7 +40,7 @@ if (!page.__postfieldInstalled) {
       }, () => respond({ started: false }));
       return true;
     }
-    if (message.type === 'CONFIG_CHANGED') { void configure().catch(() => {}); }
+    if (message.type === 'CONFIG_CHANGED') { void configure(true).catch(() => {}); }
     return false;
   });
   void configure().catch(() => {});
