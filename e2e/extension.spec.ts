@@ -2,6 +2,7 @@ import { test, expect, chromium } from '@playwright/test';
 import { mkdtemp, readFile, writeFile, cp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { openOptions } from './options-page.js';
 
 for (const scenario of [
   { name: 'manual', city: 'Москва', street: 'Тверская улица', house: '13', region: 'Москва',
@@ -32,8 +33,7 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
   try {
     const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
     const id = new URL(worker.url()).hostname;
-    const options = await context.newPage();
-    await options.goto(`chrome-extension://${id}/options.html`);
+    const options = await openOptions(context, id);
     await options.locator('#provider-geoapify').check();
     await expect(options.locator('#key-state')).toContainText('Ключ ещё не добавлен.');
     await options.locator('#key').fill('synthetic-key');
@@ -74,8 +74,7 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     await form.screenshot({ path: `output/playwright/checkout-${scenario.name}.png`, fullPage: true });
     await context.close();
     context = await launch();
-    const reopened = await context.newPage();
-    await reopened.goto(`chrome-extension://${id}/options.html`);
+    const reopened = await openOptions(context, id);
     await expect(reopened.locator('#key-state')).toContainText('Ключ сохранён');
     await expect(reopened.locator('#consent')).toBeChecked();
     const stored = await reopened.evaluate(async () => (await chrome.runtime.sendMessage({ type: 'STATE' })).data);

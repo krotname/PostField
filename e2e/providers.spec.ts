@@ -2,6 +2,7 @@ import { test, expect, chromium } from '@playwright/test';
 import { mkdtemp, readFile, writeFile, cp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { openOptions } from './options-page.js';
 
 for (const providerId of ['photon', 'geoapify', 'dadata'] as const) {
   test(`${providerId}: setup, exact house, source isolation, keyboard modes and restart`, async () => {
@@ -23,8 +24,7 @@ for (const providerId of ['photon', 'geoapify', 'dadata'] as const) {
     try {
       const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
       const id = new URL(worker.url()).hostname;
-      const options = await context.newPage();
-      await options.goto(`chrome-extension://${id}/options.html`);
+      const options = await openOptions(context, id);
       await expect(options.locator('#provider-photon')).toBeChecked();
       await expect(options.locator('#consent')).toBeChecked();
       if (providerId !== 'photon') {
@@ -61,8 +61,7 @@ for (const providerId of ['photon', 'geoapify', 'dadata'] as const) {
       await expect(form.locator('[autocomplete=postal-code]')).toHaveValue('654321');
       await context.close();
       context = await launch();
-      const restored = await context.newPage();
-      await restored.goto(`chrome-extension://${id}/options.html`);
+      const restored = await openOptions(context, id);
       const state = await restored.evaluate(async () => (await chrome.runtime.sendMessage({ type: 'STATE' })).data);
       expect(state).toMatchObject({ providerId, globalMode: 'manual', consent: true, ready: true });
       expect(JSON.stringify(state)).not.toContain('synthetic-');
