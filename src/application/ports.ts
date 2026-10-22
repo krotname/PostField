@@ -1,5 +1,11 @@
 import type { Address, AddressCandidate } from '../core/address.js';
 import type { FillMode, KeyProviderId, ProviderId } from '../core/providers.js';
+import type { FavoriteAddress } from '../core/favorites.js';
+
+export interface FavoritesStore {
+  read(): Promise<readonly FavoriteAddress[]>;
+  write(favorites: readonly FavoriteAddress[]): Promise<void>;
+}
 
 export interface AddressProvider {
   resolve(address: Address, signal?: AbortSignal): Promise<readonly AddressCandidate[]>;

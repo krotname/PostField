@@ -1,0 +1,21 @@
+{
+  "status": "insufficient",
+  "providerId": "geoapify",
+  "measurement": "live",
+  "sourceVersion": "0.3.0",
+  "sourceRevision": "f0677eb27e444a740f105c9c4c0ae393a1e3fc3b",
+  "startedAt": "2026-10-22T08:33:13.181Z",
+  "checkedAt": "2026-10-22T08:47:51.961Z",
+  "cases": 100,
+  "uniqueCases": 100,
+  "regions": 40,
+  "largestRegionShare": 0.09,
+  "attempted": 100,
+  "skipped": 0,
+  "correctAutomatic": 1,
+  "wrongAutomatic": 2,
+  "confirmedRate": 0.01,
+  "unresolved": 97,
+  "errors": 83,
+  "errorCounts": { "timeout": 79, "offline": 4 }
+}

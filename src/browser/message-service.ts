@@ -1,6 +1,8 @@
 import { isAddress } from '../core/address.js';
 import type { Address, LookupResult } from '../core/address.js';
-import type { CredentialStore, SettingsStore } from '../application/ports.js';
+import type { CredentialStore, SettingsStore, FavoritesStore } from '../application/ports.js';
+import { parseFavorite } from '../core/favorites.js';
+import { addressKey } from '../core/address-policy.js';
 import type { ProviderId } from '../core/providers.js';
 import { isFillMode, isProviderId } from '../core/providers.js';
 import { parseDaDataCredentials } from '../adapters/dadata.js';
@@ -31,7 +33,7 @@ export class MessageService {
   constructor(private readonly settings: SettingsStore, private readonly credentials: CredentialStore,
     private readonly lookup: LookupPort, private readonly browser: BrowserGateway, private readonly extensionBase: string,
     private readonly extensionId: string,
-    private readonly now: () => number = Date.now) {}
+    private readonly now: () => number = Date.now, private readonly favorites?: FavoritesStore) {}
 
   private privileged(sender: MessageSender): boolean {
     return sender.id === this.extensionId
@@ -47,6 +49,7 @@ export class MessageService {
   }
 
   private async ready(providerId: ProviderId): Promise<boolean> {
+    if ((await this.favorites?.read())?.length) return true;
     if (providerId === 'photon') return true;
     const saved = await this.credentials.read(providerId);
     if (providerId === 'geoapify') return !!saved;
@@ -93,15 +96,32 @@ export class MessageService {
     }
     if (!this.privileged(sender)) return { ok: false, error: 'forbidden' };
     switch (request.type) {
+      case 'FAVORITE_SAVE': {
+        const favorite = parseFavorite(request.favorite);
+        if (!favorite || !this.favorites) return { ok: false, error: 'invalid_favorite' };
+        const previous = await this.favorites.read();
+        await this.favorites.write([...previous.filter((item) => addressKey(item.address) !== addressKey(favorite.address)), favorite]);
+        this.invalidate();
+        await this.browser.sync((await this.settings.read()).consent ? ['http://*/*', 'https://*/*'] : []);
+        return { ok: true, data: { saved: true } };
+      }
+      case 'FAVORITE_DELETE': {
+        if (typeof request.key !== 'string' || !this.favorites) return { ok: false, error: 'invalid_favorite' };
+        await this.favorites.write((await this.favorites.read()).filter((item) => addressKey(item.address) !== request.key));
+        this.invalidate();
+        await this.browser.sync((await this.settings.read()).consent ? ['http://*/*', 'https://*/*'] : []);
+        return { ok: true, data: { deleted: true } };
+      }
       case 'STATE': {
         const settings = await this.settings.read();
         const tab = await this.browser.activeTab();
         const geoapify = !!await this.credentials.read('geoapify');
         const data = parseDaDataCredentials(await this.credentials.read('dadata'));
         const providerId = settings.providerId ?? 'geoapify';
-        return { ok: true, data: { ...settings, providerId, globalMode: settings.globalMode ?? 'auto',
+        const favorites = await this.favorites?.read() ?? [];
+        return { ok: true, data: { ...settings, favorites, providerId, globalMode: settings.globalMode ?? 'auto',
           hasKey: providerId === 'geoapify' ? geoapify : providerId === 'dadata' ? !!data.token && !!data.secret : false,
-          ready: providerId === 'photon' || (providerId === 'geoapify' ? geoapify : !!data.token && !!data.secret),
+          ready: favorites.length > 0 || providerId === 'photon' || (providerId === 'geoapify' ? geoapify : !!data.token && !!data.secret),
           keys: { geoapify, dadata: !!data.token && !!data.secret }, origin: originOf(tab?.url) } };
       }
       case 'SAVE': {

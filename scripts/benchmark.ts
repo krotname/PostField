@@ -1,24 +1,16 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { GeoapifyProvider } from '../src/adapters/geoapify.js';
-import { LookupPostcode } from '../src/application/lookup-postcode.js';
-import { inspectCorpus } from './corpus.js';
-import catalogue from '../src/data/russia-postcode-corrections.json';
-const excluded = catalogue.entries.map((entry) => ({ ...entry.address, country: 'ru' as const }));
-const { rows: corpus, eligible, uniqueCases, regions, largestRegionShare } = inspectCorpus(
-  JSON.parse(await readFile(process.env.CORPUS_PATH ?? 'tests/fixtures/russia-corpus.json', 'utf8')), excluded);
-const key = process.env.GEOAPIFY_API_KEY;
-if (!key) throw new Error('GEOAPIFY_API_KEY_required');
-const provider = new GeoapifyProvider({ read: async () => key, write: async () => { throw new Error('readonly_benchmark'); } });
-const lookup = new LookupPostcode(provider);
-let correct = 0; let wrongAutomatic = 0; let unresolved = 0; let errors = 0;
-for (const row of corpus) {
-  const result = await lookup.execute(row.address);
-  if (result.kind === 'confirmed') { if (result.candidate.postcode === row.postcode) correct++; else wrongAutomatic++; }
-  else { unresolved++; if (result.kind === 'error') errors++; }
-}
-const confirmedRate = correct / Math.max(1, corpus.length);
-const report = { status: wrongAutomatic === 0 && errors === 0 && eligible && confirmedRate >= 0.9 ? 'passed' : 'insufficient',
-  cases: corpus.length, uniqueCases, regions, largestRegionShare, wrongAutomatic, confirmedRate, unresolved, errors, checkedAt: new Date().toISOString() };
+import { execFileSync } from 'node:child_process';
+import { runRussiaBenchmark } from './russia-benchmark.js';
+
+const pkg = JSON.parse(await readFile('package.json', 'utf8'));
+const paths = ['src', 'scripts', 'extension', 'tests/fixtures', 'package.json', 'package-lock.json', 'tsconfig.json'];
+const dirty = execFileSync('git', ['status', '--porcelain', '--', ...paths], { encoding: 'utf8' });
+if (dirty.trim()) throw new Error('benchmark_requires_clean_implementation');
+const sourceRevision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+const report = await runRussiaBenchmark(JSON.parse(await readFile(process.env.CORPUS_PATH
+  ?? 'tests/fixtures/russia-independent-corpus.json', 'utf8')), {
+  env: process.env, sourceVersion: pkg.version, sourceRevision,
+});
 if (process.env.REPORT_PATH) await writeFile(process.env.REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
 console.log(JSON.stringify(report));
 if (report.status !== 'passed') process.exitCode = 1;
