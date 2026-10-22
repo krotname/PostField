@@ -156,4 +156,4 @@ RED избранных: [CI 39754122039](https://github.com/krotname/PostField/a
 
 ## Firefox Android 0.5.0
 
-22.10.2026, ADLER-WHITE-W1, Node 26.3.0: RED новой проверки совместимости — gecko_android отсутствует (ERR_ASSERTION, actual undefined). Добавлена регрессия в tests/build/manifest.test.mjs. Мобильная панель сопоставления дополнительно проверяет resize видимой области, сенсорную отмену и удаление слушателей. GREEN полного набора фиксируется после серверного CI.
+22.10.2026, ADLER-WHITE-W1, Node 26.3.0: RED новой проверки совместимости — gecko_android отсутствует (ERR_ASSERTION, actual undefined). Добавлена регрессия в tests/build/manifest.test.mjs. Мобильная панель сопоставления дополнительно проверяет resize видимой области, сенсорную отмену и удаление слушателей. GREEN: CI main b54e2a8ee12c1832e508a18d9af6295c0327e256, run 39844915705, success. Пройдены typecheck, boundaries, coverage tests, build, check:packages, npm audit high, addons-linter warnings-as-errors и Playwright e2e: https://github.com/krotname/PostField/actions/runs/39844915705 .
