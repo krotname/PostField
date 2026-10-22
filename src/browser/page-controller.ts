@@ -59,8 +59,7 @@ export class PageController {
       if (target === binding.group.postcode) {
         binding.session.manualPostcodeChanged();
         binding.ui.replaceChildren();
-      } else if (Object.values(binding.group.fields).includes(target as AddressField)) {
-        binding.session.addressChanged();
+      } else if (Object.values(binding.group.fields).includes(target as AddressField) && binding.session.addressChanged()) {
         binding.ui.replaceChildren();
         if (this.automatic) this.schedule(binding);
       }

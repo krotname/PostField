@@ -12,6 +12,19 @@ function form(): void {
 const settleMutations = (): Promise<void> => new Promise((done) => setTimeout(done, 70));
 
 describe('page controller', () => {
+  it('preserves a choice when leaving an address field emits change for the same value', async () => {
+    form();
+    if (exact.kind !== 'confirmed') throw new Error('fixture');
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [exact.candidate] }));
+    try {
+      await controller.fill();
+      const button = document.querySelector<HTMLButtonElement>('[data-postfield-choice]')!;
+      document.querySelector<HTMLInputElement>('[autocomplete="address-line1"]')!.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(button.isConnected).toBe(true);
+      button.click();
+      expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')!.value).toBe('125009');
+    } finally { controller.stop(); }
+  });
   it.each(['ui', 'field', 'container'] as const)('paces sustained hostile %s replacements, yields to timers and stops', async (replacement) => {
     vi.useFakeTimers();
     form();

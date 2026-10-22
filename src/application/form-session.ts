@@ -13,15 +13,16 @@ export class FormSession {
     private readonly readAddress: () => Address | null, private readonly readPostcode: () => string,
     private readonly write: (value: string) => void) {}
 
-  addressChanged(): void {
+  addressChanged(): boolean {
     const address = this.readAddress();
     const key = address ? addressKey(address) : null;
-    if (key === this.lastKey) return;
+    if (key === this.lastKey) return false;
     this.revision++;
     this.choices = [];
     if (this.ownedValue !== null && this.readPostcode() === this.ownedValue) this.write('');
     this.ownedValue = null;
     this.lastKey = key;
+    return true;
   }
 
   manualPostcodeChanged(): void { this.revision++; this.ownedValue = null; this.choices = []; }
