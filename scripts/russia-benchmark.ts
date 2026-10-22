@@ -6,6 +6,7 @@ import { DaDataProvider } from '../src/adapters/dadata.js';
 import { isProviderId } from '../src/core/providers.js';
 import { inspectCorpus } from './corpus.js';
 import catalogue from '../src/data/russia-postcode-corrections.json';
+import independentCorpus from '../tests/fixtures/russia-independent-corpus.json';
 
 interface BenchmarkOptions {
   readonly env: Readonly<Record<string, string | undefined>>;
@@ -21,6 +22,7 @@ export async function runRussiaBenchmark(value: unknown, options: BenchmarkOptio
   if (!isProviderId(providerId)) throw new Error('invalid_benchmark_provider');
   const excluded = catalogue.entries.map((entry) => ({ ...entry.address, country: 'ru' as const }));
   const { rows, eligible, uniqueCases, regions, largestRegionShare } = inspectCorpus(value, excluded);
+  const corpusId = JSON.stringify(rows) === JSON.stringify(independentCorpus) ? 'russia-independent-v1' : 'custom';
   const fetcher = options.fetcher ?? fetch;
   let provider: AddressProvider;
   const credentials = (key: string): CredentialStore => ({ read: async () => key,
@@ -57,7 +59,7 @@ export async function runRussiaBenchmark(value: unknown, options: BenchmarkOptio
   unresolved += skipped;
   const confirmedRate = correctAutomatic / Math.max(1, rows.length);
   return { status: eligible && wrongAutomatic === 0 && errors === 0 && skipped === 0 && confirmedRate >= 0.9 ? 'passed' : 'insufficient',
-    providerId, measurement: 'live', sourceVersion, sourceRevision, startedAt, checkedAt: new Date().toISOString(),
+    providerId, corpusId, measurement: 'live', sourceVersion, sourceRevision, startedAt, checkedAt: new Date().toISOString(),
     cases: rows.length, uniqueCases, regions, largestRegionShare, attempted, skipped,
     correctAutomatic, wrongAutomatic, confirmedRate, unresolved, errors, errorCounts };
 }

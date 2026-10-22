@@ -1,6 +1,7 @@
 import { expect, it, vi } from 'vitest';
 import { runRussiaBenchmark } from '../../scripts/russia-benchmark.js';
 import historical from '../fixtures/russia-corpus.json';
+import independent from '../fixtures/russia-independent-corpus.json';
 
 const row = { address: { country: 'ru', city: 'Тестоград', street: 'Тестовая улица', house: '13', region: 'Тестовая область' },
   postcode: '123456', source: 'https://university.test/contact' };
@@ -12,7 +13,7 @@ it('measures the default Photon through the production lookup without a key', as
   const fetcher = vi.fn(async (_url: URL | RequestInfo, _init?: RequestInit) => Response.json(photon));
   const report = await runRussiaBenchmark([row], { ...metadata, env: {}, fetcher });
   expect(report).toMatchObject({ providerId: 'photon', measurement: 'live', ...metadata,
-    cases: 1, correctAutomatic: 1, wrongAutomatic: 0, unresolved: 0, errors: 0, status: 'insufficient' });
+    corpusId: 'custom', cases: 1, correctAutomatic: 1, wrongAutomatic: 0, unresolved: 0, errors: 0, status: 'insufficient' });
   expect(String(fetcher.mock.calls[0]?.[0])).toContain('photon.komoot.io');
   expect(JSON.stringify(report)).not.toContain('Тестоград');
   expect(JSON.stringify(report)).not.toContain('123456');
@@ -53,5 +54,13 @@ it('stops on authorization or quota errors without a fallback or further paid ca
   const other = { ...row, address: { ...row.address, house: '14' } };
   expect(await runRussiaBenchmark([row, other], { ...metadata, env: { POSTFIELD_PROVIDER: 'geoapify', GEOAPIFY_API_KEY: 'test-key' }, fetcher }))
     .toMatchObject({ cases: 2, attempted: 1, skipped: 1, errors: 1, unresolved: 2, status: 'insufficient', errorCounts: { unauthorized: 1 } });
+  expect(fetcher).toHaveBeenCalledOnce();
+});
+
+it('identifies the frozen independent corpus even when authorization stops measurement', async () => {
+  const fetcher = vi.fn(async () => new Response('', { status: 401 }));
+  expect(await runRussiaBenchmark(independent, { ...metadata,
+    env: { POSTFIELD_PROVIDER: 'geoapify', GEOAPIFY_API_KEY: 'test-key' }, fetcher }))
+    .toMatchObject({ corpusId: 'russia-independent-v1', cases: 100, attempted: 1, skipped: 99, status: 'insufficient' });
   expect(fetcher).toHaveBeenCalledOnce();
 });

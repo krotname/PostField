@@ -1,0 +1,21 @@
+{
+  "status": "insufficient",
+  "providerId": "photon",
+  "measurement": "live",
+  "sourceVersion": "0.3.0",
+  "sourceRevision": "f0677eb27e444a740f105c9c4c0ae393a1e3fc3b",
+  "startedAt": "2026-10-22T08:31:02.936Z",
+  "checkedAt": "2026-10-22T08:34:13.003Z",
+  "cases": 100,
+  "uniqueCases": 100,
+  "regions": 40,
+  "largestRegionShare": 0.09,
+  "attempted": 100,
+  "skipped": 0,
+  "correctAutomatic": 24,
+  "wrongAutomatic": 17,
+  "confirmedRate": 0.24,
+  "unresolved": 59,
+  "errors": 10,
+  "errorCounts": { "timeout": 10 }
+}

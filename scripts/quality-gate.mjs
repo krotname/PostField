@@ -6,7 +6,7 @@ export function hasRussiaEvidence(value, expectedVersion) {
   const revision = value.reports[0]?.sourceRevision;
   return typeof revision === 'string' && /^[a-f0-9]{40}$/u.test(revision)
     && providers.every((providerId) => value.reports.filter((report) => report?.providerId === providerId).length === 1)
-    && value.reports.every((report) => report.status === 'passed' && report.measurement === 'live'
+    && value.reports.every((report) => report.status === 'passed' && report.measurement === 'live' && report.corpusId === 'russia-independent-v1'
       && report.sourceVersion === expectedVersion && report.sourceRevision === revision
       && Number.isFinite(Date.parse(report.startedAt)) && Number.isFinite(Date.parse(report.checkedAt))
       && Date.parse(report.checkedAt) >= Date.parse(report.startedAt)
