@@ -13,7 +13,8 @@ export function manifestFor(browser, version) {
     ...(browser === 'firefox' ? {
       background: { scripts: ['background.js'] },
       browser_specific_settings: { gecko: { id: 'postfield@krot.name', strict_min_version: '142.0',
-        data_collection_permissions: { required: ['personallyIdentifyingInfo', 'authenticationInfo'] } } },
+        data_collection_permissions: { required: ['personallyIdentifyingInfo', 'authenticationInfo'] } },
+        gecko_android: { strict_min_version: '142.0' } },
     } : { minimum_chrome_version: '120', background: { service_worker: 'background.js' } }),
   };
 }

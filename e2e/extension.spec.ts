@@ -42,6 +42,16 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     await expect(options.locator('#status')).toHaveText('Настройки сохранены.');
     await expect(options.locator('#consent')).toBeChecked();
     await expect(options.locator('#key')).toHaveValue('');
+    const popup = await context.newPage();
+    const extensionId = new URL(worker.url()).host;
+    for (const width of [320, 360, 430]) {
+      await popup.setViewportSize({ width, height: 640 });
+      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      await expect(popup.locator('body')).toBeVisible();
+      expect(await popup.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      expect(await popup.locator('button').first().evaluate((button) => button.getBoundingClientRect().height)).toBeGreaterThanOrEqual(44);
+    }
+    await popup.close();
     const form = await context.newPage();
     await form.goto('http://127.0.0.1:4173');
     await form.locator('[autocomplete=address-level2]').fill(scenario.city);

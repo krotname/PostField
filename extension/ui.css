@@ -11,3 +11,6 @@ section{border-top:1px solid #dbe5ed;padding-top:23px;margin-top:26px}section p{
 
 #favorite-fields { border: 1px solid #ccdce5; border-radius: 8px; padding: 16px; }
 #favorite-fields > input { display: block; width: 100%; box-sizing: border-box; padding: 9px; margin: 5px 0 12px; border: 1px solid #8ba4b7; border-radius: 5px; font: inherit; }
+
+.popup{max-width:100vw}button,.segmented label{min-height:44px;touch-action:manipulation}input{font-size:16px}
+@media(max-width:360px){.popup main{padding:16px}.mode-cards{grid-template-columns:1fr}.brand{flex-wrap:wrap}.source-badge{margin-left:0}}

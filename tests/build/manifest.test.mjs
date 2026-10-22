@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { manifestFor } from '../../scripts/manifest.mjs';
 
 describe('browser packaging', () => {
+  it('supports Android without changing the existing Firefox identity', () => {
+    const manifest = manifestFor('firefox', '0.5.0');
+    expect(manifest.browser_specific_settings.gecko.id).toBe('postfield@krot.name');
+    expect(manifest.browser_specific_settings.gecko_android).toEqual({ strict_min_version: '142.0' });
+    expect(manifest.background.service_worker).toBeUndefined();
+  });
   it.each(['chrome', 'opera', 'edge', 'firefox'])('declares the packaged store language for %s', (browser) => {
     const manifest = manifestFor(browser, '0.4.1');
     expect(manifest.default_locale).toBe('ru');
