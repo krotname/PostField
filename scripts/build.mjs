@@ -37,7 +37,9 @@ async function archive(name, role, files) {
 for (const browser of BROWSERS) {
   const directory = join(dist, browser);
   await mkdir(join(directory, 'icons'), { recursive: true });
+  await mkdir(join(directory, '_locales', 'ru'), { recursive: true });
   const files = new Map([...scripts, ...icons]);
+  files.set('_locales/ru/messages.json', await readFile(join(root, 'extension', '_locales', 'ru', 'messages.json')));
   files.set('manifest.json', Buffer.from(JSON.stringify(manifestFor(browser, pkg.version), null, 2)));
   for (const name of ['popup.html', 'options.html', 'ui.css']) files.set(name, await readFile(join(root, 'extension', name)));
   for (const [name, bytes] of files) await writeFile(join(directory, name), bytes);
