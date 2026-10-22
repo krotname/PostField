@@ -1,23 +1,27 @@
 # PostField — выпуск и магазины
 
-## 22.10.2026 — стабильный выпуск 0.4.0, исправление пакетов 0.4.1
+## 22.10.2026 — стабильный выпуск 0.4.1 и четыре подачи на модерацию
 
 [Issue #5](https://github.com/krotname/PostField/issues/5): владелец разрешил текущую автоподстановку с предупреждением, избранные адреса с необязательным подтверждением и диагностические живые метрики без блокировки выпуска.
 
-[PR #17](https://github.com/krotname/PostField/pull/17) объединён в main aa96999beb01e63d439fb61b2f954aee6a17fc39. [CI main](https://github.com/krotname/PostField/actions/runs/39758480801) успешен, включая семь E2E. [Стабильный неизменяемый выпуск 0.4.0](https://github.com/krotname/PostField/releases/tag/v0.4.0) опубликован с четырьмя ZIP и исходниками. Ошибка workflow доставки не отменяет доказанную публикацию GitHub Release.
+Функциональность объединена в [PR #17](https://github.com/krotname/PostField/pull/17); локализация пакетов исправлена в [PR #22](https://github.com/krotname/PostField/pull/22). Source SHA 0.4.1: `5a288b82c17d2673debef228f638b173f52490af`. [CI этого main SHA](https://github.com/krotname/PostField/actions/runs/39763576213) успешен. [Стабильный неизменяемый выпуск 0.4.1](https://github.com/krotname/PostField/releases/tag/v0.4.1) опубликован с четырьмя ZIP и исходниками; 0.4.0 сохранён без замены архивов.
 
-Последние подтверждённые состояния магазинов:
-
-| Магазин | Версия и состояние | Объект и следующий шаг |
+| Магазин | Последнее подтверждённое состояние 0.4.1 | Объект и доказательство |
 |---|---|---|
-| Chrome | 0.4.0 загружен, черновик | ekdhmojbkpdgpgeipchaifhoedkgpjgo; publisher 1d5e12f2-4a39-43f1-ae0e-855c4ae6fd07. Регистрация оплачена ранее. Декларации privacy сохранены и перечитаны. Завершить карточку и подать; [журнал #20](https://github.com/krotname/PostField/issues/20). |
-| Firefox | 0.4.0 Awaiting Review | [postfield](https://addons.mozilla.org/en-US/developers/addon/postfield/versions), GUID postfield@krot.name. 0 ошибок и 0 предупреждений, исходники и custom license сохранены. Публичный автор krotname; [журнал #19](https://github.com/krotname/PostField/issues/19). |
-| Edge | 0.4.0 загружен, подача rejected | product a8f939c3-649a-476d-a638-660e09c8b742, store 0RDCKDVTJVP6. Пакет не объявляет языки: languageCodes/supportedLocales пусты, listings required. Остальные модули ready. Исправить локаль в 0.4.1 и завершить подачу; [журнал #18](https://github.com/krotname/PostField/issues/18). |
-| Opera | 0.4.0 загружен, черновик | package 307854, slug postfield-pochtovyi-indeks. Заполнить описание и подать через кабинет; HTTP API-контракт не подтверждён; [журнал #21](https://github.com/krotname/PostField/issues/21). |
+| Chrome | Ожидает рассмотрения | [Кабинет](https://chrome.google.com/webstore/devconsole/1d5e12f2-4a39-43f1-ae0e-855c4ae6fd07/ekdhmojbkpdgpgeipchaifhoedkgpjgo/edit/status); item ekdhmojbkpdgpgeipchaifhoedkgpjgo. Финальная UI-подача принята; [журнал #26](https://github.com/krotname/PostField/issues/26). |
+| Firefox | Awaiting Review | [Версия 6607828](https://addons.mozilla.org/en-US/developers/addon/postfield/versions/6607828); GUID postfield@krot.name. 0 ошибок и 0 предупреждений; исходники, custom license, release notes и инструкции модератору сохранены; [журнал #25](https://github.com/krotname/PostField/issues/25). |
+| Edge | In review | [Кабинет](https://partner.microsoft.com/en-us/dashboard/microsoftedge/a8f939c3-649a-476d-a638-660e09c8b742/packages/dashboard); store 0RDCKDVTJVP6. Russian listing Complete, certification notes сохранены, UI Publish принят; [журнал #24](https://github.com/krotname/PostField/issues/24). |
+| Opera | Awaiting moderation | [Версия](https://addons.opera.com/developer/package/307854/version/0.4.1?language=ru); package 307854. Описание, исходники и медиа сохранены. Conversation: v0.4.1 was submitted, 22.10.2026 10:48:30 UTC; [журнал #23](https://github.com/krotname/PostField/issues/23). |
 
-0.4.1 добавляет `default_locale: ru` и каталог сообщений во все пакеты. Изменённый архив выпускается новой версией; 0.4.0 не заменяется. Публичная доступность в магазинах ещё не подтверждена. После публикации требуются подпись и обычная установка магазинной версии; GitHub ZIP этого не доказывает.
+Предыдущая API-попытка Edge `bb2d8913-ce40-4b81-80a4-f4db6ca298c8` отклонена; её журнал не подменяет более позднюю успешную UI-подачу. Opera HTTP API остаётся неподтверждённым: ручная подача не доказывает работу адаптера. Ошибки автоматической доставки Chrome/Edge/Opera не отменяют последующее подтверждение в кабинетах; перед повтором требуется readback, чтобы не дублировать подачу.
 
-Качество: [живой независимый корпус и результаты](../evidence/RUSSIA_QUALITY.md). Цель ≥90% без неверных автоматических ответов остаётся диагностической; прежний gate стабильный выпуск не блокирует. Секреты только в environment соответствующего магазина, исходники и PR их не получают.
+Следующий этап — решения магазинов, проверка публичных карточек 0.4.1 и обычной установки подписанной магазином версии. Публичная доступность пока не подтверждена; issue #5 остаётся открытой. Ответы и новые статусы сохраняются здесь, в журналах и в единой матрице приложений и сторов. Матрица APP-013 обновлена: один опубликованный канал GitHub, четыре магазина на модерации.
+
+0.4.1 включает `default_locale: ru` и каталог сообщений во все пакеты; Edge подтвердил непустой languageCodes. Качество: [живой независимый корпус и результаты](../evidence/RUSSIA_QUALITY.md). Цель ≥90% без неверных автоматических ответов остаётся диагностической; прежний gate выпуск не блокирует. Секреты находятся только в environments магазинов.
+
+## История выпуска 0.4.0
+
+[CI main 0.4.0](https://github.com/krotname/PostField/actions/runs/39758480801), включая семь E2E, успешен. [Выпуск 0.4.0](https://github.com/krotname/PostField/releases/tag/v0.4.0) опубликован. Его попытки доставки: [Edge #18](https://github.com/krotname/PostField/issues/18), [Firefox #19](https://github.com/krotname/PostField/issues/19), [Chrome #20](https://github.com/krotname/PostField/issues/20), [Opera #21](https://github.com/krotname/PostField/issues/21); текущие подачи заменены 0.4.1.
 
 ## История
 

@@ -47,12 +47,12 @@ GitHub ZIP не подписан магазином. CWS, Opera, Edge и AMO п�
 
 | Площадка | Адаптер | Identity продукта | Состояние настройки |
 |---|---|---|---|
-| Chrome | src/delivery/stores.ts / ChromeStore | CWS item не назначен | OAuth настроен; регистрация издателя не завершена |
-| Opera | src/delivery/stores.ts / OperaStore | Новый package, ещё не назначен | HTTP auth и ответы загрузки требуют проверки |
-| Edge | src/delivery/stores.ts / EdgeStore | a8f939c3-649a-476d-a638-660e09c8b742 | InDraft; API 1.1 настроен, первая публикация не выполнена |
-| Mozilla | src/delivery/stores.ts / MozillaStore | postfield@krot.name | JWT настроен; listed карточка и custom license отсутствуют |
+| Chrome | src/delivery/stores.ts / ChromeStore | ekdhmojbkpdgpgeipchaifhoedkgpjgo | 0.4.1 — Ожидает рассмотрения; [журнал #26](https://github.com/krotname/PostField/issues/26) |
+| Opera | src/delivery/stores.ts / OperaStore | package 307854, postfield-pochtovyi-indeks | 0.4.1 — Awaiting moderation через кабинет; HTTP API не подтверждён; [журнал #23](https://github.com/krotname/PostField/issues/23) |
+| Edge | src/delivery/stores.ts / EdgeStore | a8f939c3-649a-476d-a638-660e09c8b742 | 0.4.1 — In review после подачи через кабинет; [журнал #24](https://github.com/krotname/PostField/issues/24) |
+| Mozilla | src/delivery/stores.ts / MozillaStore | postfield@krot.name, submission 6607828 | 0.4.1 — Awaiting Review; исходники и custom license сохранены; [журнал #25](https://github.com/krotname/PostField/issues/25) |
 
-Целевой публичный издатель — Kreout. Подтверждённая 14.10.2026 настройка: CWS v2 OAuth refresh проверен HTTP200; publisher/item IDs PostField не были созданы. Общая матрица от 21.10.2026 подтверждает оплату взноса Chrome 19.10.2026 для другого расширения; повторная оплата не требуется. Текущий вход проверяется отдельно. Edge — Kreout, publisher13844550, ровно один [новый draft](https://partner.microsoft.com/en-us/dashboard/microsoftedge/a8f939c3-649a-476d-a638-660e09c8b742/packages/dashboard), store ID0RDCKDVTJVP6, extension IDlbeapkbfgkokedeepphbphjahopnlaok. API key API1.1 истекает 25.12.2026; последующий Update API требует первой публикации через Partner Center. AMO — текущее публичное имя krotname; JWT60s проверен HTTP200, PostField GUID отсутствует (404). Переименование общего профиля меняет автора существующего дополнения и требует решения владельца. Opera HTTP auth остаётся неподтверждённой; старый продукт не изменяется.
+Подтверждено 22.10.2026: Chrome — аккаунт Kreout@gmail.com, publisher 1d5e12f2-4a39-43f1-ae0e-855c4ae6fd07; повторный взнос не потребовался. Edge — аккаунт kreout@live.com, издатель Kreout, store ID 0RDCKDVTJVP6, extension ID lbeapkbfgkokedeepphbphjahopnlaok. AMO — аккаунт sex@krot.name, публичный автор krotname, slug postfield. Opera — package 307854, extension ID dgnekoeonfoimmialapdahohhoieeedb; логин и публичное имя отдельно не подтверждены. Во всех четырёх кабинетах подача 0.4.1 принята на модерацию. Публичная доступность и установка магазинной версии остаются неподтверждёнными.
 
 Environments chrome/edge/firefox/opera созданы с main и v*; соответствующие OAuth/API/JWT secrets сохранены без публикации значений. Это настройка доступа, не upload/submission. [Журнал настройки](https://github.com/krotname/PostField/issues/5). Production доставка предназначена для стабильного релиза; первоначальное языковое покрытие ru/en, функция РФ. Неизвестный ID блокирует доставку; публичные URL карточек до создания не придумываются.
 
@@ -60,7 +60,7 @@ Environments chrome/edge/firefox/opera созданы с main и v*; соотв�
 
 ## Метаданные и ограничения
 
-Канонический текст: README.md, docs/PRIVACY.md, docs/DELIVERY.md, site/ и docs/releases/0.4.0.md. Стабильный GitHub Release 0.4.0 опубликован 22.10.2026; текущие состояния магазинов находятся в docs/release/CHECKPOINT.md. Лицензия: LICENSE; сторонние лицензии сохраняются. Screenshots smoke доступны как CI artifacts и перед карточкой требуют соответствия окончательному интерфейсу.
+Канонический текст: README.md, docs/PRIVACY.md, docs/DELIVERY.md, site/ и docs/releases/0.4.1.md. Стабильный GitHub Release 0.4.1 опубликован 22.10.2026; текущие состояния магазинов находятся в docs/release/CHECKPOINT.md. Лицензия: LICENSE; сторонние лицензии сохраняются. Screenshots smoke доступны как CI artifacts и перед карточкой требуют соответствия окончательному интерфейсу.
 
 Разрешённые заявления: поиск индекса по адресу, сохранение ручного значения, ручной выбор и назначение полей, отдельное согласие и режим сайта. В 0.2.0 единственное точное совпадение города, улицы и дома с confidence=1 и result_type=building разрешает вставку; это выбранная политика доверия Geoapify, а не независимое доказательство индекса. 48 адресных исправлений и неоднозначные результаты остаются под защитой каталога. Распознавание подписей на 12 языках не расширяет географию. Запрещены неподтверждённые заявления о точности на всей РФ, международном автозаполнении, публикации во всех магазинах, общей магазинной криптографической подписи и постоянном подписанном Firefox XPI.
 
