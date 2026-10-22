@@ -32,7 +32,7 @@ for (const providerId of ['photon', 'geoapify', 'dadata'] as const) {
         await options.locator('#key').fill('synthetic-token');
         if (providerId === 'dadata') await options.locator('#secret').fill('synthetic-secret');
         await options.getByRole('button', { name: 'Сохранить', exact: true }).click();
-        await expect(options.getByRole('status')).toHaveText('Настройки сохранены.');
+        await expect(options.locator('#status')).toHaveText('Настройки сохранены.');
       }
       const form = await context.newPage();
       await form.goto('http://127.0.0.1:4173');

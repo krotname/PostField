@@ -40,6 +40,20 @@
     </fieldset>
   </form>
   <p id="status" role="status" aria-live="polite"></p>
+  <section aria-labelledby="favorites-heading"><h2 id="favorites-heading">Избранные адреса</h2>
+    <p>Сохраните адрес и проверенный вами индекс вручную. При точном совпадении адреса PostField использует избранное до запроса к сервису. Список хранится только в этом браузере; запись не добавляется сама.</p>
+    <form id="favorite-form"><fieldset id="favorite-fields" disabled><legend>Добавить или обновить адрес в России</legend>
+      <label for="favorite-region">Регион (если указан в форме)</label><input id="favorite-region" maxlength="180" autocomplete="off">
+      <label for="favorite-city">Город / населённый пункт</label><input id="favorite-city" maxlength="180" required autocomplete="off">
+      <label for="favorite-street">Улица</label><input id="favorite-street" maxlength="180" required autocomplete="off">
+      <label for="favorite-house">Дом, корпус, строение</label><input id="favorite-house" maxlength="180" required autocomplete="off">
+      <label for="favorite-postcode">Индекс</label><input id="favorite-postcode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autocomplete="off">
+      <label class="check"><input id="favorite-confirm" type="checkbox"><span>Каждый раз подтверждать подстановку этого индекса</span></label>
+      <button type="submit">Сохранить адрес</button>
+    </fieldset></form>
+    <p id="favorite-status" role="status" aria-live="polite"></p><ul id="favorites"></ul>
+  </section>
+  <section><h2>Проверяйте индекс перед отправкой</h2><p>Автоматические ответы Photon, Geoapify и DaData могут быть ошибочными. Совпадение адреса не гарантирует правильный индекс. Сверьте его перед отправкой формы; при сомнении включите ручной режим или сохраните проверенное значение в избранном.</p><p><a href="https://github.com/krotname/PostField/blob/main/docs/evidence/RUSSIA_QUALITY.md" target="_blank" rel="noopener noreferrer">Результаты живых проверок качества</a></p></section>
   <section><h2>Вы управляете заполнением</h2><p>Во всплывающем окне рядом находятся режимы «Все сайты» и «Этот сайт». Общий «Вручную» прекращает автозаполнение везде. Общий «Авто» учитывает ручные исключения сайтов. Поля распознаются в обоих режимах; кнопка «Заполнить сейчас» доступна и в ручном.</p><p>Единственный точный ответ для города, улицы и полного номера дома заполняется автоматически. Частичные и неоднозначные результаты предлагаются для выбора. Ваш индекс сохраняется; формы не отправляются автоматически.</p></section>
   <section><h2>Сайты в ручном режиме</h2><ul id="origins"></ul><p class="hint">Режим сайта сохраняется при переключении общего режима.</p></section>
   <footer><a href="https://krotname.github.io/PostField/privacy.html" target="_blank" rel="noopener noreferrer">Приватность</a> · <a href="https://github.com/krotname/PostField/issues" target="_blank" rel="noopener noreferrer">Поддержка</a><p>Geocoding: Photon / OpenStreetMap, Geoapify или DaData — по вашему выбору.</p></footer>

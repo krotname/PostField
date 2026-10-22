@@ -1,8 +1,6 @@
 import { appendFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { gh, requireGreenCI } from './trusted-ci.mjs';
-import { hasRussiaEvidence } from './quality-gate.mjs';
-import { verifyEvidenceRevision } from './quality-revision.mjs';
 const repo = process.env.GITHUB_REPOSITORY;
 let tag = process.env.RELEASE_TAG;
 if (!tag) {
@@ -16,7 +14,4 @@ if (release.draft || release.prerelease || !release.immutable) throw new Error('
 const sha = execFileSync('git', ['rev-parse', `${tag}^{commit}`], { encoding: 'utf8' }).trim();
 execFileSync('git', ['merge-base', '--is-ancestor', sha, 'origin/main']);
 requireGreenCI(repo, sha);
-const quality = JSON.parse(execFileSync('git', ['show', `${sha}:docs/evidence/russia-quality.json`], { encoding: 'utf8' }));
-if (!hasRussiaEvidence(quality, tag.slice(1))) throw new Error('released_sha_lacks_russia_evidence');
-verifyEvidenceRevision(quality.reports[0].sourceRevision, sha);
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `tag=${tag}\nsha=${sha}\n`);

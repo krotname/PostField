@@ -4,6 +4,8 @@ import { DaDataProvider } from '../adapters/dadata.js';
 import { IndexedDbCredentials } from '../adapters/private-storage.js';
 import { LocalSettings } from '../adapters/settings-storage.js';
 import { ProviderLookup } from '../application/provider-lookup.js';
+import { FavoriteLookup } from '../application/favorite-lookup.js';
+import { LocalFavorites } from '../adapters/favorites-storage.js';
 import { MessageService } from './message-service.js';
 import type { BrowserGateway } from './message-service.js';
 import { extension } from './extension-api.js';
@@ -11,7 +13,9 @@ import { hostPattern } from './host-pattern.js';
 
 const settings = new LocalSettings(extension.storage.local);
 const credentials = new IndexedDbCredentials();
-const lookup = new ProviderLookup(settings, { photon: new PhotonProvider(), geoapify: new GeoapifyProvider(credentials), dadata: new DaDataProvider(credentials) });
+const favorites = new LocalFavorites(extension.storage.local);
+const lookup = new FavoriteLookup(favorites, new ProviderLookup(settings, {
+  photon: new PhotonProvider(), geoapify: new GeoapifyProvider(credentials), dadata: new DaDataProvider(credentials) }));
 const gateway: BrowserGateway = {
   async openOptions() { await extension.runtime.openOptionsPage(); },
   async activeTab() {
@@ -46,7 +50,7 @@ const gateway: BrowserGateway = {
       .map((tab) => extension.tabs.sendMessage(tab.id!, { type: 'CONFIG_CHANGED' })));
   },
 };
-const service = new MessageService(settings, credentials, lookup, gateway, extension.runtime.getURL(''), extension.runtime.id);
+const service = new MessageService(settings, credentials, lookup, gateway, extension.runtime.getURL(''), extension.runtime.id, Date.now, favorites);
 
 extension.runtime.onMessage.addListener((message: unknown, sender, respond) => {
   void service.handle(message, sender).then(respond, () => respond({ ok: false, error: 'operation_failed' }));

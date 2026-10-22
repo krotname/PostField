@@ -189,6 +189,9 @@ export class PageController {
     binding.ui.textContent = result.kind === 'ambiguous' && result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)
       ? 'Точность индекса не подтверждена. Сверьте индекс перед выбором.'
       : labels[result.kind === 'error' ? result.code : result.kind] ?? '';
+    if (result.kind === 'confirmed' && result.candidate.resultType !== 'favorite') {
+      binding.ui.append(this.document.createTextNode('. Возможна ошибка источника — проверьте индекс перед отправкой.'));
+    }
     if (result.kind === 'error' || result.kind === 'not_found' || result.kind === 'ambiguous') {
       const retry = this.document.createElement('button');
       retry.type = 'button'; retry.dataset.postfieldRetry = 'true'; retry.textContent = 'Повторить';

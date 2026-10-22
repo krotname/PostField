@@ -37,10 +37,10 @@ test(`extension ${scenario.name}: options, background, content script and DOM pr
     await options.locator('#provider-geoapify').check();
     await expect(options.locator('#key-state')).toContainText('Ключ ещё не добавлен.');
     await options.locator('#key').fill('synthetic-key');
-    await options.locator('input[type=checkbox]').check();
-    await options.getByRole('button', { name: 'Сохранить' }).click();
-    await expect(options.getByRole('status')).toHaveText('Настройки сохранены.');
-    await expect(options.locator('input[type=checkbox]')).toBeChecked();
+    await options.locator('#consent').check();
+    await options.getByRole('button', { name: 'Сохранить', exact: true }).click();
+    await expect(options.locator('#status')).toHaveText('Настройки сохранены.');
+    await expect(options.locator('#consent')).toBeChecked();
     await expect(options.locator('#key')).toHaveValue('');
     const form = await context.newPage();
     await form.goto('http://127.0.0.1:4173');
