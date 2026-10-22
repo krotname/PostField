@@ -1,0 +1,4 @@
+{
+  "extensionName": { "message": "PostField — почтовый индекс" },
+  "extensionDescription": { "message": "Индекс по адресу в РФ: Photon, Geoapify, DaData и избранные адреса. Результаты провайдеров могут содержать ошибки." }
+}

@@ -2,8 +2,8 @@ export const BROWSERS = ['chrome', 'opera', 'edge', 'firefox'];
 export function manifestFor(browser, version) {
   if (!BROWSERS.includes(browser) || !/^\d+\.\d+\.\d+$/u.test(version)) throw new Error('invalid_build_target_or_version');
   return {
-    manifest_version: 3, name: 'PostField — почтовый индекс', version,
-    description: 'Находит индекс по адресу в РФ. Photon без ключа, Geoapify или DaData. Авто и ручной режимы.',
+    manifest_version: 3, name: '__MSG_extensionName__', version, default_locale: 'ru',
+    description: '__MSG_extensionDescription__',
     author: 'Kreout',
     permissions: ['activeTab', 'scripting', 'storage'], host_permissions: ['https://*/*', 'http://*/*'],
     icons: { 16: 'icons/16.png', 32: 'icons/32.png', 48: 'icons/48.png', 96: 'icons/96.png', 128: 'icons/128.png' },

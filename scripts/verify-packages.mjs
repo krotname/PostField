@@ -23,9 +23,15 @@ for (const asset of manifest.assets) {
     assert.ok(!Object.keys(files).some((name) => /^(?:node_modules|dist|artifacts|\.local|\.cache)\//u.test(name)));
   } else {
     const expected = ['background.js', 'content.js', 'popup.js', 'options.js', 'popup.html', 'options.html', 'ui.css', 'manifest.json',
-      ...[16, 32, 48, 96, 128].map((size) => `icons/${size}.png`)];
+      '_locales/ru/messages.json', ...[16, 32, 48, 96, 128].map((size) => `icons/${size}.png`)];
     assert.deepEqual(Object.keys(files).sort(), expected.sort());
     assert.deepEqual(JSON.parse(strFromU8(files['manifest.json'])), manifestFor(asset.role, version));
+    const messages = JSON.parse(strFromU8(files['_locales/ru/messages.json']));
+    const extensionManifest = manifestFor(asset.role, version);
+    for (const field of ['name', 'description']) {
+      const key = /^__MSG_(\w+)__$/u.exec(extensionManifest[field])?.[1];
+      assert.ok(key && messages[key]?.message?.trim(), `${field}: missing localized message`);
+    }
     for (const name of ['background.js', 'content.js', 'popup.js', 'options.js']) {
       const js = strFromU8(files[name]);
       assert.ok(!/\beval\s*\(|new Function\s*\(/u.test(js), `${name}: dynamic execution`);

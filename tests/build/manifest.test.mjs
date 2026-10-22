@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { manifestFor } from '../../scripts/manifest.mjs';
 
 describe('browser packaging', () => {
+  it.each(['chrome', 'opera', 'edge', 'firefox'])('declares the packaged store language for %s', (browser) => {
+    const manifest = manifestFor(browser, '0.4.1');
+    expect(manifest.default_locale).toBe('ru');
+    expect(manifest.name).toBe('__MSG_extensionName__');
+    expect(manifest.description).toBe('__MSG_extensionDescription__');
+  });
   it.each(['chrome', 'opera', 'edge'])('uses a worker and no product key for %s', (browser) => {
     const manifest = manifestFor(browser, '0.1.0');
     expect(manifest.manifest_version).toBe(3);
