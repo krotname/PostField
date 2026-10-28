@@ -1,5 +1,7 @@
 # PostField
 
+[Сайт PassField + PostField](https://passfield.ru/postfield/) · [Политика конфиденциальности](https://passfield.ru/postfield/privacy/)
+
 Почтовый индекс по адресу, который уже введён в форму. Первый выпуск — для России; международные страны подключаются после проверки качества.
 
 Издатель: **Kreout**. Публичные исходники и бесплатные официальные сборки для Chrome, Opera, Microsoft Edge и Firefox. Правообладатель сохраняет права на исходный код: см. [LICENSE](LICENSE).
