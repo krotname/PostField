@@ -154,6 +154,10 @@ RED избранных: [CI 39754122039](https://github.com/krotname/PostField/a
 
 22.10.2026, White: до исправления четыре проверки `declares the packaged store language` упали из-за отсутствующего `default_locale`. После добавления русского каталога сообщений 9 тестов манифеста прошли; сборка и проверка пяти архивов прошли. Проверка ZIP требует файл локали и непустые сообщения для названия и описания. Живой Edge для 0.4.0 возвращал `languageCodes: []`, `supportedLocales: []` и `listings: required`; результат новой загрузки фиксируется отдельно.
 
+## Safari Web Extension Packager
+
+18.11.2026, MacBook, Node.js 24.22.3. RED: новая проверка Safari упала из-за отсутствующей цели (`invalid target`). После добавления цели прошёл `npm run check`: 36 файлов, 333 теста, typecheck, boundaries, build и check:packages. Packager обнаружил неподдерживаемый `options_ui.open_in_tab`; новая проверка сначала упала с `expected true to be undefined`. Ключ исключён только из Safari: GREEN 11 тестов манифеста, повторные build/check:packages и Packager без предупреждений. Нативное приложение собрано Xcode 27.2, версии приложения и расширения 0.5.0, подпись ad hoc проверена через codesign. Браузерный смок фиксируется отдельно в [SAFARI.md](SAFARI.md).
+
 ## Firefox Android 0.5.0
 
 22.10.2026, ADLER-WHITE-W1, Node 26.3.0: RED новой проверки совместимости — gecko_android отсутствует (ERR_ASSERTION, actual undefined). Добавлена регрессия в tests/build/manifest.test.mjs. Мобильная панель сопоставления дополнительно проверяет resize видимой области, сенсорную отмену и удаление слушателей. GREEN: CI main b54e2a8ee12c1832e508a18d9af6295c0327e256, run 39844915705, success. Пройдены typecheck, boundaries, coverage tests, build, check:packages, npm audit high, addons-linter warnings-as-errors и Playwright e2e: https://github.com/krotname/PostField/actions/runs/39844915705 .

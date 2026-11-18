@@ -2,6 +2,15 @@ import { describe, expect, it } from 'vitest';
 import { manifestFor } from '../../scripts/manifest.mjs';
 
 describe('browser packaging', () => {
+  it('packages Safari MV3 without Chrome or Firefox metadata', () => {
+    const manifest = manifestFor('safari', '0.5.0');
+    expect(manifest.background).toEqual({ service_worker: 'background.js' });
+    expect(manifest.minimum_chrome_version).toBeUndefined();
+    expect(manifest.browser_specific_settings).toBeUndefined();
+    expect(manifest.permissions).toEqual(['activeTab', 'scripting', 'storage']);
+    expect(manifest.options_ui.page).toBe('options.html');
+    expect(manifest.options_ui.open_in_tab).toBeUndefined();
+  });
   it('supports Android without changing the existing Firefox identity', () => {
     const manifest = manifestFor('firefox', '0.5.0');
     expect(manifest.browser_specific_settings.gecko.id).toBe('postfield@krot.name');

@@ -19,7 +19,7 @@ for (const directory of [artifacts, dist]) {
 }
 const entries = ['background', 'content', 'popup', 'options'];
 const compiled = await build({ entryPoints: entries.map((entry) => join(root, 'src', 'browser', `${entry}.ts`)),
-  outdir: dist, bundle: true, format: 'iife', platform: 'browser', target: ['chrome120', 'firefox142'],
+  outdir: dist, bundle: true, format: 'iife', platform: 'browser', target: ['chrome120', 'firefox142', 'safari17.4'],
   write: false, legalComments: 'inline', charset: 'utf8', minify: false });
 const scripts = new Map(compiled.outputFiles.map((file) => [file.path.split(/[\\/]/u).at(-1), file.contents]));
 const icon = await readFile(join(root, 'extension', 'icon.svg'));
