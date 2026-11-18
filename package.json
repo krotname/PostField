@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "build": "node scripts/build.mjs",
+    "package:safari": "bash scripts/package-safari.sh",
     "check:packages": "node scripts/verify-packages.mjs",
     "test:e2e": "playwright test",
     "benchmark:ru": "node scripts/node-run.mjs benchmark",
