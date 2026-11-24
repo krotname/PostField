@@ -20,7 +20,8 @@ jobs:
         with:
           node-version: '24'
           cache: npm
-      - run: npm ci
+      # Keep the explicit audit gate; avoid its advisory-only install duplicate.
+      - run: npm ci --no-audit --no-fund
       - run: npm run typecheck && npm run check:boundaries && npm run test:coverage && npm run build && npm run check:packages
       - run: npm audit --audit-level=high
       - run: node node_modules/addons-linter/bin/addons-linter dist/firefox --warnings-as-errors
