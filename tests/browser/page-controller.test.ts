@@ -410,6 +410,23 @@ describe('page controller', () => {
     }
     controller.stop();
   });
+  it('hides its empty status box before a result and after the address changes', async () => {
+    form();
+    let answer: (result: LookupResult) => void = () => undefined;
+    const controller = new PageController(document, () => new Promise<LookupResult>((done) => { answer = done; }));
+    const filling = controller.fill();
+    const ui = document.querySelector<HTMLElement>('[data-postfield-ui]');
+    expect(ui?.style.display).toBe('none');
+    answer({ kind: 'not_found' });
+    await filling;
+    expect(ui?.style.display).toBe('block');
+    const street = document.querySelector<HTMLInputElement>('[autocomplete="address-line1"]');
+    if (street) street.value = 'Тверская улица, 15';
+    street?.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(ui?.textContent).toBe('');
+    expect(ui?.style.display).toBe('none');
+    controller.stop();
+  });
   it('finds a newly added form and preserves its manual value', async () => {
     const resolve = vi.fn(async () => exact);
     const controller = new PageController(document, resolve);
