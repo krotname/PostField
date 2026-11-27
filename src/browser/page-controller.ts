@@ -2,11 +2,18 @@ import { discoverAddressGroups, readAddress, writePostcode } from '../adapters/f
 import type { AddressField, AddressGroup } from '../adapters/forms.js';
 import { FormSession } from '../application/form-session.js';
 import type { FormResult } from '../application/form-session.js';
-import type { Address, LookupResult } from '../core/address.js';
+import type { Address, AddressCandidate, LookupResult } from '../core/address.js';
+import { normalizePostcode } from '../core/address-policy.js';
 
 interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; manual: boolean; timer?: ReturnType<typeof setTimeout>; automaticRequest?: symbol }
 // Yield to host timers even when every UI insertion triggers another rerender.
 const scanDelay = 25;
+const buttonStyle = 'margin:4px 8px 4px 0;padding:5px 9px;border:1px solid #577898;border-radius:5px;background-color:#fff;color:#153a61;font:inherit;cursor:pointer';
+// An empty status keeps its box hidden so no bare frame shows before or between lookups.
+function clearStatus(ui: HTMLElement): void {
+  ui.replaceChildren();
+  ui.style.display = 'none';
+}
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
@@ -58,9 +65,9 @@ export class PageController {
     for (const binding of this.bindings.values()) {
       if (target === binding.group.postcode) {
         binding.session.manualPostcodeChanged();
-        binding.ui.replaceChildren();
+        clearStatus(binding.ui);
       } else if (Object.values(binding.group.fields).includes(target as AddressField) && binding.session.addressChanged()) {
-        binding.ui.replaceChildren();
+        clearStatus(binding.ui);
         if (this.automatic) this.schedule(binding);
       }
     }
@@ -96,7 +103,7 @@ export class PageController {
           if (changed) {
             if (existing.timer) clearTimeout(existing.timer);
             existing.session.addressChanged();
-            existing.ui.replaceChildren();
+            clearStatus(existing.ui);
             if (this.automatic) this.schedule(existing);
           }
         }
@@ -137,7 +144,7 @@ export class PageController {
       ui.dataset.postfieldUi = 'true';
       ui.setAttribute('role', 'status');
       ui.setAttribute('aria-live', 'polite');
-      ui.style.cssText = 'display:block;position:static;clear:both;flex:0 0 auto;grid-column:1 / -1;width:100%;box-sizing:border-box;font:13px/1.4 system-ui,sans-serif;color:#153a61;margin:4px 0;max-width:460px;max-height:180px;overflow:auto;white-space:normal';
+      ui.style.cssText = 'display:none;position:static;clear:both;flex:0 0 auto;grid-column:1 / -1;width:100%;box-sizing:border-box;font:13px/1.4 system-ui,sans-serif;color:#153a61;background-color:#f4f8fc;border:1px solid #577898;border-radius:6px;padding:6px 8px;margin:4px 0;max-width:460px;max-height:180px;overflow:auto;white-space:normal';
       this.placeStatus(group, ui);
       const binding: Binding = { group, ui, manual, session: new FormSession(this.resolve, () => readAddress(binding.group),
         () => binding.group.postcode.value, (value) => {
@@ -185,16 +192,26 @@ export class PageController {
 
   private render(binding: Binding, result: FormResult): void {
     binding.ui.replaceChildren();
-    binding.ui.textContent = result.kind === 'ambiguous' && result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)
-      ? 'Точность индекса не подтверждена. Сверьте индекс перед выбором.'
-      : labels[result.kind === 'error' ? result.code : result.kind] ?? '';
-    if (result.kind === 'confirmed' && result.candidate.resultType !== 'favorite') {
-      binding.ui.append(this.document.createTextNode('. Возможна ошибка источника — проверьте индекс перед отправкой.'));
+    binding.ui.style.display = 'block';
+    const groups = new Map<string, AddressCandidate[]>();
+    if (result.kind === 'ambiguous') for (const candidate of result.candidates) {
+      const postcode = normalizePostcode(candidate.country, candidate.postcode) ?? candidate.postcode;
+      groups.set(postcode, [...groups.get(postcode) ?? [], candidate]);
     }
+    // The message gets its own line so the buttons below never run into it.
+    const message = this.document.createElement('div');
+    message.textContent = result.kind === 'ambiguous' && result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)
+      ? 'Точность индекса не подтверждена. Сверьте индекс перед выбором.'
+      : result.kind === 'ambiguous' && groups.size === 1 ? 'Дом не найден точно, но у найденных адресов один индекс. Проверьте и подтвердите'
+        : labels[result.kind === 'error' ? result.code : result.kind] ?? '';
+    if (result.kind === 'confirmed' && result.candidate.resultType !== 'favorite') {
+      message.append(this.document.createTextNode('. Возможна ошибка источника — проверьте индекс перед отправкой.'));
+    }
+    binding.ui.append(message);
     if (result.kind === 'error' || result.kind === 'not_found' || result.kind === 'ambiguous') {
       const retry = this.document.createElement('button');
       retry.type = 'button'; retry.dataset.postfieldRetry = 'true'; retry.textContent = 'Повторить';
-      retry.style.cssText = 'margin:4px 8px;padding:4px 8px;cursor:pointer';
+      retry.style.cssText = buttonStyle;
       retry.addEventListener('click', () => { retry.disabled = true; void this.lookup(binding); });
       binding.ui.append(retry);
       const change = this.document.createElement('button');
@@ -204,12 +221,15 @@ export class PageController {
       binding.ui.append(change);
     }
     if (result.kind !== 'ambiguous') return;
-    for (const candidate of result.candidates) {
+    for (const [postcode, [candidate, ...others]] of groups) {
+      if (!candidate) continue;
+      const place = (candidate.formatted || `${candidate.city}, ${candidate.street}, ${candidate.house}`).split(',')
+        .map((part) => part.trim()).filter((part) => part && normalizePostcode(candidate.country, part) !== postcode).join(', ');
       const button = this.document.createElement('button');
       button.type = 'button';
       button.dataset.postfieldChoice = 'true';
-      button.textContent = `${candidate.formatted || `${candidate.city}, ${candidate.street}, ${candidate.house}`} — ${candidate.postcode}`;
-      button.style.cssText = 'display:block;text-align:left;margin:6px 0;padding:7px;border:1px solid #577898;border-radius:5px;background:#fff;color:#153a61;cursor:pointer';
+      button.textContent = `${postcode} — ${place}${others.length ? ` и ещё ${others.length}` : ''}`;
+      button.style.cssText = `display:block;text-align:left;margin:6px 0;${buttonStyle}`;
       button.addEventListener('click', () => {
         if (binding.session.choose(candidate)) binding.ui.textContent = 'Выбранный индекс заполнен';
       });

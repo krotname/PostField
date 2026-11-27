@@ -380,6 +380,53 @@ describe('page controller', () => {
     expect(postcode?.value).toBe('125009');
     controller.stop();
   });
+  it('offers one choice per distinct postcode without repeating it', async () => {
+    form();
+    const candidate = exact.kind === 'confirmed' ? exact.candidate : (() => { throw new Error(); })();
+    const candidates = [{ ...candidate, house: '15', formatted: 'Москва, Тверская улица, 15, 125009' },
+      { ...candidate, house: '17', formatted: 'Москва, Тверская улица, 17, 125009' }, { ...candidate, house: '19', postcode: '125010', formatted: '' }];
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates }));
+    await controller.fill();
+    const choices = [...document.querySelectorAll<HTMLButtonElement>('[data-postfield-choice]')];
+    expect(choices).toHaveLength(2);
+    expect(choices[0]?.textContent?.match(/125009/gu)).toHaveLength(1);
+    expect(choices[0]?.textContent).toContain('ещё 1');
+    expect(choices[1]?.textContent?.match(/125010/gu)).toHaveLength(1);
+    choices[1]?.click();
+    expect(document.querySelector<HTMLInputElement>('[autocomplete="postal-code"]')?.value).toBe('125010');
+    controller.stop();
+  });
+  it('keeps its status readable on dark pages', async () => {
+    form();
+    const candidate = exact.kind === 'confirmed' ? exact.candidate : (() => { throw new Error(); })();
+    const controller = new PageController(document, async () => ({ kind: 'ambiguous', candidates: [candidate] }));
+    await controller.fill();
+    const ui = document.querySelector<HTMLElement>('[data-postfield-ui]');
+    expect(ui?.style.backgroundColor).not.toBe('');
+    expect(ui?.style.color).not.toBe('');
+    for (const button of document.querySelectorAll<HTMLButtonElement>('[data-postfield-ui] button')) {
+      expect(button.style.backgroundColor).not.toBe('');
+      expect(button.style.color).not.toBe('');
+    }
+    controller.stop();
+  });
+  it('hides its empty status box before a result and after the address changes', async () => {
+    form();
+    let answer: (result: LookupResult) => void = () => undefined;
+    const controller = new PageController(document, () => new Promise<LookupResult>((done) => { answer = done; }));
+    const filling = controller.fill();
+    const ui = document.querySelector<HTMLElement>('[data-postfield-ui]');
+    expect(ui?.style.display).toBe('none');
+    answer({ kind: 'not_found' });
+    await filling;
+    expect(ui?.style.display).toBe('block');
+    const street = document.querySelector<HTMLInputElement>('[autocomplete="address-line1"]');
+    if (street) street.value = 'Тверская улица, 15';
+    street?.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(ui?.textContent).toBe('');
+    expect(ui?.style.display).toBe('none');
+    controller.stop();
+  });
   it('finds a newly added form and preserves its manual value', async () => {
     const resolve = vi.fn(async () => exact);
     const controller = new PageController(document, resolve);
