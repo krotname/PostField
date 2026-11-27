@@ -64,17 +64,24 @@ describe('durable delivery', () => {
   });
   it('keeps an unproven outcome unchanged when readback is unavailable or inconclusive', async () => {
     const initial: DeliveryState = { ...release, stage: 'needs_readback', uploadId: 'up' };
+    const notes: string[] = [];
+    const note = (reason: string) => notes.push(reason);
     const failing = setup(initial);
-    vi.mocked(failing.store.status).mockRejectedValueOnce(new Error('network'));
-    expect(await deliver(release, failing.store, failing.journal)).toEqual(initial);
+    vi.mocked(failing.store.status).mockRejectedValueOnce(new Error('store_http_401'));
+    expect(await deliver(release, failing.store, failing.journal, false, note)).toEqual(initial);
+    const leaky = setup(initial);
+    vi.mocked(leaky.store.status).mockRejectedValueOnce(new Error('private server body with spaces'));
+    expect(await deliver(release, leaky.store, leaky.journal, false, note)).toEqual(initial);
     const unknown = setup(initial);
     vi.mocked(unknown.store.status).mockResolvedValueOnce('needs_readback');
-    expect(await deliver(release, unknown.store, unknown.journal)).toEqual(initial);
+    expect(await deliver(release, unknown.store, unknown.journal, false, note)).toEqual(initial);
     const offline = setup(initial);
     offline.store.ready = () => false;
-    expect(await deliver(release, offline.store, offline.journal)).toEqual(initial);
+    expect(await deliver(release, offline.store, offline.journal, false, note)).toEqual(initial);
+    expect(notes).toEqual(['readback_failed:store_http_401', 'readback_failed:error',
+      `readback_inconclusive:version_${release.version}_not_in_store_revisions`, 'readback_skipped:store_not_configured']);
     expect(offline.store.status).not.toHaveBeenCalled();
-    for (const { store, journal } of [failing, unknown, offline]) {
+    for (const { store, journal } of [failing, leaky, unknown, offline]) {
       expect(journal.write).not.toHaveBeenCalled();
       expect(store.upload).not.toHaveBeenCalled();
       expect(store.submit).not.toHaveBeenCalled();

@@ -1,7 +1,8 @@
 import type { DeliveryState, Journal, ReleaseIdentity, StorePort } from './ports.js';
 
 /** Write the intent before every mutation; an unknown outcome never authorizes replay. */
-export async function deliver(release: ReleaseIdentity, store: StorePort, journal: Journal, statusOnly = false): Promise<DeliveryState> {
+export async function deliver(release: ReleaseIdentity, store: StorePort, journal: Journal, statusOnly = false,
+  note: (reason: string) => void = () => {}): Promise<DeliveryState> {
   let state = await journal.read();
   if (state && (state.version !== release.version || state.sha !== release.sha || state.digest !== release.digest)) throw new Error('release_identity_mismatch');
   const save = async (next: DeliveryState): Promise<DeliveryState> => {
@@ -12,11 +13,15 @@ export async function deliver(release: ReleaseIdentity, store: StorePort, journa
   if (state && ['uploading', 'submitting'].includes(state.stage)) return save({ ...state, stage: 'needs_readback' });
   if (state?.stage === 'needs_readback') {
     // Read-only recovery: a store GET may prove the outcome; a mutation is never replayed.
-    if (!store.ready()) return state;
+    // The reason tells "the store has no such revision" apart from "the read failed"; it carries only an error code.
+    if (!store.ready()) { note('readback_skipped:store_not_configured'); return state; }
     try {
       const observed = await store.status(state);
+      if (observed === 'needs_readback') note(`readback_inconclusive:version_${release.version}_not_in_store_revisions`);
       return observed === 'needs_readback' ? state : save({ ...state, stage: observed });
-    } catch {
+    } catch (error) {
+      const code = error instanceof Error && /^[\w.-]{1,60}$/u.test(error.message) ? error.message : 'error';
+      note(`readback_failed:${code}`);
       return state;
     }
   }
