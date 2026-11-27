@@ -35,7 +35,7 @@ const prior = resume ? await journal.read() : null;
 if (resume && (!prior || ['requires_setup', 'not_started', 'published', 'rejected'].includes(prior.stage))) {
   console.log(`${store}: ${prior?.stage ?? 'not_started'}`);
 } else {
-  const result = await deliver(release, adapters[store]!(), journal);
+  const result = await deliver(release, adapters[store]!(), journal, false, (reason) => console.log(`${store}: ${reason}`));
   console.log(`${store}: ${result.stage}`);
   if (env('GITHUB_STEP_SUMMARY')) await appendFile(env('GITHUB_STEP_SUMMARY'), `${store}: **${result.stage}** — [journal](https://github.com/${env('GITHUB_REPOSITORY')}/issues?q=${encodeURIComponent(`[delivery] ${env('RELEASE_TAG')} / ${store}`)})\n\n`);
   // A scheduled readback that learns nothing new is not a new failure.
