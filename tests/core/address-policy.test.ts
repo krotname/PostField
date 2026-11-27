@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyCandidates, isCompleteAddress, normalizePostcode } from '../../src/core/address-policy.js';
+import { addressKey, classifyCandidates, isCompleteAddress, normalizePostcode } from '../../src/core/address-policy.js';
 import type { Address, AddressCandidate } from '../../src/core/address.js';
 
 const address: Address = { country: 'ru', city: 'Москва', street: 'Тверская улица', house: '13' };
@@ -62,6 +62,11 @@ describe('postcode decisions', () => {
       expect(classifyCandidates({ ...address, street }, [exact]).kind).toBe('confirmed');
     },
   );
+  it('keeps the district in the address key so a changed district is a new address', () => {
+    expect(addressKey({ ...address, street: 'Тверская улица, жилой район Центральный' }))
+      .not.toBe(addressKey({ ...address, street: 'Тверская улица, жилой район Северный' }));
+    expect(addressKey({ ...address, street: 'ул. Тверская' })).toBe(addressKey({ ...address, street: 'Тверская улица' }));
+  });
   it('keeps a microdistrict that is the only street name', () => {
     const microdistrict = { ...exact, street: '7-й микрорайон' };
     expect(classifyCandidates({ ...address, street: '7-й микрорайон' }, [microdistrict]).kind).toBe('confirmed');
