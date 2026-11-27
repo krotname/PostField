@@ -55,13 +55,14 @@ describe('Geoapify HTTP contract', () => {
     if (result.kind === 'ambiguous') expect(result.candidates[0]).toMatchObject({ postcode: '185000', requiresPostcodeConfirmation: true });
   });
   it.each([{ rank: { confidence: 0.8 } }, { result_type: 'street' }])(
-    'does not let catalogue correction erase contradictory provider evidence: %j', async (difference) => {
+    'applies the catalogue correction when weaker records agree on the postcode: %j', async (difference) => {
       const input = { country: 'ru' as const, region: 'Республика Карелия', city: 'Петрозаводск', street: 'Чапаева ул', house: '52' };
       const response = { ...raw, state: input.region, city: input.city, street: input.street,
         housenumber: input.house, postcode: '185000' };
       for (const results of [[{ ...response, ...difference }, response], [response, { ...response, ...difference }]]) {
         const fetcher = vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({ results })));
-        expect((await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input)).kind).toBe('ambiguous');
+        const result = await new LookupPostcode(new GeoapifyProvider(credentials, fetcher)).execute(input);
+        expect(result).toMatchObject({ kind: 'confirmed', candidate: { postcode: '185002', confidence: 1, resultType: 'building' } });
       }
     },
   );
