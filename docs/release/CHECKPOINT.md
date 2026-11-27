@@ -1,8 +1,21 @@
 # PostField — выпуск и магазины
 
+## 27.11.2026 — стабильный выпуск 0.5.1 и подачи в магазины
+
+[Стабильный неизменяемый выпуск 0.5.1](https://github.com/krotname/PostField/releases/tag/v0.5.1) опубликован с main SHA `0ebfb28` ([PR #42](https://github.com/krotname/PostField/pull/42), [CI main](https://github.com/krotname/PostField/actions/runs/45960061132)): 7 assets (chrome/edge/firefox/opera/safari/sources + release-manifest), Sigstore attestations подтверждены. Изменение поведения — из [PR #41](https://github.com/krotname/PostField/pull/41): единый индекс всех найденных записей с надёжной точной записью дома подставляется сам; кнопки группируются по индексу; район рядом с улицей не мешает точному совпадению, но остаётся в ключе адреса; статус читается на тёмных сайтах, пустая плашка скрыта.
+
+| Магазин | Состояние 0.5.1 | Объект и доказательство |
+|---|---|---|
+| Chrome | needs_readback: upload SUCCEEDED, исход publish POST неизвестен | item ekdhmojbkpdgpgeipchaifhoedkgpjgo. Повтор только после readback в кабинете; [журнал #44](https://github.com/krotname/PostField/issues/44). Публичная карточка по-прежнему 0.5.0 (проверено 27.11). |
+| Edge | pending_review, submission 46b83d85 (draft-op 7f207cc5) | product a8f939c3-649a-476d-a638-660e09c8b742; [журнал #43](https://github.com/krotname/PostField/issues/43). Публичная карточка — Версия 0.5.0 (DOM readback через White Chrome 27.11). |
+| Firefox | pending_review, submission 6770731 (upload 63224c8b) | GUID postfield@krot.name; [журнал #46](https://github.com/krotname/PostField/issues/46). Публичный API отдаёт только 0.5.0 public (проверено 27.11). |
+| Opera | requires_setup: HTTP-контракт не подтверждён, 0.5.1 не подана | package 307854. 0.4.1 Awaiting moderation без изменений; публичная страница не найдена (проверено 27.11); [журнал #45](https://github.com/krotname/PostField/issues/45). Ручная подача 0.5.1 — решение владельца. |
+
+Подача ≠ публикация: публичные версии остаются Chrome/Firefox/Edge 0.5.0, Opera — нет. Сайт: образ с 0.5.1 опубликован ([publish run](https://github.com/krotname/ChromeShowPasswords/actions/runs/45963559376), container smoke passed), ZIP-ссылки и release tag — v0.5.1, кнопки сторов — опубликованные 0.5.0 (проверено 27.11). Live-хост 51.250.3.133 27.11 недоступен с LAN (443 timeout) — смоук прод-URL требует проверки человека/сети. Матрица APP-013 и checkpoint обновлены.
+
 ## 28.10.2026 — единый сайт PassField + PostField
 
-По поручению владельца отдельный лендинг `site/index.html` удалён. Каноническая страница — https://passfield.ru/postfield/, политика — https://passfield.ru/postfield/privacy/. Ссылки на Chrome 0.5.0, Firefox 0.5.0 (desktop и Android 142+) и Edge 0.4.1 публикуются на общем сайте. Старый URL `/PostField/privacy.html` сохранён с указанием канонического сайта: опубликованная карточка Edge ещё ссылается на него. Историческая запись ниже о публикации отдельного лендинга больше не определяет сайт продукта. Репозиторий и пакеты расширения сохранены.
+По поручению владельца отдельный лендинг `site/index.html` удалён. Каноническая страница — https://passfield.ru/postfield/, политика — https://passfield.ru/postfield/privacy/. Ссылки на Chrome 0.5.0, Firefox 0.5.0 (desktop и Android 142+) и Edge 0.5.0 публикуются на общем сайте. Старый URL `/PostField/privacy.html` сохранён с указанием канонического сайта: опубликованная карточка Edge ещё ссылается на него. Историческая запись ниже о публикации отдельного лендинга больше не определяет сайт продукта. Репозиторий и пакеты расширения сохранены.
 
 ## 28.10.2026 — публичные магазины и ссылки установки
 
