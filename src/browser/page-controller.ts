@@ -194,13 +194,16 @@ export class PageController {
       const postcode = normalizePostcode(candidate.country, candidate.postcode) ?? candidate.postcode;
       groups.set(postcode, [...groups.get(postcode) ?? [], candidate]);
     }
-    binding.ui.textContent = result.kind === 'ambiguous' && result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)
+    // The message gets its own line so the buttons below never run into it.
+    const message = this.document.createElement('div');
+    message.textContent = result.kind === 'ambiguous' && result.candidates.some((candidate) => candidate.requiresPostcodeConfirmation)
       ? 'Точность индекса не подтверждена. Сверьте индекс перед выбором.'
       : result.kind === 'ambiguous' && groups.size === 1 ? 'Дом не найден точно, но у найденных адресов один индекс. Проверьте и подтвердите'
         : labels[result.kind === 'error' ? result.code : result.kind] ?? '';
     if (result.kind === 'confirmed' && result.candidate.resultType !== 'favorite') {
-      binding.ui.append(this.document.createTextNode('. Возможна ошибка источника — проверьте индекс перед отправкой.'));
+      message.append(this.document.createTextNode('. Возможна ошибка источника — проверьте индекс перед отправкой.'));
     }
+    binding.ui.append(message);
     if (result.kind === 'error' || result.kind === 'not_found' || result.kind === 'ambiguous') {
       const retry = this.document.createElement('button');
       retry.type = 'button'; retry.dataset.postfieldRetry = 'true'; retry.textContent = 'Повторить';
