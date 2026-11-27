@@ -13,8 +13,12 @@ function withoutDistricts(value: string): string {
   return kept.length > 0 && kept.length < parts.length ? kept.join(', ') : value;
 }
 
+// Matching ignores a district beside the street; the address key keeps it so a changed district is a new address.
 export function normalizeComponent(value: string, kind: 'city' | 'street' | 'house', country: CountryCode): string {
-  const source = country === 'ru' && kind === 'street' ? withoutDistricts(value) : value;
+  return canonicalComponent(country === 'ru' && kind === 'street' ? withoutDistricts(value) : value, kind, country);
+}
+
+function canonicalComponent(source: string, kind: 'city' | 'street' | 'house', country: CountryCode): string {
   let result = kind === 'house' ? source.normalize('NFKC').toLocaleLowerCase('ru').trim() : normalizeWords(source);
   if (country === 'ru') {
     if (kind === 'city') result = result.replace(/^(?:город|г)\s+/u, '');
@@ -49,7 +53,7 @@ export function normalizePostcode(country: CountryCode, value: string): string |
 
 export function addressKey(address: Address): string {
   return JSON.stringify([address.country, normalizeComponent(address.city, 'city', address.country),
-    normalizeComponent(address.street, 'street', address.country), normalizeComponent(address.house, 'house', address.country), address.region?.trim() ?? '']);
+    canonicalComponent(address.street, 'street', address.country), normalizeComponent(address.house, 'house', address.country), address.region?.trim() ?? '']);
 }
 
 export function classifyCandidates(address: Address, candidates: readonly AddressCandidate[]): LookupResult {
