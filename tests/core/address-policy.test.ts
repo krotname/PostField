@@ -38,12 +38,36 @@ describe('postcode decisions', () => {
     expect(classifyCandidates(input, [{ ...exact, region: ' СВЕРДЛОВСКАЯ область ' }]).kind).toBe('confirmed');
   });
   it.each([{ confidence: 0.8 }, { resultType: 'street' }])(
-    'keeps contradictory match evidence regardless of response order: %j', (difference) => {
+    'confirms the reliable exact record when weaker records agree on the postcode: %j', (difference) => {
       const weaker = { ...exact, ...difference };
-      expect(classifyCandidates(address, [weaker, exact]).kind).toBe('ambiguous');
-      expect(classifyCandidates(address, [exact, weaker]).kind).toBe('ambiguous');
+      expect(classifyCandidates(address, [weaker, exact])).toEqual({ kind: 'confirmed', candidate: exact });
+      expect(classifyCandidates(address, [exact, weaker])).toEqual({ kind: 'confirmed', candidate: exact });
     },
   );
+  it('confirms one postcode shared by neighbouring houses when the requested house matches exactly', () => {
+    const neighbours = [{ ...exact, house: '13А', formatted: 'Москва, Тверская улица, 13А' }, { ...exact, house: '11', formatted: 'Москва, Тверская улица, 11' }];
+    expect(classifyCandidates(address, [...neighbours, exact])).toEqual({ kind: 'confirmed', candidate: exact });
+    expect(classifyCandidates(address, [exact, ...neighbours])).toEqual({ kind: 'confirmed', candidate: exact });
+  });
+  it('keeps a choice when records agree on the postcode but none is a reliable exact house', () => {
+    expect(classifyCandidates(address, [{ ...exact, confidence: 0.8 }, { ...exact, house: '15' }]).kind).toBe('ambiguous');
+    expect(classifyCandidates(address, [{ ...exact, house: '15' }, { ...exact, house: '11' }]).kind).toBe('ambiguous');
+  });
+  it('keeps a choice when a neighbouring house has another postcode', () => {
+    expect(classifyCandidates(address, [exact, { ...exact, house: '15', postcode: '125010' }]).kind).toBe('ambiguous');
+  });
+  it.each(['Тверская улица, жилой район Центральный', 'жилой район Центральный, Тверская улица', 'ул. Тверская, мкр. Центральный',
+    'микрорайон Центральный, улица Тверская', 'Тверская улица, Центральный район'])(
+    'ignores a district written next to the street: %s', (street) => {
+      expect(classifyCandidates({ ...address, street }, [exact]).kind).toBe('confirmed');
+    },
+  );
+  it('keeps a microdistrict that is the only street name', () => {
+    const microdistrict = { ...exact, street: '7-й микрорайон' };
+    expect(classifyCandidates({ ...address, street: '7-й микрорайон' }, [microdistrict]).kind).toBe('confirmed');
+    expect(classifyCandidates({ ...address, street: '7-й микрорайон' }, [{ ...exact, street: '7-й' }]).kind).not.toBe('confirmed');
+    expect(classifyCandidates({ ...address, street: 'Тверская улица, Садовая улица' }, [exact]).kind).not.toBe('confirmed');
+  });
   it('deduplicates identical candidate records', () => {
     expect(classifyCandidates(address, [exact, exact]).kind).toBe('confirmed');
   });
