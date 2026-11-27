@@ -32,11 +32,12 @@ const release = { version: manifest.version, sha: manifest.source_sha, digest: r
 const journal = new GitHubJournal(env('GITHUB_REPOSITORY'), env('GH_TOKEN'), env('RELEASE_TAG'), store);
 const resume = process.argv.includes('--resume');
 const prior = resume ? await journal.read() : null;
-if (resume && (!prior || ['requires_setup', 'not_started', 'published', 'rejected', 'needs_readback'].includes(prior.stage))) {
+if (resume && (!prior || ['requires_setup', 'not_started', 'published', 'rejected'].includes(prior.stage))) {
   console.log(`${store}: ${prior?.stage ?? 'not_started'}`);
 } else {
   const result = await deliver(release, adapters[store]!(), journal);
   console.log(`${store}: ${result.stage}`);
   if (env('GITHUB_STEP_SUMMARY')) await appendFile(env('GITHUB_STEP_SUMMARY'), `${store}: **${result.stage}** — [journal](https://github.com/${env('GITHUB_REPOSITORY')}/issues?q=${encodeURIComponent(`[delivery] ${env('RELEASE_TAG')} / ${store}`)})\n\n`);
-  if (['requires_setup', 'needs_readback', 'rejected'].includes(result.stage)) process.exitCode = 1;
+  // A scheduled readback that learns nothing new is not a new failure.
+  if (['requires_setup', 'needs_readback', 'rejected'].includes(result.stage) && !(resume && result.stage === prior?.stage)) process.exitCode = 1;
 }

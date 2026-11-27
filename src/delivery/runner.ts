@@ -8,8 +8,18 @@ export async function deliver(release: ReleaseIdentity, store: StorePort, journa
     const checked = { ...next, checkedAt: new Date().toISOString() };
     await journal.write(checked); state = checked; return checked;
   };
-  if (state && ['published', 'rejected', 'needs_readback'].includes(state.stage)) return state;
+  if (state && ['published', 'rejected'].includes(state.stage)) return state;
   if (state && ['uploading', 'submitting'].includes(state.stage)) return save({ ...state, stage: 'needs_readback' });
+  if (state?.stage === 'needs_readback') {
+    // Read-only recovery: a store GET may prove the outcome; a mutation is never replayed.
+    if (!store.ready()) return state;
+    try {
+      const observed = await store.status(state);
+      return observed === 'needs_readback' ? state : save({ ...state, stage: observed });
+    } catch {
+      return state;
+    }
+  }
   if (!store.ready()) {
     if (state && !['not_started', 'requires_setup'].includes(state.stage)) return state;
     return save({ ...release, stage: 'requires_setup' });
