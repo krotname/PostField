@@ -4,8 +4,18 @@ function normalizeWords(value: string): string {
   return value.normalize('NFKC').toLocaleLowerCase('ru').replace(/ё/gu, 'е').replace(/[.,]/gu, ' ').replace(/\s+/gu, ' ').trim();
 }
 
+// A district written beside the street ("жилой район X", "мкр X", "X район") does not change the street itself.
+const district = /^(?:(?:жилой\s+район|жилрайон|ж\/р|микрорайон|мкрн?|район|р-н)\.?\s+\S.*|\S.*\s+(?:район|р-н|микрорайон|мкр)\.?)$/u;
+
+function withoutDistricts(value: string): string {
+  const parts = value.split(',').map((part) => part.trim()).filter(Boolean);
+  const kept = parts.filter((part) => !district.test(part.normalize('NFKC').toLocaleLowerCase('ru')));
+  return kept.length > 0 && kept.length < parts.length ? kept.join(', ') : value;
+}
+
 export function normalizeComponent(value: string, kind: 'city' | 'street' | 'house', country: CountryCode): string {
-  let result = kind === 'house' ? value.normalize('NFKC').toLocaleLowerCase('ru').trim() : normalizeWords(value);
+  const source = country === 'ru' && kind === 'street' ? withoutDistricts(value) : value;
+  let result = kind === 'house' ? source.normalize('NFKC').toLocaleLowerCase('ru').trim() : normalizeWords(source);
   if (country === 'ru') {
     if (kind === 'city') result = result.replace(/^(?:город|г)\s+/u, '');
     if (kind === 'street') result = result.replace(/^(?:улица|ул)\s+/u, '').replace(/\s+(?:улица|ул)$/u, '');
@@ -51,15 +61,19 @@ export function classifyCandidates(address: Address, candidates: readonly Addres
   const exact = unique.filter((candidate) => (!address.region?.trim() || (!!candidate.region && normalizeWords(address.region) === normalizeWords(candidate.region)))
     && (['city', 'street', 'house'] as const).every((part) => normalizeComponent(address[part], part, address.country)
       === normalizeComponent(candidate[part], part, address.country)));
-  const candidate = exact[0];
-  const quality = candidate?.quality;
-  const reliable = quality?.source === 'photon' ? quality.explicitAddress
-    : quality?.source === 'dadata' ? quality.qc === 0 && quality.qcHouse === 2 && [0, 5].includes(quality.qcComplete)
-      && quality.actuality === '0' && !!quality.houseId && !quality.unparsed
-      : candidate?.confidence === 1 && candidate.resultType === 'building';
-  // Geoapify's contradictory rank evidence and known corrections retain the conservative policy.
-  const scope = quality?.source === 'photon' || quality?.source === 'dadata' ? exact : unique;
-  if (scope.length === 1 && candidate && candidate.requiresPostcodeConfirmation !== true && reliable) {
+  const reliable = (candidate: AddressCandidate): boolean => {
+    const quality = candidate.quality;
+    return quality?.source === 'photon' ? quality.explicitAddress
+      : quality?.source === 'dadata' ? quality.qc === 0 && quality.qcHouse === 2 && [0, 5].includes(quality.qcComplete)
+        && quality.actuality === '0' && !!quality.houseId && !quality.unparsed
+        : candidate.confidence === 1 && candidate.resultType === 'building';
+  };
+  const source = exact[0]?.quality?.source;
+  // Photon and DaData judge only the exact records; Geoapify neighbours must agree on the same postcode.
+  const scope = source === 'photon' || source === 'dadata' ? exact : unique;
+  const postcodes = new Set(scope.map((candidate) => normalizePostcode(candidate.country, candidate.postcode)));
+  const candidate = exact.find(reliable);
+  if (postcodes.size === 1 && candidate && scope.every((record) => record.requiresPostcodeConfirmation !== true)) {
     return { kind: 'confirmed', candidate: { ...candidate, postcode: normalizePostcode(candidate.country, candidate.postcode) ?? candidate.postcode } };
   }
   return { kind: 'ambiguous', candidates: unique };
