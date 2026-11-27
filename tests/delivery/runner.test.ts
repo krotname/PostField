@@ -33,6 +33,7 @@ describe('durable delivery', () => {
   it('does not repeat a mutation after a lost upload response', async () => {
     const { store, journal } = setup();
     vi.mocked(store.upload).mockRejectedValueOnce(new Error('private server body'));
+    vi.mocked(store.status).mockResolvedValue('needs_readback');
     expect((await deliver(release, store, journal)).stage).toBe('needs_readback');
     expect((await deliver(release, store, journal)).stage).toBe('needs_readback');
     expect(store.upload).toHaveBeenCalledOnce();
@@ -51,6 +52,33 @@ describe('durable delivery', () => {
     const fresh = setup(); fresh.store.ready = () => false;
     expect((await deliver(release, fresh.store, fresh.journal)).stage).toBe('requires_setup');
     expect(fresh.store.upload).not.toHaveBeenCalled();
+  });
+  it('reads back an uncertain outcome without replaying the mutation', async () => {
+    const initial: DeliveryState = { ...release, stage: 'needs_readback', uploadId: 'up' };
+    const { store, journal } = setup(initial);
+    expect((await deliver(release, store, journal, true)).stage).toBe('pending_review');
+    expect(store.status).toHaveBeenCalledOnce();
+    expect(store.upload).not.toHaveBeenCalled();
+    expect(store.submit).not.toHaveBeenCalled();
+    expect(journal.write.mock.calls[0]?.[0]).toMatchObject({ stage: 'pending_review', uploadId: 'up' });
+  });
+  it('keeps an unproven outcome unchanged when readback is unavailable or inconclusive', async () => {
+    const initial: DeliveryState = { ...release, stage: 'needs_readback', uploadId: 'up' };
+    const failing = setup(initial);
+    vi.mocked(failing.store.status).mockRejectedValueOnce(new Error('network'));
+    expect(await deliver(release, failing.store, failing.journal)).toEqual(initial);
+    const unknown = setup(initial);
+    vi.mocked(unknown.store.status).mockResolvedValueOnce('needs_readback');
+    expect(await deliver(release, unknown.store, unknown.journal)).toEqual(initial);
+    const offline = setup(initial);
+    offline.store.ready = () => false;
+    expect(await deliver(release, offline.store, offline.journal)).toEqual(initial);
+    expect(offline.store.status).not.toHaveBeenCalled();
+    for (const { store, journal } of [failing, unknown, offline]) {
+      expect(journal.write).not.toHaveBeenCalled();
+      expect(store.upload).not.toHaveBeenCalled();
+      expect(store.submit).not.toHaveBeenCalled();
+    }
   });
   it('status-only polling cannot create a new submission', async () => {
     const { store, journal } = setup();
