@@ -9,6 +9,11 @@ interface Binding { group: AddressGroup; session: FormSession; ui: HTMLElement; 
 // Yield to host timers even when every UI insertion triggers another rerender.
 const scanDelay = 25;
 const buttonStyle = 'margin:4px 8px 4px 0;padding:5px 9px;border:1px solid #577898;border-radius:5px;background-color:#fff;color:#153a61;font:inherit;cursor:pointer';
+// An empty status keeps its box hidden so no bare frame shows before or between lookups.
+function clearStatus(ui: HTMLElement): void {
+  ui.replaceChildren();
+  ui.style.display = 'none';
+}
 const labels: Record<string, string> = {
   confirmed: 'Индекс заполнен', not_found: 'Индекс для этого дома не найден', incomplete: 'Укажите город, улицу и дом',
   unsupported: 'Сейчас поддерживается Россия', preserved: 'Сохранён ваш индекс', ambiguous: 'Уточните адрес и выберите результат',
@@ -60,9 +65,9 @@ export class PageController {
     for (const binding of this.bindings.values()) {
       if (target === binding.group.postcode) {
         binding.session.manualPostcodeChanged();
-        binding.ui.replaceChildren();
+        clearStatus(binding.ui);
       } else if (Object.values(binding.group.fields).includes(target as AddressField) && binding.session.addressChanged()) {
-        binding.ui.replaceChildren();
+        clearStatus(binding.ui);
         if (this.automatic) this.schedule(binding);
       }
     }
@@ -98,7 +103,7 @@ export class PageController {
           if (changed) {
             if (existing.timer) clearTimeout(existing.timer);
             existing.session.addressChanged();
-            existing.ui.replaceChildren();
+            clearStatus(existing.ui);
             if (this.automatic) this.schedule(existing);
           }
         }
@@ -139,8 +144,7 @@ export class PageController {
       ui.dataset.postfieldUi = 'true';
       ui.setAttribute('role', 'status');
       ui.setAttribute('aria-live', 'polite');
-      ui.style.display = 'none';
-      ui.style.cssText = 'display:block;position:static;clear:both;flex:0 0 auto;grid-column:1 / -1;width:100%;box-sizing:border-box;font:13px/1.4 system-ui,sans-serif;color:#153a61;background-color:#f4f8fc;border:1px solid #577898;border-radius:6px;padding:6px 8px;margin:4px 0;max-width:460px;max-height:180px;overflow:auto;white-space:normal';
+      ui.style.cssText = 'display:none;position:static;clear:both;flex:0 0 auto;grid-column:1 / -1;width:100%;box-sizing:border-box;font:13px/1.4 system-ui,sans-serif;color:#153a61;background-color:#f4f8fc;border:1px solid #577898;border-radius:6px;padding:6px 8px;margin:4px 0;max-width:460px;max-height:180px;overflow:auto;white-space:normal';
       this.placeStatus(group, ui);
       const binding: Binding = { group, ui, manual, session: new FormSession(this.resolve, () => readAddress(binding.group),
         () => binding.group.postcode.value, (value) => {
